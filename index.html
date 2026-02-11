@@ -38,17 +38,25 @@
                 radial-gradient(circle at 10% 20%, rgba(211, 47, 47, 0.1) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.08) 0%, transparent 40%);
             background-attachment: fixed;
+            /* 단어 단위 줄바꿈 적용 (가독성 향상) */
+            word-break: keep-all; 
         }
 
-        img { width: 100%; display: block; object-fit: cover; }
+        /* [이미지 공통 설정] 비율 유지하며 꽉 채우기 */
+        img { 
+            width: 100%; 
+            display: block; 
+            object-fit: cover; /* 이미지가 박스 비율에 맞춰 잘림 (찌그러짐 방지) */
+        }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
         /* 공통 유틸리티 */
         .container {
-            max-width: 1100px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 100px 20px;
+            /* 상하 여백 80px로 최적화 */
+            padding: 80px 20px;
         }
 
         .gold-title {
@@ -84,7 +92,6 @@
 
         /* --- 1. 헤더 & 메인 배너 --- */
         header {
-            /* [수정] images -> image 폴더명 변경 */
             background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-deep)), url('image/main-banner.jpg');
             background-size: cover;
             background-position: center;
@@ -174,8 +181,11 @@
         .badge-icon { width: 120px; margin: 0 auto 40px; filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.5)); }
         #intro h2 { font-size: 2.5rem; margin-bottom: 60px; font-weight: 300; line-height: 1.4; color: var(--text-white); }
         
+        /* [이미지 사이즈 고정] */
         .intro-img-box img { 
             height: 350px; 
+            width: 100%;
+            object-fit: cover; 
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(0,0,0,0.5);
             border: 1px solid var(--glass-border);
@@ -212,10 +222,30 @@
         .compare-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0; }
         .text-red { color: var(--accent-red) !important; text-shadow: 0 0 5px var(--accent-red); }
 
-        .img-box img { border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        /* [이미지 사이즈 고정] */
+        .img-box img { 
+            height: 400px; 
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+        }
 
         /* --- 4. 장인 이야기 --- */
         #story .text-content { padding: 40px; }
+        /* [이미지 사이즈 고정] */
+        #story img {
+            height: 500px; 
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* 장인 이야기 하단 여백 축소 */
+        #story .container { padding-bottom: 40px; }
+
         #story h4 { 
             font-size: 1.6rem; 
             margin-bottom: 20px; 
@@ -226,8 +256,9 @@
         #story .story-sub { font-size: 1rem; color: #888; margin-bottom: 40px; font-style: italic;}
         #story p { color: var(--text-gray); margin-bottom: 20px; font-size: 1.05rem; }
         .highlight-bold { font-weight: bold; color: var(--text-white); }
+        
         .signature { 
-            margin-top: 50px; 
+            margin-top: 30px; 
             font-family: 'Brush Script MT', cursive; 
             color: var(--text-gold) !important; 
             text-align: right; 
@@ -239,7 +270,14 @@
         #process .card { 
             background: linear-gradient(180deg, rgba(30,30,30,0.6) 0%, rgba(10,10,10,0.8) 100%);
         }
-        #process .card img { height: 250px; width: 100%; transition: transform 0.5s; opacity: 0.9; }
+        /* [이미지 사이즈 고정] */
+        #process .card img { 
+            height: 250px; 
+            width: 100%; 
+            object-fit: cover;
+            transition: transform 0.5s; 
+            opacity: 0.9; 
+        }
         #process .card:hover img { transform: scale(1.1); opacity: 1; }
         
         #process .overlay {
@@ -277,7 +315,17 @@
         .result-card {
             background: rgba(20, 20, 20, 0.6);
         }
-        .result-card .img-wrapper { height: 220px; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        /* [이미지 사이즈 고정] */
+        .result-card .img-wrapper { 
+            height: 250px; 
+            overflow: hidden; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+        }
+        .result-card .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .result-card h4 { padding: 25px 25px 10px; font-size: 1.2rem; color: var(--text-white); font-weight: bold; }
         .result-card .desc { padding: 0 25px 25px; font-size: 0.95rem; color: #aaa; }
 
@@ -300,9 +348,18 @@
             box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
         }
 
-        /* --- 7. 가치 복원 프로젝트 --- */
+        /* --- 7. 가치 복원 프로젝트 (개선 적용) --- */
         .project-card {
             background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        /* [이미지 사이즈 고정] */
+        .project-card > img {
+            height: 250px; 
+            width: 100%;
+            object-fit: cover;
         }
         .project-quote {
             text-align: center;
@@ -313,29 +370,74 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             font-weight: 500;
         }
-        .project-info { padding: 30px; }
-        .project-info h4 { color: var(--text-white); font-size: 1.3rem; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        .info-title { color: var(--text-gold); margin-bottom: 12px; display: inline-block; font-size: 0.95rem;}
-        .project-info li { color: #ccc; margin-bottom: 8px; }
+        .project-info { 
+            padding: 30px; 
+            flex-grow: 1; 
+            display: flex;
+            flex-direction: column;
+        }
+        .project-info h4 { color: var(--text-white); font-size: 1.3rem; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
         
+        .info-title { color: var(--text-gold); margin-bottom: 12px; display: inline-block; font-size: 0.95rem;}
+        
+        /* [구분선 및 간격 수정] */
+        .info-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            min-height: 140px; /* 구분선 위치 고정 */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .info-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+            min-height: 180px; /* 버튼 위치 고정 */
+        }
+
+        .project-info ul { margin-left: 5px; }
+        .project-info li { color: #ccc; margin-bottom: 8px; font-size: 0.95rem; }
+        
+        /* [버튼 하단 고정] */
         .price-btn {
             background: linear-gradient(135deg, #ff4d4d 0%, #b71c1c 100%);
-            margin-top: 30px;
+            margin-top: auto; 
+            width: 100%;
             padding: 18px 0;
             border-radius: 15px;
             font-size: 1.2rem;
+            font-weight: bold;
             border: none;
             color: white;
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .price-btn:hover { transform: translateY(-2px); }
+        .price-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 15px 30px rgba(211, 47, 47, 0.4);
+        }
 
-        /* --- 8. 문의하기 (Contact) --- */
-        #contact { padding-bottom: 50px; }
-        .contact-title { font-size: 4rem; color: var(--text-white); }
-        .contact-subtitle-box p { color: var(--text-gold); font-size: 1.3rem; }
+        /* --- 8. 문의하기 (Contact: [복원] 2분할 글래스 디자인) --- */
+        #contact { 
+            background-color: var(--bg-deep); /* 통일성을 위해 어두운 배경으로 복원 */
+            color: var(--text-white);
+            padding-bottom: 50px;
+        }
+
+        #contact .container {
+            padding-top: 80px; 
+            padding-bottom: 20px;
+        }
+
+        .contact-title { font-size: 4rem; color: var(--text-white); margin-bottom: 20px; }
+        
+        .contact-subtitle-box { text-align: center; margin-bottom: 50px; }
+        .contact-subtitle-box p { color: var(--text-gold); font-size: 1.3rem; font-weight: 500; }
 
         .contact-actions-grid {
             display: grid;
@@ -350,7 +452,15 @@
             justify-content: flex-start;
             align-items: center;
             height: 100%;
+            /* Glass Box Style 복원 */
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
         }
+        .action-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.05); }
 
         .action-btn {
             display: flex;
@@ -366,137 +476,89 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(255,255,255,0.4);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 
-                0 10px 20px rgba(0,0,0,0.3),
-                inset 0 1px 0 rgba(255,255,255,0.6), 
-                inset 0 -1px 0 rgba(0,0,0,0.2),    
-                inset 0 10px 20px rgba(255,255,255,0.1); 
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .action-btn-call {
-            background: var(--btn-gradient-red);
-            color: white;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-        }
+        .action-btn-call { background: var(--btn-gradient-red); color: white; }
+        .action-btn-talk { background: var(--btn-gradient-yellow); color: #3c1e1e; }
 
-        .action-btn-talk {
-            background: var(--btn-gradient-yellow);
-            color: #3c1e1e; 
-            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
-        }
+        .main-desc { font-size: 1.1rem; color: var(--text-white); margin-bottom: 10px; font-weight: bold; }
+        .sub-desc { color: #888; margin-bottom: 20px; font-size: 0.95rem; }
+        .req-list { text-align: left; display: inline-block; color: #ccc; font-size: 0.95rem; list-style: disc; padding-left: 20px; margin-bottom: 25px; }
 
-        .action-btn:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 
-                0 15px 30px rgba(0,0,0,0.4),
-                inset 0 1px 0 rgba(255,255,255,0.8);
-        }
-        
-        .main-desc { font-size: 1.2rem; color: var(--text-white); margin-bottom: 10px; }
-        .sub-desc { color: #888; margin-bottom: 20px; }
-        .req-list { 
-            text-align: left;
-            display: inline-block; 
-            margin: 0 auto;
-            color: #ccc;
-            font-size: 0.95rem; 
-            list-style: disc; 
-            padding-left: 20px;
-            line-height: 1.8;
-            margin-bottom: 25px; 
-        }
-        .req-list li { margin-bottom: 5px; padding-left: 0; }
-        .req-list li::before { content: none; }
-
+        /* 하단 정보 캡슐 복원 */
         .info-capsule {
             margin-top: auto; 
-            font-size: 1.4rem; 
+            font-size: 1.3rem; 
             font-weight: 700;
-            color: var(--text-white);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 18px 0;
+            color: #ccc;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 0;
             border-radius: 50px;
             display: block; 
             text-align: center;
-            box-shadow: 
-                0 10px 30px rgba(0, 0, 0, 0.3),
-                inset 0 0 15px rgba(255, 255, 255, 0.05);
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
             width: 100%; 
-            max-width: 380px; 
-            margin-left: auto; margin-right: auto;
-            transition: all 0.3s ease;
+            max-width: 380px;
+            transition: 0.3s;
         }
-        
-        .info-capsule:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
-            border-color: var(--text-gold);
-            color: var(--text-gold);
-        }
+        .info-capsule:hover { background: rgba(0, 0, 0, 0.5); border-color: var(--text-gold); color: var(--text-gold); }
 
         .contact-footer-divider { border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0 30px; }
-        .promise-box { color: var(--text-white); font-weight: 300; font-style: italic;}
-        .shop-info-box h4 { color: var(--text-gold); margin-bottom: 10px; }
-        .shop-info-box ul li { color: #aaa; }
+        
+        .contact-bottom-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; 
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-top: 20px;
+        }
+        
+        .promise-box { color: var(--text-white); font-weight: 500; font-size: 1.3rem; flex: 1; text-align: left; }
+        .shop-info-box { flex: 1; text-align: right; }
+        .shop-info-box h4 { color: var(--text-white); margin-bottom: 8px; font-size: 1.1rem; }
+        .shop-info-box ul li { color: #aaa; font-size: 0.95rem; margin-bottom: 4px; }
 
         /* --- 9. Footer --- */
         .last-page-footer { 
             border-top: 1px solid rgba(255,255,255,0.05); 
             background: linear-gradient(to top, #000, var(--bg-deep));
         }
-        
-        .footer-brand { color: var(--text-gold); font-size: 3rem; }
-        .footer-message { color: var(--text-white); font-weight: 300; }
-        .shop-meta, .contact-meta { color: #888; }
-        .shop-meta .brand-since { color: var(--text-white); }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding-top: 60px; }
+        .footer-img-box img { width: 100%; min-height: 500px; border-radius: 20px; }
+        .footer-text-box { display: flex; flex-direction: column; justify-content: flex-end; padding: 20px 0; }
+        .footer-bottom-split { display: flex; flex-direction: column; align-items: flex-end; gap: 30px; text-align: right; }
+        .footer-brand { font-size: 3.5rem; color: var(--text-gold); margin-bottom: 10px; }
+        .footer-message { font-size: 1.4rem; color: var(--text-white); margin-bottom: 5px; }
+        .brand-since { font-weight: bold; color: var(--text-white); font-size: 1.1rem; }
+        .footer-right-group { color: #888; font-size: 0.95rem; line-height: 1.6; }
 
         /* --- 10. Legal Footer --- */
-        .legal-footer {
-            background-color: #050505;
-            border-top: 1px solid #222;
-            color: #555;
-        }
-        .legal-links a { color: #888; }
-        .legal-links .bold-link { color: #ccc; }
-        .copyright-text { color: #444; }
+        .legal-footer { background-color: #050505; border-top: 1px solid #222; color: #555; }
+        .legal-links a { color: #888; margin-right: 15px; cursor: pointer; }
+        .legal-info { font-size: 0.85rem; margin-bottom: 5px; }
 
         /* --- Floating Menu --- */
-        .float-btn {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            color: white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        .btn-call { background: #4CAF50; color: white; border: none;}
-        .btn-talk { background: #FEE500; color: #3c1e1e; border: none;}
-        .btn-top { background: var(--glass-bg); }
-        .btn-top:hover { background: var(--accent-red); border-color: var(--accent-red); }
+        .floating-menu { position: fixed; right: 20px; bottom: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .float-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: 0.3s; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); }
+        .float-btn svg { width: 24px; height: 24px; fill: currentColor; }
+        .btn-call { background-color: #4CAF50; color: white; }
+        .btn-talk { background-color: #FEE500; color: #3c1e1e; }
+        .btn-top { background: var(--glass-bg); color: white; flex-direction: column; font-size: 0.7rem; backdrop-filter: blur(10px); }
 
         /* --- Modals --- */
-        .modal-content {
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-white);
-        }
-        .modal-title { border-bottom-color: rgba(255,255,255,0.1); }
-        .terms-text { color: #ccc; }
-        .terms-text strong { color: var(--text-gold); }
-        .close-btn { color: #fff; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-content { background: rgba(20, 20, 20, 0.9); border: 1px solid rgba(255,255,255,0.1); color: white; width: 90%; max-width: 800px; height: 80%; padding: 30px; border-radius: 20px; position: relative; display: flex; flex-direction: column; }
+        .terms-text { flex-grow: 1; overflow-y: auto; white-space: pre-line; text-align: left; color: #ccc; }
+        .close-btn { position: absolute; top: 20px; right: 25px; font-size: 30px; cursor: pointer; }
 
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 2.5rem; }
-            .container { padding: 60px 20px; }
-            .contact-title { font-size: 2.8rem; }
-            .info-capsule { font-size: 1.1rem; padding: 15px 25px; }
+            .grid-2-col, .grid-3-col, .contact-actions-grid, .footer-grid { grid-template-columns: 1fr; }
+            .contact-bottom-info { flex-direction: column; text-align: center; }
+            .shop-info-box { text-align: center; }
+            .footer-bottom-split { align-items: center; text-align: center; }
         }
     </style>
 </head>
@@ -511,7 +573,7 @@
             <h1>고가의 내 차,<br>아무에게나 맡기시겠습니까?</h1>
             <div class="cta-buttons">
                 <a href="#contact" class="btn btn-red">문의하기</a>
-                <a href="#process" class="btn btn-glass">공정 보기</a>
+                <a href="#projects" class="btn btn-glass">가격보기</a>
             </div>
         </div>
         <div class="banner-bar glass-card" style="border-radius: 0; border-left:0; border-right:0;">
@@ -522,9 +584,7 @@
     <!-- 2. 인트로 -->
     <section id="intro">
         <div class="container">
-            <div class="badge-icon">
-                <img src="image/badge-icon.png" alt="인증 마크" style="width:100%;"> 
-            </div>
+            <div class="badge-icon"><img src="image/badge-icon.png" alt="인증 마크"></div>
             <h2>"자동차 복원 전문가가<br>직접 시공합니다"</h2>
             <div class="grid-2-col intro-img-box">
                 <img src="image/intro-car-side.jpg" alt="클래식카 측면">
@@ -541,24 +601,19 @@
                     <div class="text-box">
                         <h3>왜 비싼 돈 들인 광택이<br>세차 몇 번에 사라질까요?</h3>
                         <p class="accent-text">“저렴한 광택은 기름으로 덮지만,<br>우리는 깍아서 살려냅니다.”</p>
-                        
                         <div class="comparison-details">
                             <div class="compare-block">
                                 <h4>❌ 일반 광택</h4>
-                                <p>소중한 고객님의 차가 '기름칠' 당하고 있을지 모릅니다.</p>
-                                <p>흠집을 강한 유분으로 덮기 때문에 세차 몇 번이면 다시 드러납니다.</p>
+                                <p>소중한 고객님의 차가 '기름칠' 당하고 있을지 모릅니다. 흠집을 강한 유분으로 덮기 때문에 세차 몇 번이면 다시 드러납니다.</p>
                             </div>
                             <hr class="compare-divider">
                             <div class="compare-block">
                                 <h4 class="text-red">⭕ GARAGE40</h4>
-                                <p>자체 개발한 약품으로 도장면의 본질을 복원합니다.</p>
-                                <p>기름기가 빠져도 광은 사라지지 않고 시간이 지나도 오래 지속 됩니다.</p>
+                                <p>자체 개발한 약품으로 도장면의 본질을 복원합니다. 기름기가 빠져도 광은 사라지지 않고 시간이 지나도 오래 지속 됩니다.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="img-box">
-                        <img src="image/problem-comparison.jpg" alt="광택 비교">
-                    </div>
+                    <div class="img-box"><img src="image/problem-comparison.jpg" alt="광택 비교"></div>
                 </div>
             </div>
         </div>
@@ -569,20 +624,12 @@
         <div class="container"> 
             <h3 class="gold-title">Master's Story</h3>
             <div class="grid-2-col">
-                <img src="image/master-working.jpg" alt="장인 작업 모습" style="border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
+                <img src="image/master-working.jpg" alt="장인 작업 모습">
                 <div class="text-content">
                     <h4>40년의 역사, 5만 대의 증명.</h4>
                     <p class="story-sub">광택의 시초 을지로 오장동에서 시작된 기술은<br>장안동에서 더 정교해졌습니다.</p>
-                    <p>
-                        <span class="highlight-bold">'모든 차의 피부는 다릅니다.'</span><br>
-                        벤츠의 단단함과 포르쉐의 유연함이 다르듯,<br>
-                        브랜드별 도장의 특성을 완벽히 이해해야 합니다.
-                    </p>
-                    <p>주행 환경이 남긴 미세한 흔적 하나까지<br>놓치지 않습니다.</p>
-                    <p>
-                        마스터가 직접 설계하는 1:1 맞춤 공정.<br>
-                        제 마음에 들지 않는 결과물은<br>고객님께도 드리지 않습니다.
-                    </p>
+                    <p><span class="highlight-bold">'모든 차의 피부는 다릅니다.'</span><br>브랜드별 도장의 특성을 완벽히 이해해야 합니다.</p>
+                    <p>마스터가 직접 설계하는 1:1 맞춤 공정. 제 마음에 들지 않는 결과물은 고객님께도 드리지 않습니다.</p>
                     <p class="highlight-bold" style="margin-top: 10px;">이것이 GARAGE 40의 퀄리티가 다른 이유입니다.</p>
                     <p class="signature">Master Lee SungGu</p>
                 </div>
@@ -602,12 +649,12 @@
                 </div>
                 <div class="card glass-card">
                     <img src="image/process-step2.jpg" alt="Step 2">
-                    <div class="overlay">Step 2. 수성 광택 폴리싱</div>
+                    <div class="overlay">Step 2. 약품 광택 폴리싱</div>
                     <div class="step-desc">직접 개발한 광택제,<br>충분한 작업시간</div>
                 </div>
                 <div class="card glass-card">
                     <img src="image/process-step3.jpg" alt="Step 3">
-                    <div class="overlay">Step 3. 유리막 코팅</div>
+                    <div class="overlay">Step 3. 표면 보호 코팅</div>
                     <div class="step-desc">색감 광도 체크 후<br>출고</div>
                 </div>
             </div>
@@ -655,20 +702,21 @@
                             <span class="info-title">적합 대상 :</span>
                             <ul>
                                 <li>출고 1~3년 미만의 신차급 차량.</li>
-                                <li>깊은 흠집보다는 생활 스크래치(세차 기스)를 지우고 광도를 끌어올리고 싶은 분.</li>
+                                <li>생활 스크래치를 제거하고, 신차 이상의 광도를 원하는 분.</li>
                             </ul>
                         </div>
                         <div class="info-section">
                             <span class="info-title">시공 패키지 :</span>
                             <ul>
-                                <li>세미 폴리싱: 도장면 삭감을 최소화, 스월 마크(거미줄 기스) 제거.</li>
-                                <li>광도 증진: 탁해진 도장면의 채도를 높여 맑은 리플렉션 회복.</li>
-                                <li>기본 코팅: 작업 후 도장면 보호를 위한 프리미엄 왁스/실란트 마감.</li>
+                                <li>세미 폴리싱: 도장면 삭감 최소화, 스월 마크 제거.</li>
+                                <li>광도 증진: 맑은 리플렉션 회복.</li>
+                                <li>기본 코팅: 프리미엄 왁스/실란트 마감.</li>
                             </ul>
                         </div>
-                        <button class="price-btn" onclick="inquire('스탠다드 케어 패키지', '15만원 부터')">[문의] 15만원 부터</button>
+                        <button class="price-btn" onclick="inquire('스탠다드 케어', '15만원 부터')">[문의] 15만원 부터</button>
                     </div>
                 </div>
+                
                 <div class="project-card glass-card">
                     <div class="project-quote">"GARAGE40의 기술력이 집약된 시그니처"</div>
                     <img src="image/project-best.jpg" alt="BEST 정밀 광택">
@@ -677,66 +725,65 @@
                         <div class="info-section">
                             <span class="info-title">적합 대상 :</span>
                             <ul>
-                                <li>출고 3년 이상, 세월의 흔적이 눈에 띄는 차량.</li>
-                                <li>자동세차로 깊은 기스를 제거하고, 새 차 광택을 원하는 분, 차량 수리 후 광택이 필요한 분.</li>
+                                <li>출고 3년 이상, 세월의 흔적이 있는 차량.</li>
+                                <li>자동세차 기스를 완벽 제거하고, 새 차 광택으로 복원을 원하는 분.</li>
                             </ul>
                         </div>
                         <div class="info-section">
                             <span class="info-title">시공 패키지 :</span>
                             <ul>
-                                <li>1:1 맞춤 약품 처방: 상태에 맞춤 'Original Chemical' 시공.</li>
-                                <li>정밀 듀얼 광택: 딥 스크래치 제거, 도장면 난반사→정반사 보정.</li>
-                                <li>유리막 코팅: 깊은 광택을 오랫동안 유지해 주는 고경도 코팅 포함.</li>
+                                <li>1:1 맞춤 약품 처방 시공.</li>
+                                <li>정밀 듀얼 광택: 딥 스크래치 제거 및 정반사 보정.</li>
+                                <li>유리막 코팅: 고경도 코팅 포함.</li>
                             </ul>
                         </div>
-                        <button class="price-btn" onclick="inquire('BEST 정밀 광택 패키지', '30만원 부터')">[문의] 30만원 부터</button>
+                        <button class="price-btn" onclick="inquire('BEST 정밀 광택', '30만원 부터')">[문의] 30만원 부터</button>
                     </div>
                 </div>
+
                 <div class="project-card glass-card">
-                    <div class="project-quote">"단순한 광택을 넘어선, 완벽한 작품으로의 복원"</div>
-                    <img src="image/project-vip.jpg" alt="VIP 마스터 리스토어">
+                    <div class="project-quote">"단순한 광택을 넘어선, 완벽한 작품"</div>
+                    <img src="image/project-vip.jpg" alt="VIP 리스토어">
                     <div class="project-info">
                         <h4>#3 [VIP 마스터 리스토어] 패키지</h4>
                         <div class="info-section">
                             <span class="info-title">적합 대상 :</span>
                             <ul>
                                 <li>소장용 올드카, 클래식카, 고가 수입차.</li>
-                                <li>비용과 상관없이 "가장 완벽한 상태"로 되돌려 평생 소장하고 싶은 분.</li>
+                                <li>비용 상관없이 "완벽한 상태"로 복원해 평생 소장하고 싶은 분.</li>
                             </ul>
                         </div>
                         <div class="info-section">
                             <span class="info-title">시공 패키지 :</span>
                             <ul>
-                                <li>하루 1대 전담: 시간에 구애받지 않는 극한의 마스터 디테일링.</li>
-                                <li>평탄 광택: 도장면의 귤껍질 질감(오렌지필)을 평탄화.</li>
-                                <li>토탈 케어: 엔진룸/휠/타이어 정밀 케어, 실내 클리닝 포함.</li>
+                                <li>하루 1대 전담: 극한의 마스터 디테일링.</li>
+                                <li>평탄 광택: 오렌지필 평탄화 작업.</li>
+                                <li>토탈 케어: 엔진룸 및 실내 정밀 클리닝 포함.</li>
                             </ul>
                         </div>
-                        <button class="price-btn" onclick="inquire('VIP 마스터 리스토어 패키지', '50만원 부터')">[문의] 50만원 부터</button>
+                        <button class="price-btn" onclick="inquire('VIP 마스터 리스토어', '50만원 부터')">[문의] 50만원 부터</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 8. 문의하기 (Contact) -->
+    <!-- 8. 문의하기 (Contact: [복원] 2분할 글래스 디자인) -->
     <section id="contact">
         <div class="container">
-            <div class="contact-header">
-                <h2 class="contact-title">Contact us</h2>
-            </div>
+            <div class="contact-header"><h2 class="contact-title">Contact us</h2></div>
             <div class="contact-subtitle-box">
-                <p>공장처럼 찍어내면 돈은 더 벌겠지만,<br>40년 기술자의 양심은 지킬 수 없습니다</p>
+                <p>공장처럼 찍어내면 돈은 더 벌겠지만,<br>40년 기술자의 양심은 지킬 수 없습니다.</p>
             </div>
             <div class="contact-actions-grid">
                 <div class="action-card">
                     <a href="tel:01046848838" class="action-btn action-btn-call">📲 1분 통화로 예약하기</a>
                     <p class="main-desc">"복잡한 건 싫다! 바로 물어보세요."</p>
                     <p class="sub-desc">(부재 시 문자 남겨주세요) 🤚</p>
-                    <p class="info-capsule">Tel: 010-4684-8838</p>
+                    <a href="tel:01046848838" class="info-capsule">Tel: 010-4684-8838</a>
                 </div>
                 <div class="action-card">
-                     <button class="action-btn action-btn-talk" onclick="inquire('사진 견적 문의', '상담 연결')">💬 사진으로 견적받기</button>
+                     <button class="action-btn action-btn-talk" onclick="inquire('사진 견적', '상담 연결')">💬 사진으로 견적받기</button>
                      <p class="main-desc">"카톡으로 상처 부위 사진만 보내주세요."</p>
                      <ul class="req-list">
                          <li>차종 & 연식 (예: 벤츠 E클래스 / 20년식)</li>
@@ -760,100 +807,79 @@
         </div>
     </section>
 
-    <!-- 9. 최종 푸터 (Last Page Design) -->
+    <!-- 9. 최종 푸터 -->
     <footer class="last-page-footer">
         <div class="container footer-grid">
-            <div class="footer-img-box">
-                <img src="image/footer-interior.jpg" alt="클래식 카 인테리어">
-            </div>
+            <div class="footer-img-box"><img src="image/footer-interior.jpg" alt="감성 샷"></div>
             <div class="footer-text-box">
-                <h2 class="footer-brand">Garage40</h2>
-                <div class="footer-message">"게러지40을 찾아 주셔서 고맙습니다."</div>
-                <div class="footer-info-group">
-                    <div class="shop-meta">
+                <div class="footer-bottom-split">
+                    <div class="footer-left-group">
+                        <h2 class="footer-brand">Garage40</h2>
+                        <div class="footer-message">"게러지40을 찾아 주셔서 고맙습니다."</div>
                         <p class="brand-since">GARAGE40 — since 1980</p>
+                    </div>
+                    <div class="footer-right-group">
                         <p>경기 시흥시 금오로 499, 1F</p>
                         <p>K 광택 • 실내세차 • 덴트</p>
-                    </div>
-                    <div class="contact-meta">
-                        <p>Tel: 010-4684-8838</p>
+                        <p class="contact-line">Tel: 010-4684-8838</p>
                         <p>Email: garage40@gmail.com</p>
                         <p>Ins: @garage40</p>
                     </div>
                 </div>
-                 <div class="footer-arrow"></div>
             </div>
         </div>
     </footer>
 
-    <!-- 10. 법적 필수정보 푸터 (Legal Footer) -->
+    <!-- 10. 법적 필수정보 -->
     <div class="legal-footer">
         <div class="container">
             <div class="legal-links">
                 <a onclick="openTermsModal(event)">이용약관</a>
-                <a onclick="openPrivacyModal(event)" class="bold-link">개인정보처리방침</a>
-                <a href="#">사업자정보확인</a>
+                <a onclick="openPrivacyModal(event)" style="font-weight:bold; color:#ccc;">개인정보처리방침</a>
             </div>
-            
-            <div class="legal-info">
-                <span>상호명: 넘버원카클리닉 (K광택)</span>
-                <span>대표자: 이성구</span>
-                <span>개인정보관리책임자: 김용화</span>
-            </div>
-            
-            <div class="legal-info">
-                <span>사업자등록번호: 306-27-29085</span>
-                <span>주소: 경기도 시흥시 금오로 499, 1F</span>
-                <span>이메일: qoorocket@gmail.com</span>
-            </div>
-
-            <p class="copyright-text">Copyright © 2024 GARAGE40. All rights reserved.</p>
+            <div class="legal-info">상호명: 넘버원카클리닉 (K광택) | 대표자: 이성구 | 사업자번호: 306-27-29085</div>
+            <p style="margin-top:10px;">Copyright © 2024 GARAGE40. All rights reserved.</p>
         </div>
     </div>
 
-    <!-- 우측 하단 플로팅 메뉴 -->
+    <!-- 플로팅 메뉴 -->
     <div class="floating-menu">
-        <a href="tel:01046848838" class="float-btn btn-call" title="전화 문의">
-            <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.59 3.99C8.59 3.44 8.14 3 7.59 3H4.03C3.48 3 3 3.45 3 4.01 3 13.42 10.58 21 19.99 21c.56 0 1.01-.45 1.01-1v-3.61c0-.56-.45-1.01-1-.01z"/></svg>
-        </a>
-        <button onclick="inquire('간편 상담', '상담 연결')" class="float-btn btn-talk" title="카톡 상담">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-        </button>
-        <a href="#hero" class="float-btn btn-top" title="맨 위로">
-            <svg viewBox="0 0 24 24" style="width:20px; height:20px; margin-bottom:2px;"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
-            <span>TOP</span>
-        </a>
+        <a href="tel:01046848838" class="float-btn btn-call" title="전화"><svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.59 3.99C8.59 3.44 8.14 3 7.59 3H4.03C3.48 3 3 3.45 3 4.01 3 13.42 10.58 21 19.99 21c.56 0 1.01-.45 1.01-1v-3.61c0-.56-.45-1.01-1-.01z"/></svg></a>
+        <button onclick="inquire('간편 상담', '연결')" class="float-btn btn-talk" title="카톡"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></button>
+        <a href="#hero" class="float-btn btn-top" title="TOP"><svg viewBox="0 0 24 24" style="width:20px;"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg><span>TOP</span></a>
     </div>
 
-    <!-- Scripts (Modal functions same as before) -->
+    <!-- 스크립트 설정 -->
     <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target){
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-
-        function inquire(packageName, price) {
-            const msg = `[${packageName}]\n가격: ${price}\n\n상담을 위해 카카오톡으로 이동하시겠습니까?`;
-            if (confirm(msg)) {
-                // ★ 실제 카카오톡 링크로 교체 필요
-                const kakaoLink = 'https://open.kakao.com/o/YOUR_LINK_HERE'; 
-                window.open(kakaoLink, '_blank'); 
-            }
-        }
-
+        function inquire(pkg, price) { if(confirm(`[${pkg}] 상담을 위해 카카오톡으로 이동하시겠습니까?`)) window.open('https://open.kakao.com/o/YOUR_LINK', '_blank'); }
+        
         function openTermsModal(e) { if(e) e.preventDefault(); document.getElementById('terms-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
         function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         function openPrivacyModal(e) { if(e) e.preventDefault(); document.getElementById('privacy-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
         function closePrivacyModal() { document.getElementById('privacy-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        
         window.onclick = function(event) {
-            if (event.target == document.getElementById('terms-modal')) closeTermsModal();
-            if (event.target == document.getElementById('privacy-modal')) closePrivacyModal();
+            if (event.target.className === 'modal-overlay') {
+                closeTermsModal();
+                closePrivacyModal();
+            }
         }
     </script>
+
+    <!-- 모달 내용 (생략 가능하나 구조 유지를 위해 포함) -->
+    <div id="terms-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeTermsModal()">&times;</span>
+            <h2>이용약관</h2>
+            <div class="terms-text">사이트 이용약관 내용...</div>
+        </div>
+    </div>
+    <div id="privacy-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePrivacyModal()">&times;</span>
+            <h2>개인정보처리방침</h2>
+            <div class="terms-text">개인정보처리방침 내용...</div>
+        </div>
+    </div>
 </body>
 </html>
