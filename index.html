@@ -7,52 +7,85 @@
     <!-- 구글 폰트 (Noto Sans KR) 로드 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 기본 설정 (Reset & Variables) --- */
+        /* --- [Global] 글래스모피즘 테마 설정 --- */
         :root {
-            --bg-black: #111111;
-            --bg-dark: #1a1a1a;
-            --bg-light: #ECE9E4; /* 따뜻한 베이지색 */
+            --bg-deep: #0f0f0f;
             --text-white: #ffffff;
-            --text-gold: #c5a059; /* 골드 색상 */
-            --text-gray: #aaaaaa;
+            --text-gold: #eebb66; /* 조금 더 밝은 골드 */
+            --text-gray: #cccccc;
             --accent-red: #d32f2f;
+            
+            /* Glassmorphism Variables */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --glass-blur: blur(12px);
+            
+            /* Liquid Button Gradients */
+            --btn-gradient-red: linear-gradient(180deg, #ff6b6b 0%, #c0392b 100%);
+            --btn-gradient-yellow: linear-gradient(180deg, #f1c40f 0%, #f39c12 100%);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-black);
+            background-color: var(--bg-deep);
             color: var(--text-white);
-            line-height: 1.6;
+            line-height: 1.7;
+            /* 배경에 은은한 빛 효과 추가 */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(211, 47, 47, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
         }
 
         img { width: 100%; display: block; object-fit: cover; }
-        a { text-decoration: none; color: inherit; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
         ul { list-style: none; }
 
         /* 공통 유틸리티 */
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 100px 20px;
         }
 
         .gold-title {
             color: var(--text-gold);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
+        }
+
+        /* [Glass Style] 공통 카드 디자인 */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         /* 그리드 레이아웃 */
-        .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .grid-3-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .grid-3-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
 
         /* --- 1. 헤더 & 메인 배너 --- */
         header {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/main-banner.jpg');
+            /* [수정] images -> image 폴더명 변경 */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-deep)), url('image/main-banner.jpg');
             background-size: cover;
             background-position: center;
             height: 100vh;
@@ -60,355 +93,249 @@
             flex-direction: column;
             justify-content: space-between;
             text-align: center;
+            position: relative;
         }
 
-        .navbar { padding: 20px; display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: white; }
-        .logo .since { font-size: 0.8rem; font-weight: normal; margin-left: 10px; color: var(--text-gray); }
+        .navbar { 
+            padding: 20px 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+        }
+        
+        .logo { font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: 1px; }
+        .logo .since { font-size: 0.9rem; font-weight: 300; margin-left: 10px; color: var(--text-gold); }
 
-        .hero-content { margin-top: auto; margin-bottom: auto; padding: 0 20px; }
+        .hero-content { margin-top: auto; margin-bottom: auto; padding: 0 20px; z-index: 1; }
         .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 40px;
+            font-size: 4rem;
+            margin-bottom: 50px;
             line-height: 1.2;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            font-weight: 700;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .cta-buttons { display: flex; gap: 15px; justify-content: center; }
-        .btn { padding: 15px 40px; border-radius: 4px; font-weight: bold; transition: 0.3s; font-size: 1rem; cursor: pointer;}
-        .btn-red { background-color: var(--accent-red); color: white; }
-        .btn-red:hover { background-color: #b71c1c; }
-        .btn-red-outline { border: 2px solid var(--accent-red); color: white; }
-        .btn-red-outline:hover { background-color: var(--accent-red); }
+        .cta-buttons { display: flex; gap: 20px; justify-content: center; }
+        
+        /* 버튼 스타일 */
+        .btn { 
+            padding: 16px 40px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-red { 
+            background: linear-gradient(135deg, #ff4d4d 0%, #b71c1c 100%);
+            color: white;
+            box-shadow: 0 10px 20px rgba(211, 47, 47, 0.4);
+            border: none;
+        }
+        .btn-red:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(211, 47, 47, 0.6);
+        }
+
+        .btn-glass { 
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            color: white;
+        }
+        .btn-glass:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: white;
+        }
 
         .banner-bar {
-            background-color: rgba(0,0,0,0.8);
-            color: white;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            color: var(--text-gray);
             padding: 20px;
             font-size: 1rem;
-            border-top: 1px solid #333;
+            border-top: 1px solid var(--glass-border);
         }
 
         /* --- 2. 인트로 섹션 --- */
-        #intro { 
-            text-align: center; 
-            background-color: var(--bg-light); 
-            color: #333; 
-            width: 100%; /* 전체 너비 */
+        #intro { text-align: center; }
+        .badge-icon { width: 120px; margin: 0 auto 40px; filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.5)); }
+        #intro h2 { font-size: 2.5rem; margin-bottom: 60px; font-weight: 300; line-height: 1.4; color: var(--text-white); }
+        
+        .intro-img-box img { 
+            height: 350px; 
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
         }
-        .badge-icon { width: 100px; margin: 0 auto 30px; border-radius: 50%; border: 2px solid var(--text-gold); padding: 10px; }
-        #intro h2 { font-size: 2rem; margin-bottom: 60px; font-weight: 300; line-height: 1.4; color: #111; }
-        
-        .intro-img-box img { height: 300px; border-radius: 4px; filter: grayscale(0%); transition: 0.5s; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .intro-img-box img:hover { transform: translateY(-5px); }
 
-        /* --- 3. 문제 제기 --- */
-        #problem { background-color: var(--bg-light); color: #333; width: 100%; }
-        .grid-2-col-text-img { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-        .text-box h3 { font-size: 1.8rem; margin-bottom: 20px; color: #000; }
-        .accent-text { color: var(--accent-red); font-weight: bold; margin: 30px 0; font-size: 1.2rem; border-left: 4px solid var(--accent-red); padding-left: 20px; line-height: 1.6; }
-        
-        .comparison-details { margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px; }
-        .compare-block { margin-bottom: 25px; }
-        .compare-block h4 { font-size: 1.3rem; margin-bottom: 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; color: #111;}
-        .compare-block p { font-size: 0.95rem; line-height: 1.6; color: #444; margin-bottom: 5px; }
-        .compare-divider { border: 0; border-top: 1px solid #e0e0e0; margin: 20px 0; }
-        .text-red { color: var(--accent-red) !important; }
+        /* --- 3. 문제 제기 (Glass Panel) --- */
+        #problem { padding-top: 0; }
+        .problem-glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 60px;
+            box-shadow: var(--glass-shadow);
+        }
 
-        .img-box img { box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .grid-2-col-text-img { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        
+        .text-box h3 { font-size: 2rem; margin-bottom: 30px; color: var(--text-white); font-weight: 700; }
+        .accent-text { 
+            color: var(--accent-red); 
+            font-weight: bold; 
+            margin: 30px 0; 
+            font-size: 1.3rem; 
+            border-left: 4px solid var(--accent-red); 
+            padding-left: 20px; 
+            line-height: 1.6;
+            text-shadow: 0 0 10px rgba(211, 47, 47, 0.3);
+        }
+        
+        .comparison-details { margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
+        .compare-block h4 { font-size: 1.4rem; margin-bottom: 15px; font-weight: bold; color: var(--text-white); display: flex; align-items: center; gap: 10px;}
+        .compare-block p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .compare-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0; }
+        .text-red { color: var(--accent-red) !important; text-shadow: 0 0 5px var(--accent-red); }
+
+        .img-box img { border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
 
         /* --- 4. 장인 이야기 --- */
-        #story { background-color: var(--bg-light); color: #333; width: 100%; } 
-        #story .text-content { padding: 20px 40px; display: flex; flex-direction: column; justify-content: center; text-align: left; }
-        
+        #story .text-content { padding: 40px; }
         #story h4 { 
-            font-size: 1.4rem; 
-            margin-bottom: 10px; 
+            font-size: 1.6rem; 
+            margin-bottom: 20px; 
             line-height: 1.4; 
-            color: #111; 
+            color: var(--text-gold); 
             font-weight: 700;
         }
-
-        #story .story-sub {
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 40px;
-        }
-
-        #story p { 
-            color: #444; 
-            margin-bottom: 20px; 
-            font-size: 1rem;
-            line-height: 1.7;
-        }
-
-        .highlight-bold { font-weight: bold; color: #000; }
-
+        #story .story-sub { font-size: 1rem; color: #888; margin-bottom: 40px; font-style: italic;}
+        #story p { color: var(--text-gray); margin-bottom: 20px; font-size: 1.05rem; }
+        .highlight-bold { font-weight: bold; color: var(--text-white); }
         .signature { 
             margin-top: 50px; 
-            font-family: cursive; 
-            color: #333 !important; 
+            font-family: 'Brush Script MT', cursive; 
+            color: var(--text-gold) !important; 
             text-align: right; 
-            font-size: 1.4rem; 
+            font-size: 2rem; 
+            opacity: 0.8;
         }
 
         /* --- 5. 복원 프로세스 --- */
-        #process.bg-dark { background-color: #151515; width: 100%; }
         #process .card { 
-            position: relative; 
-            overflow: hidden; 
-            background-color: #222; 
-            border: 1px solid #333; 
+            background: linear-gradient(180deg, rgba(30,30,30,0.6) 0%, rgba(10,10,10,0.8) 100%);
         }
-        #process .card img { height: 300px; transition: transform 0.5s; width: 100%; }
-        #process .card:hover img { transform: scale(1.1); }
+        #process .card img { height: 250px; width: 100%; transition: transform 0.5s; opacity: 0.9; }
+        #process .card:hover img { transform: scale(1.1); opacity: 1; }
+        
         #process .overlay {
-            background-color: var(--accent-red);
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(211, 47, 47, 0.9);
             color: white;
-            padding: 15px;
-            text-align: center;
+            padding: 8px 16px;
             font-weight: bold;
-            position: relative;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 10;
         }
+        
         .step-desc {
-            padding: 20px 15px;
-            color: #ccc;
-            font-size: 0.95rem;
+            padding: 30px;
+            color: var(--text-gray);
+            font-size: 1rem;
             text-align: center;
-            line-height: 1.5;
-            position: relative;
-            z-index: 10;
-            background-color: #222;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         /* --- 6. 결과 사례 --- */
-        #results {
-            background-color: var(--bg-light); 
-            color: #333;
-            width: 100%;
-        }
-
         #results .section-quote {
-            font-size: 1.6rem; 
-            color: #222;
-            margin-bottom: 50px;
+            font-size: 1.8rem; 
+            color: var(--text-white);
+            margin-bottom: 60px;
             font-weight: 300;
+            text-align: center;
         }
-
-        #results .section-quote strong {
-            font-weight: 700;
-            color: #000;
-        }
+        #results .section-quote strong { color: var(--text-gold); font-weight: 700; }
 
         .result-card {
-            background: #fff; 
-            border: 1px solid #eee;
-            border-radius: 8px; 
-            overflow: hidden; 
-            padding-bottom: 25px;
-            transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+            background: rgba(20, 20, 20, 0.6);
         }
-
-        .result-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-            border-color: transparent;
-        }
-
-        .result-card .img-wrapper {
-            height: 220px;
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-
-        .result-card h4 {
-            padding: 0 20px;
-            font-size: 1.25rem; 
-            margin-bottom: 15px;
-            color: #222; 
-            font-weight: bold;
-        }
-
-        .result-card .desc {
-            padding: 0 20px;
-            font-size: 1.05rem; 
-            color: #555; 
-            margin-bottom: 25px;
-            height: auto; 
-            min-height: 100px; 
-            line-height: 1.6;
-            display: block; 
-        }
+        .result-card .img-wrapper { height: 220px; overflow: hidden; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .result-card h4 { padding: 25px 25px 10px; font-size: 1.2rem; color: var(--text-white); font-weight: bold; }
+        .result-card .desc { padding: 0 25px 25px; font-size: 0.95rem; color: #aaa; }
 
         .btn-block-red {
             display: block;
-            margin: 0 20px;
-            background-color: var(--accent-red); 
-            border: none;
-            color: white;
+            margin: 0 25px 25px;
+            background: transparent; 
+            border: 1px solid var(--accent-red);
+            color: var(--accent-red);
             text-align: center;
-            padding: 14px 0; 
-            border-radius: 4px;
-            font-size: 1.1rem; 
+            padding: 12px 0; 
+            border-radius: 12px;
+            font-size: 1rem; 
             font-weight: 500;
             transition: 0.3s;
-            cursor: pointer;
         }
-
         .btn-block-red:hover {
-            background-color: #b71c1c;
+            background: var(--accent-red);
             color: white;
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
         }
 
         /* --- 7. 가치 복원 프로젝트 --- */
-        #projects {
-            background-color: #0d0d0d;
-            border-top: 1px solid #222;
-            color: #fff;
-            width: 100%;
-        }
-
         .project-card {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            display: flex;
-            flex-direction: column;
-            height: 100%; 
+            background: rgba(255, 255, 255, 0.03);
         }
-
         .project-quote {
             text-align: center;
-            padding: 15px 10px;
+            padding: 20px;
             font-size: 0.95rem;
-            color: #fff;
-            background-color: #222;
-            border-bottom: 1px solid #333;
+            color: var(--text-gold);
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             font-weight: 500;
         }
-
-        .project-card > img {
-            height: 200px;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        .project-info {
-            padding: 25px;
-            flex-grow: 1; 
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-info h4 {
-            color: var(--text-gold);
-            font-size: 1.2rem;
-            margin-bottom: 25px;
-            font-weight: bold;
-        }
-
-        .info-section {
-            margin-bottom: 25px;
-        }
-
-        .info-title {
-            font-size: 0.9rem;
-            color: #888;
-            margin-bottom: 10px;
-            font-weight: bold;
-            display: block;
-        }
-
-        .project-info ul {
-            list-style: none;
-            margin-left: 5px;
-        }
-
-        .project-info li {
-            font-size: 0.9rem;
-            color: #ccc;
-            margin-bottom: 8px;
-            padding-left: 10px;
-            position: relative;
-            line-height: 1.5;
-        }
-
-        .project-info li::before {
-            content: "•";
-            color: var(--text-gold);
-            position: absolute;
-            left: 0;
-            top: 0;
-        }
-
+        .project-info { padding: 30px; }
+        .project-info h4 { color: var(--text-white); font-size: 1.3rem; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+        .info-title { color: var(--text-gold); margin-bottom: 12px; display: inline-block; font-size: 0.95rem;}
+        .project-info li { color: #ccc; margin-bottom: 8px; }
+        
         .price-btn {
-            margin-top: auto; 
-            background-color: var(--accent-red);
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            font-weight: bold;
-            font-size: 1.1rem;
-            border-radius: 4px;
-            display: block;
-            transition: 0.3s;
+            background: linear-gradient(135deg, #ff4d4d 0%, #b71c1c 100%);
+            margin-top: 30px;
+            padding: 18px 0;
+            border-radius: 15px;
+            font-size: 1.2rem;
             border: none;
-            width: 100%;
-            cursor: pointer;
-        }
-
-        .price-btn:hover {
-            background-color: #b71c1c;
             color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
         }
+        .price-btn:hover { transform: translateY(-2px); }
 
         /* --- 8. 문의하기 (Contact) --- */
-        #contact {
-            padding-bottom: 80px;
-            background-color: #f4f1ea;
-            color: #111;
-            width: 100%;
-        }
-
-        .contact-header {
-            position: relative;
-            margin-bottom: 30px;
-        }
-
-        .contact-title {
-            font-size: 4rem;
-            font-weight: 400; 
-            line-height: 1;
-            margin-bottom: 10px;
-            color: #111;
-            font-family: 'Noto Sans KR', sans-serif;
-            letter-spacing: -1px;
-        }
-
-        .arrow-graphic {
-            font-size: 4rem;
-            color: var(--accent-red);
-            font-weight: 300;
-            line-height: 1;
-            display: inline-block;
-            transform: rotate(45deg); 
-            margin-left: 5px;
-            vertical-align: top;
-        }
-
-        .contact-subtitle-box {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .contact-subtitle-box p {
-            color: var(--text-gold);
-            font-size: 1.2rem;
-            font-weight: bold;
-            line-height: 1.5;
-        }
+        #contact { padding-bottom: 50px; }
+        .contact-title { font-size: 4rem; color: var(--text-white); }
+        .contact-subtitle-box p { color: var(--text-gold); font-size: 1.3rem; }
 
         .contact-actions-grid {
             display: grid;
@@ -418,7 +345,11 @@
         }
 
         .action-card {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100%;
         }
 
         .action-btn {
@@ -426,258 +357,146 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            background-color: var(--accent-red);
-            color: white;
-            padding: 15px 0;
-            border-radius: 10px; 
-            font-size: 1.1rem;
+            padding: 12px 0;
+            border-radius: 15px;
+            font-size: 1.2rem;
             font-weight: bold;
-            margin-bottom: 20px;
-            border: none;
+            margin-bottom: 25px;
+            text-decoration: none;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-decoration: none; 
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.6), 
+                inset 0 -1px 0 rgba(0,0,0,0.2),    
+                inset 0 10px 20px rgba(255,255,255,0.1); 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn-call {
+            background: var(--btn-gradient-red);
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .action-btn-talk {
+            background: var(--btn-gradient-yellow);
+            color: #3c1e1e; 
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
         }
 
         .action-btn:hover {
-            background-color: #b71c1c;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 15px 30px rgba(0,0,0,0.4),
+                inset 0 1px 0 rgba(255,255,255,0.8);
         }
-
-        .main-desc {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .sub-desc {
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .phone-number {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: #000;
-            margin-top: 10px;
-        }
-
-        .req-list {
+        
+        .main-desc { font-size: 1.2rem; color: var(--text-white); margin-bottom: 10px; }
+        .sub-desc { color: #888; margin-bottom: 20px; }
+        .req-list { 
             text-align: left;
             display: inline-block; 
             margin: 0 auto;
-            color: #444;
-            font-size: 0.9rem;
+            color: #ccc;
+            font-size: 0.95rem; 
             list-style: disc; 
             padding-left: 20px;
-        }
-
-        .req-list li {
-            margin-bottom: 5px;
-            padding-left: 0; 
-        }
-        .req-list li::before {
-            content: none; 
-        }
-
-        .bottom-desc {
-            margin-top: 15px;
-            font-weight: 500;
-            color: #333;
-        }
-
-        .contact-footer-divider {
-            border-top: 1px solid #ccc;
-            margin: 40px 0;
-        }
-
-        .contact-bottom-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .promise-box {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #333;
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .shop-info-box {
-            flex: 1;
-            min-width: 250px;
-            text-align: right;
-        }
-
-        .shop-info-box h4 {
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #000;
-        }
-
-        .shop-info-box ul li {
-            font-size: 0.95rem;
-            color: #444;
-            margin-bottom: 5px;
-            list-style: none;
-            padding-left: 0;
-        }
-        .shop-info-box ul li::before { content: none; }
-
-        /* --- 9. 최종 푸터 (Last Page) --- */
-        .last-page-footer {
-            background-color: var(--bg-light); 
-            color: #333;
-            padding-bottom: 80px; 
-            border-top: 1px solid #ccc; 
-            width: 100%;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: stretch;
-            padding-top: 60px; 
-        }
-
-        .footer-img-box img {
-            width: 100%;
-            height: 100%;
-            min-height: 500px; 
-            object-fit: cover;
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-
-        .footer-text-box {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px 0;
-        }
-
-        .footer-brand {
-            font-size: 3.5rem;
-            font-weight: 500;
-            color: #111;
-            border-bottom: 4px solid #111; 
-            display: inline-block;
-            width: fit-content;
-            line-height: 1;
-            margin-bottom: 40px;
-            padding-bottom: 5px;
-        }
-
-        .footer-message {
-            font-size: 1.4rem;
-            color: #333;
-            font-weight: 500;
-            margin-bottom: auto; 
-            padding-top: 40px;
-            word-break: keep-all;
-        }
-
-        .footer-info-group {
-            text-align: right; 
-            margin-top: 50px;
-        }
-
-        .shop-meta {
-            margin-bottom: 30px;
-            color: #555;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-        .shop-meta .brand-since {
-            font-weight: bold;
-            color: #111;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .contact-meta {
-            color: #777;
-            font-size: 0.95rem;
             line-height: 1.8;
+            margin-bottom: 25px; 
         }
+        .req-list li { margin-bottom: 5px; padding-left: 0; }
+        .req-list li::before { content: none; }
 
-        .footer-arrow {
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            font-size: 6rem; 
-            color: var(--accent-red);
-            line-height: 0.5;
-            font-weight: 300;
-            font-family: serif; 
+        .info-capsule {
+            margin-top: auto; 
+            font-size: 1.4rem; 
+            font-weight: 700;
+            color: var(--text-white);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 18px 0;
+            border-radius: 50px;
+            display: block; 
+            text-align: center;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 0 15px rgba(255, 255, 255, 0.05);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            width: 100%; 
+            max-width: 380px; 
+            margin-left: auto; margin-right: auto;
+            transition: all 0.3s ease;
         }
-
-        /* --- 10. 법적 필수정보 푸터 (Legal Footer) --- */
-        .legal-footer {
-            background-color: #f5f5f5;
-            border-top: 1px solid #e0e0e0;
-            padding: 40px 0;
-            font-size: 0.8rem;
-            color: #666;
-            line-height: 1.6;
-            width: 100%;
-        }
-
-        /* ... 나머지 CSS는 동일 ... */
-        .legal-links { margin-bottom: 20px; }
-        .legal-links a { margin-right: 20px; color: #333; text-decoration: none; display: inline-block; cursor: pointer; }
-        .legal-links .bold-link { font-weight: 700; color: #000; }
-        .legal-info span { margin-right: 15px; display: inline-block; }
-        .legal-info span::after { content: "|"; margin-left: 15px; color: #ccc; font-weight: 300; }
-        .legal-info span:last-child::after { content: none; }
-        .copyright-text { margin-top: 20px; color: #999; font-family: Arial, sans-serif; }
         
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center; }
-        .modal-content { background-color: #fff; width: 90%; max-width: 800px; height: 80%; padding: 30px; border-radius: 8px; position: relative; display: flex; flex-direction: column; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: #333; }
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; cursor: pointer; color: #333; line-height: 1; }
-        .modal-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
-        .terms-text { flex-grow: 1; overflow-y: auto; margin-top: 10px; line-height: 1.6; font-size: 0.9rem; color: #444; padding-right: 15px; white-space: pre-line; text-align: left; }
-        .terms-text strong { display: block; margin-top: 20px; margin-bottom: 5px; color: #000; font-size: 1rem; }
+        .info-capsule:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+            border-color: var(--text-gold);
+            color: var(--text-gold);
+        }
 
-        .floating-menu { position: fixed; right: 20px; bottom: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-        .float-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; text-decoration: none; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; border: none; color: white; font-weight: bold; font-size: 1.5rem; padding: 0; }
-        .float-btn svg { width: 24px; height: 24px; fill: currentColor; }
-        .float-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
-        .btn-call { background-color: #4CAF50; }
-        .btn-talk { background-color: #FEE500; color: #3c1e1e; }
-        .btn-talk svg { width: 28px; height: 28px; }
-        .btn-top { background-color: var(--accent-red); font-size: 0.9rem; flex-direction: column; line-height: 1; gap: 2px; }
-        .btn-top span { font-size: 0.7rem; }
+        .contact-footer-divider { border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0 30px; }
+        .promise-box { color: var(--text-white); font-weight: 300; font-style: italic;}
+        .shop-info-box h4 { color: var(--text-gold); margin-bottom: 10px; }
+        .shop-info-box ul li { color: #aaa; }
+
+        /* --- 9. Footer --- */
+        .last-page-footer { 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            background: linear-gradient(to top, #000, var(--bg-deep));
+        }
+        
+        .footer-brand { color: var(--text-gold); font-size: 3rem; }
+        .footer-message { color: var(--text-white); font-weight: 300; }
+        .shop-meta, .contact-meta { color: #888; }
+        .shop-meta .brand-since { color: var(--text-white); }
+
+        /* --- 10. Legal Footer --- */
+        .legal-footer {
+            background-color: #050505;
+            border-top: 1px solid #222;
+            color: #555;
+        }
+        .legal-links a { color: #888; }
+        .legal-links .bold-link { color: #ccc; }
+        .copyright-text { color: #444; }
+
+        /* --- Floating Menu --- */
+        .float-btn {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .btn-call { background: #4CAF50; color: white; border: none;}
+        .btn-talk { background: #FEE500; color: #3c1e1e; border: none;}
+        .btn-top { background: var(--glass-bg); }
+        .btn-top:hover { background: var(--accent-red); border-color: var(--accent-red); }
+
+        /* --- Modals --- */
+        .modal-content {
+            background: rgba(20, 20, 20, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-white);
+        }
+        .modal-title { border-bottom-color: rgba(255,255,255,0.1); }
+        .terms-text { color: #ccc; }
+        .terms-text strong { color: var(--text-gold); }
+        .close-btn { color: #fff; }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.2rem; }
-            .grid-2-col, .grid-3-col, .grid-2-col-text-img, .contact-actions-grid { grid-template-columns: 1fr !important; gap: 30px; }
-            .contact-title { font-size: 3rem; }
-            .arrow-graphic { font-size: 3rem; }
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .footer-img-box img { min-height: 300px; }
-            .footer-brand { font-size: 2.5rem; }
-            .footer-info-group { text-align: left; }
-            .footer-arrow { position: relative; margin-top: 30px; font-size: 4rem; }
-            .legal-info span { display: block; margin-right: 0; margin-bottom: 5px; }
-            .legal-info span::after { content: none; }
-            .contact-bottom-info { flex-direction: column; text-align: center; }
-            .shop-info-box { text-align: center; }
-            .modal-content { width: 95%; height: 90%; padding: 20px; }
-            .floating-menu { right: 15px; bottom: 20px; }
-            .float-btn { width: 50px; height: 50px; font-size: 1.3rem; }
-            .btn-top { font-size: 0.8rem; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .container { padding: 60px 20px; }
+            .contact-title { font-size: 2.8rem; }
+            .info-capsule { font-size: 1.1rem; padding: 15px 25px; }
         }
     </style>
 </head>
@@ -692,10 +511,10 @@
             <h1>고가의 내 차,<br>아무에게나 맡기시겠습니까?</h1>
             <div class="cta-buttons">
                 <a href="#contact" class="btn btn-red">문의하기</a>
-                <a href="#process" class="btn btn-red-outline">공정 보기</a>
+                <a href="#process" class="btn btn-glass">공정 보기</a>
             </div>
         </div>
-        <div class="banner-bar">
+        <div class="banner-bar glass-card" style="border-radius: 0; border-left:0; border-right:0;">
             <p>40년 경력 장인의 기술로 완성되는 완벽한 복원 (Restoration)</p>
         </div>
     </header>
@@ -704,39 +523,43 @@
     <section id="intro">
         <div class="container">
             <div class="badge-icon">
-                <img src="images/badge-icon.png" alt="인증 마크" style="width:100%;"> 
+                <img src="image/badge-icon.png" alt="인증 마크" style="width:100%;"> 
             </div>
             <h2>"자동차 복원 전문가가<br>직접 시공합니다"</h2>
             <div class="grid-2-col intro-img-box">
-                <img src="images/intro-car-side.jpg" alt="클래식카 측면">
-                <img src="images/intro-car-detail.jpg" alt="클래식카 디테일">
+                <img src="image/intro-car-side.jpg" alt="클래식카 측면">
+                <img src="image/intro-car-detail.jpg" alt="클래식카 디테일">
             </div>
         </div>
     </section>
 
     <!-- 3. 문제 제기 -->
     <section id="problem">
-        <div class="container grid-2-col-text-img">
-            <div class="text-box">
-                <h3>왜 비싼 돈 들인 광택이<br>세차 몇 번에 사라질까요?</h3>
-                <p class="accent-text">“저렴한 광택은 기름으로 덮지만,<br>우리는 깍아서 살려냅니다.”</p>
-                
-                <div class="comparison-details">
-                    <div class="compare-block">
-                        <h4>❌ 일반 광택</h4>
-                        <p>소중한 고객님의 차가 '기름칠' 당하고 있을지 모릅니다.</p>
-                        <p>흠집을 강한 유분으로 덮기 때문에 세차 몇 번이면 다시 드러납니다.</p>
+        <div class="container">
+            <div class="problem-glass-panel">
+                <div class="grid-2-col-text-img">
+                    <div class="text-box">
+                        <h3>왜 비싼 돈 들인 광택이<br>세차 몇 번에 사라질까요?</h3>
+                        <p class="accent-text">“저렴한 광택은 기름으로 덮지만,<br>우리는 깍아서 살려냅니다.”</p>
+                        
+                        <div class="comparison-details">
+                            <div class="compare-block">
+                                <h4>❌ 일반 광택</h4>
+                                <p>소중한 고객님의 차가 '기름칠' 당하고 있을지 모릅니다.</p>
+                                <p>흠집을 강한 유분으로 덮기 때문에 세차 몇 번이면 다시 드러납니다.</p>
+                            </div>
+                            <hr class="compare-divider">
+                            <div class="compare-block">
+                                <h4 class="text-red">⭕ GARAGE40</h4>
+                                <p>자체 개발한 약품으로 도장면의 본질을 복원합니다.</p>
+                                <p>기름기가 빠져도 광은 사라지지 않고 시간이 지나도 오래 지속 됩니다.</p>
+                            </div>
+                        </div>
                     </div>
-                    <hr class="compare-divider">
-                    <div class="compare-block">
-                        <h4 class="text-red">⭕ GARAGE40</h4>
-                        <p>자체 개발한 약품으로 도장면의 본질을 복원합니다.</p>
-                        <p>기름기가 빠져도 광은 사라지지 않고 시간이 지나도 오래 지속 됩니다.</p>
+                    <div class="img-box">
+                        <img src="image/problem-comparison.jpg" alt="광택 비교">
                     </div>
                 </div>
-            </div>
-            <div class="img-box">
-                <img src="images/problem-comparison.jpg" alt="광택 비교">
             </div>
         </div>
     </section>
@@ -746,7 +569,7 @@
         <div class="container"> 
             <h3 class="gold-title">Master's Story</h3>
             <div class="grid-2-col">
-                <img src="images/master-working.jpg" alt="장인 작업 모습" style="border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                <img src="image/master-working.jpg" alt="장인 작업 모습" style="border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);">
                 <div class="text-content">
                     <h4>40년의 역사, 5만 대의 증명.</h4>
                     <p class="story-sub">광택의 시초 을지로 오장동에서 시작된 기술은<br>장안동에서 더 정교해졌습니다.</p>
@@ -768,22 +591,22 @@
     </section>
 
     <!-- 5. 복원 프로세스 -->
-    <section id="process" class="bg-dark">
+    <section id="process">
         <div class="container">
             <h3 class="gold-title">GARAGE40<br>복원 프로세스</h3>
             <div class="grid-3-col">
-                <div class="card">
-                    <img src="images/process-step1.jpg" alt="Step 1">
+                <div class="card glass-card">
+                    <img src="image/process-step1.jpg" alt="Step 1">
                     <div class="overlay">Step 1. 정밀 세차 및 전처리</div>
                     <div class="step-desc">차의 상태, 당일 날씨,<br>습도에 맞춘 작업 준비</div>
                 </div>
-                <div class="card">
-                    <img src="images/process-step2.jpg" alt="Step 2">
+                <div class="card glass-card">
+                    <img src="image/process-step2.jpg" alt="Step 2">
                     <div class="overlay">Step 2. 수성 광택 폴리싱</div>
                     <div class="step-desc">직접 개발한 광택제,<br>충분한 작업시간</div>
                 </div>
-                <div class="card">
-                    <img src="images/process-step3.jpg" alt="Step 3">
+                <div class="card glass-card">
+                    <img src="image/process-step3.jpg" alt="Step 3">
                     <div class="overlay">Step 3. 유리막 코팅</div>
                     <div class="step-desc">색감 광도 체크 후<br>출고</div>
                 </div>
@@ -796,20 +619,20 @@
         <div class="container">
             <h3 class="section-quote">“10년 된 차도 <strong>신차의 설렘</strong>을 되찾을 수 있습니다.”</h3>
             <div class="grid-3-col">
-                <div class="result-card">
-                    <div class="img-wrapper"><img src="images/result-case1.jpg" alt="수입차 정밀 광택"></div>
+                <div class="result-card glass-card">
+                    <div class="img-wrapper"><img src="image/result-case1.jpg" alt="수입차 정밀 광택"></div>
                     <h4>수입차 · 클래식카 정밀 복원 광택</h4>
                     <p class="desc">80년대부터 축적된 데이터로 차종별 1:1 맞춤 공정을 설계하여, 신차 이상의 품격을 완성합니다.</p>
                     <a href="#" class="btn-block-red">Read more</a>
                 </div>
-                <div class="result-card">
-                    <div class="img-wrapper"><img src="images/result-case2.jpg" alt="사고 수리 후 광택"></div>
+                <div class="result-card glass-card">
+                    <div class="img-wrapper"><img src="image/result-case2.jpg" alt="사고 수리 후 광택"></div>
                     <h4>사고 수리 & 도색 후처리 광택</h4>
                     <p class="desc">도색 직후의 거친 표면(오렌지필)을 매끄럽게 다듬어, 완벽한 광택으로 수리를 완성합니다.</p>
                     <a href="#" class="btn-block-red">Read more</a>
                 </div>
-                <div class="result-card">
-                    <div class="img-wrapper"><img src="images/result-case3.jpg" alt="잘못된 시공 분석"></div>
+                <div class="result-card glass-card">
+                    <div class="img-wrapper"><img src="image/result-case3.jpg" alt="잘못된 시공 분석"></div>
                     <h4>잘못된 시공 사례 분석</h4>
                     <p class="desc">기름으로 덮는 눈속임식 저가 시공의 실태를 전문가의 시선으로 정확히 진단해 드립니다.</p>
                     <a href="#" class="btn-block-red">Read more</a>
@@ -823,9 +646,9 @@
         <div class="container">
             <h3 class="gold-title">차량 가치 복원 프로젝트</h3>
             <div class="grid-3-col">
-                <div class="project-card">
+                <div class="project-card glass-card">
                     <div class="project-quote">"가볍게 시작하는 신차 컨디션 관리"</div>
-                    <img src="images/project-standard.jpg" alt="스탠다드 케어">
+                    <img src="image/project-standard.jpg" alt="스탠다드 케어">
                     <div class="project-info">
                         <h4>#1 [스탠다드 케어] 패키지</h4>
                         <div class="info-section">
@@ -846,9 +669,9 @@
                         <button class="price-btn" onclick="inquire('스탠다드 케어 패키지', '15만원 부터')">[문의] 15만원 부터</button>
                     </div>
                 </div>
-                <div class="project-card">
+                <div class="project-card glass-card">
                     <div class="project-quote">"GARAGE40의 기술력이 집약된 시그니처"</div>
-                    <img src="images/project-best.jpg" alt="BEST 정밀 광택">
+                    <img src="image/project-best.jpg" alt="BEST 정밀 광택">
                     <div class="project-info">
                         <h4>#2 [BEST 정밀 광택] 패키지</h4>
                         <div class="info-section">
@@ -869,9 +692,9 @@
                         <button class="price-btn" onclick="inquire('BEST 정밀 광택 패키지', '30만원 부터')">[문의] 30만원 부터</button>
                     </div>
                 </div>
-                <div class="project-card">
+                <div class="project-card glass-card">
                     <div class="project-quote">"단순한 광택을 넘어선, 완벽한 작품으로의 복원"</div>
-                    <img src="images/project-vip.jpg" alt="VIP 마스터 리스토어">
+                    <img src="image/project-vip.jpg" alt="VIP 마스터 리스토어">
                     <div class="project-info">
                         <h4>#3 [VIP 마스터 리스토어] 패키지</h4>
                         <div class="info-section">
@@ -896,31 +719,31 @@
         </div>
     </section>
 
-    <!-- 8. 문의하기 -->
+    <!-- 8. 문의하기 (Contact) -->
     <section id="contact">
         <div class="container">
             <div class="contact-header">
-                <h2 class="contact-title">Contact us <span class="arrow-graphic"></span></h2>
+                <h2 class="contact-title">Contact us</h2>
             </div>
             <div class="contact-subtitle-box">
                 <p>공장처럼 찍어내면 돈은 더 벌겠지만,<br>40년 기술자의 양심은 지킬 수 없습니다</p>
             </div>
             <div class="contact-actions-grid">
                 <div class="action-card">
-                    <a href="tel:01046848838" class="action-btn">📲 1분 통화로 예약하기</a>
+                    <a href="tel:01046848838" class="action-btn action-btn-call">📲 1분 통화로 예약하기</a>
                     <p class="main-desc">"복잡한 건 싫다! 바로 물어보세요."</p>
                     <p class="sub-desc">(부재 시 문자 남겨주세요) 🤚</p>
-                    <p class="phone-number">Tel: 010-4684-8838</p>
+                    <p class="info-capsule">Tel: 010-4684-8838</p>
                 </div>
                 <div class="action-card">
-                     <button class="action-btn" onclick="inquire('사진 견적 문의', '상담 연결')">💬 사진으로 견적받기</button>
+                     <button class="action-btn action-btn-talk" onclick="inquire('사진 견적 문의', '상담 연결')">💬 사진으로 견적받기</button>
                      <p class="main-desc">"카톡으로 상처 부위 사진만 보내주세요."</p>
                      <ul class="req-list">
                          <li>차종 & 연식 (예: 벤츠 E클래스 / 20년식)</li>
                          <li>상처 부위 사진 (멀리서 1장, 가까이서 1장)</li>
                          <li>원하시는 시공 (광택 / 유리막 / 사고수리 등)</li>
                      </ul>
-                     <p class="bottom-desc">사진을 확인하고 연락 드립니다.</p>
+                     <p class="info-capsule">사진을 확인하고 연락 드립니다.</p>
                 </div>
             </div>
             <div class="contact-footer-divider"></div>
@@ -941,7 +764,7 @@
     <footer class="last-page-footer">
         <div class="container footer-grid">
             <div class="footer-img-box">
-                <img src="images/footer-interior.jpg" alt="클래식 카 인테리어">
+                <img src="image/footer-interior.jpg" alt="클래식 카 인테리어">
             </div>
             <div class="footer-text-box">
                 <h2 class="footer-brand">Garage40</h2>
@@ -988,287 +811,21 @@
         </div>
     </div>
 
-    <!-- 이용약관 모달 -->
-    <div id="terms-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeTermsModal()">&times;</span>
-            <div class="modal-title">사이트 이용약관</div>
-            <div class="terms-text">
-제 1 조 (목적)
-본 약관은 쇼핑몰을 운영하는 회사 (이하 ‘사이트’이라 한다)에서 제공하는 인터넷 관련 서비스(이하 ‘서비스’라 하며, 접속 가능한 유,무선 단말기의 종류와 상관없이 이용 가능한 사이트가 제공하는 모든 서비스를 의미합니다.)를 이용함에 있어 회원의 권리•의무 및 책임사항을 규정함을 목적으로 합니다.
-
-제 2 조 (정의)
-1. ‘사이트’ 란 ‘회사’가 상품을 회원에게 제공하기 위하여 컴퓨터 등 정보통신설비를 이용하여 ‘상품 등’을 거래할 수 있도록 설정한 가상의 영업장을 말하며, 사이버몰을 운영하는 사업자의 의미로도 사용합니다. 현재 ‘회사’가 운영하는 ‘사이트’는 https:// 이며, 더불어 서비스 하는 안드로이드, iOS 환경의 서비스를 포함한 모바일웹과 앱을 포함 합니다.
-2. ‘회원’이라 함은 ‘사이트’에 개인정보를 제공하여 회원등록을 한 자로서, ‘사이트’에 정해진 회원 가입 방침에 따라 ‘사이트’의 정보를 지속적으로 제공받으며, ‘사이트’가 제공하는 ‘서비스’를 계속적으로 이용할 수 있는 자를 말합니다.
-3. ‘비밀번호’라 함은 회원의 동일성 확인과 회원의 권익 및 비밀보호를 위하여 회원 스스로가 설정하여 ‘사이트’에 등록한 영문과 숫자의 조합을 말합니다.
-4. 본 약관에서 정의되지 않은 용어는 관계법령이 정하는 바에 따르며, 그 외에는 일반적인 상관례에 의합니다.
-
-제 3 조 (약관의 명시와 설명 및 개정)
-1. ‘회사’는 이 약관의 내용과 상호 및 대표자 이름, 소재지 주소, 전화번호, 전자우편주소, 사업자등록번호 등을 회원이 쉽게 알 수 있도록 ‘사이트’의 초기 ‘서비스’ 화면에 게시합니다. 다만, 약관의 구체적 내용은 회원이 연결화면을 통하여 볼 수 있습니다.
-2. ‘회사’는 『전자상거래 등에서의 소비자보호에 관한 법률』, 『약관의 규제 등에 관한 법률』, 『전자거래 기본법』, 『전자 서명법』, 『정보통신망 이용촉진 등에 관한 법률』, 『소비자기본법』 등 관계법령을 위배하지 않는 범위에서 이 약관을 개정할 수 있습니다.
-3. ‘회사’가 약관을 개정할 경우에는 적용일자 및 개정사유를 명시하여 현행 약관과 함께 ‘사이트’의 초기화면에 그 적용일자 7일 이전부터 적용일자 전일까지 공지합니다.
-4. ‘회사’가 약관을 개정할 경우에는 그 개정약관은 그 적용일자 이후에 체결되는 계약에만 적용되고 그 이전에 이미 체결된 계약에 대해서는 개정전의 약관조항이 그대로 적용됩니다. 다만 이미 계약을 체결한 회원이 개정약관 조항의 적용을 받기를 원하는 뜻을 제3항에 의한 개정약관의 공지기간 내에 ‘회사’에 송신하여 ‘회사’의 동의를 받은 경우에는 개정약관 조항이 적용됩니다.
-5. 제3항에 따라 공지된 적용일자 이후에 회원이 ‘회사’의 ‘서비스’를 계속 이용하는 경우에는 개정된 약관에 동의하는 것으로 봅니다. 개정된 약관에 동의하지 아니하는 회원은 언제든지 자유롭게 ‘서비스’ 이용계약을 해지할 수 있습니다.
-
-제 4 조 (약관 외 준칙)
-이 약관에서 정하지 아니한 사항과 이 약관의 해석에 관하여는 『전자상거래 등에서의 소비자 보호에 관한 법률』 등 관련법령의 규정과 일반 상관례에 따릅니다.
-
-제 5 조 (이용계약의 성립)
-1. 이용계약은 회원이 되고자 하는 자(이하 ‘가입신청자’)가 약관의 내용에 동의를 하고, ‘회사’가 정한 가입양식에 따라 회원정보(전자우편주소, 비밀번호, or 소셜네트워크를 통한 회원가입 정보 등)를 기입하여 회원가입신청을 하고 ‘회사’가 이러한 신청에 대하여 승인함으로써 체결됩니다.
-2. ‘회사’는 다음 각 호에 해당하는 신청에 대하여는 승인을 하지 않거나 사후에 이용계약을 해지할 수 있습니다.
-가. ‘가입신청자’가 이 약관에 의하여 이전에 회원자격을 상실한 적이 있는 경우. 다만, 회원자격 상실 후 3개월이 경과한 자로서 ‘회사’의 회원 재가입 승낙을 얻은 경우에는 예외로 함
-다. 등록내용에 허위의 정보를 기재하거나, 기재누락, 오기가 있는 경우
-라. 회원가입일 현재 만 14세 미만인 경우
-마. 이미 가입된 회원과 이름 및 전자우편주소가 동일한 경우
-바. 부정한 용도 또는 영리를 추구할 목적으로 본 ‘서비스’를 이용하고자 하는 경우
-사. 회원의 귀책사유로 인하여 승인이 불가능하거나 기타 규정한 제반 사항을 위반하며 신청하는 경우
-아. 기타 이 약관에 위배되거나 위법 또는 부당한 이용신청임이 확인된 경우 및 ‘회사’가 합리적인 판단에 의하여 필요하다고 인정하는 경우
-3. ‘회사’는 ‘서비스’ 관련 설비의 여유가 없거나, 기술상 또는 업무상 문제가 있는 경우에는 승낙을 유보할 수 있습니다.
-4. 제2항에 따라 회원가입신청의 승낙을 하지 아니하거나 유보한 경우, 이 경우 ‘회사’는 원칙적으로 이를 ‘가입신청자’에게 알리도록 합니다.
-5. 이용계약의 성립시기는 ‘회사’가 가입완료를 신청절차상에서 표시한 시점으로 합니다.
-6. ‘회사’는 회원에 대해 ‘회사’정책에 따라 등급별로 구분하여 이용시간, 이용횟수, ‘서비스’ 메뉴 등을 세분하여 이용에 차등을 둘 수 있습니다.
-7. ‘회사’는 회원에 대하여 『영화 및 비디오물의 진흥에 관한 법률』 및 『청소년 보호법』 등에 따른 등급 및 연령준수를 위해 이용제한이나 등급별 제한을 할 수 있습니다.
-
-제 6 조 (개인정보의 변경)
-회원은 개인정보관리화면을 통하여 언제든지 본인의 개인정보를 열람하고 수정할 수 있습니다.
-
-제 7 조 (개인정보의 보호)
-1. ‘회사’는 회원의 개인정보를 보호하기 위하여 『정보통신망 이용촉진 및 정보보호 등에 관한 법률』 등 관계법령에서 정하는 바를 준수합니다.
-2. ‘회사’는 회원의 개인정보를 보호하기 위하여 개인정보취급방침을 제정, ‘서비스’ 초기화면에 게시합니다. 다만, 개인정보취급방침의 구체적 내용은 연결화면을 통하여 볼 수 있습니다.
-3. ‘회사’는 개인정보취급방침에 따라 회원의 개인정보를 최대한 보호하기 위하여 노력합니다.
-4. ‘회사’의 공식 ‘사이트’ 이외의 링크된 사이트에서는 ‘회사’의 개인정보취급방침이 적용되지 않습니다. 링크된 사이트 및 ‘상품 등’을 제공하는 제3자의 개인정보 취급과 관련하여는 해당 ‘사이트’ 및 제3자의 개인정보취급방침을 확인할 책임이 회원에게 있으며, ‘회사’는 이에 대하여 책임을 부담하지 않습니다.
-5. ‘회사’는 다음과 같은 경우에 법이 허용하는 범위 내에서 회원의 개인정보를 제3자에게 제공할 수 있습니다.
-가. 수사기관이나 기타 정부기관으로부터 정보제공을 요청 받은 경우
-나. 회원의 법령 또는 약관의 위반을 포함하여 부정행위확인 등의 정보보호업무를 위해 필요한 경우
-다. 기타 법률에 의해 요구되는 경우
-라. 판매자 또는 배송업체 등에게 거래 및 배송 등에 필요한 최소한의 회원의 정보(성명, 주소, 전화번호)를 제공하는 경우
-마. 구매가 성사된 때에 그 이행을 위하여 필요한 경우와 구매가 종료된 이후에도 반품, 교환, 환불, 취소 등을 위하여 필요한 경우
-
-제 8 조 (이용계약의 종료)
-1. 회원의 해지
-가. 회원은 언제든지 ‘회사’에게 해지의사를 통지함으로써 이용계약을 해지할 수 있습니다.
-나. 이용계약은 회원의 해지의사가 ‘회사’에 도달한 때에 종료됩니다.
-다. 본 항에 따라 해지를 한 회원은 이 약관이 정하는 회원가입절차와 관련조항에 따라 회원으로 다시 가입할 수 있습니다.
-2. 회사의 해지
-가. ‘회사’는 다음과 같은 사유가 있는 경우, 이용계약을 해지할 수 있습니다. 이 경우 ‘회사’는 회원에게 전자우편주소, 전화 등 기타의 방법을 통하여 해지사유를 밝혀 해지의사를 통지합니다. 다만 ‘회사’는 해당 회원에게 사전에 해지사유에 대한 의견진술의 기회를 부여할 수 있습니다.
-① 제5조 제2항에서 정하고 있는 이용계약의 승낙거부사유가 있음이 확인된 경우
-② 회원이 ‘회사’나 다른 회원 기타 타인의 권리나 명예, 신용 기타 정당한 이익을 침해하는 행위를 한 경우
-③ 기타 회원이 이 약관에 위배되는 행위를 하거나 이 약관에서 정한 해지사유가 발생한 경우
-나. 이용계약은 ‘회사’가 해지의사를 회원에게 통지함으로써 종료됩니다. 이 경우 ‘회사’는 해지의사를 회원이 등록한 전자우편주소로 발송하거나 ‘회사’의 게시판에 게시함으로써 통지에 갈음합니다.
-다. 이용계약이 종료되는 경우 회원의 적립금 및 쿠폰은 소멸되며, 환불 등의 처리에 관하여는 ‘회사’의 환불규정에 의합니다.
-라. 이용계약의 종료와 관련하여 발생한 손해는 이용계약이 종료된 해당 회원이 책임을 부담하고 ‘회사’는 일체의 책임을 지지 않습니다.
-
-제 9 조 (회원탈퇴 및 자격 상실)
-1. 회원은 ‘회사’에 언제든지 탈퇴를 요청할 수 있으며 ‘회사’는 회원탈퇴에 관한 규정에 따라 이를 처리합니다.
-2. 회원이 다음 각 호의 사유에 해당하는 경우, ‘회사’는 회원자격을 제한 및 정지시킬 수 있습니다.
-가. 다른 사람의 ‘사이트’ 이용을 방해하거나 그 정보를 도용하는 등 전자상거래질서를 위협하는 경우
-나. ‘사이트’를 이용하여 법령과 이 약관이 금지하거나 공서양속에 반하는 행위를 하는 경우
-다. 기타 다음과 같은 행위 등으로 ‘사이트’의 건전한 운영을 해하거나 ‘사이트’의 업무를 방해하는 경우
-① ‘사이트’의 운영과 관련하여 근거 없는 사실 또는 허위의 사실을 적시하거나 유포하여 ‘회사’의 명예를 실추시키거나 ‘사이트’의 신뢰성을 해하는 경우
-② ‘사이트’의 이용과정에서 직원에게 폭언, 협박 또는 음란한 언행 등으로 ‘사이트’의 운영을 방해하는 경우
-③ ‘사이트’를 통해 ‘상품 등’을 구매한 후 정당한 이유 없이 상습 또는 반복적으로 취소∙반품하여 ‘회사’의 업무를 방해하는 경우
-④ ‘사이트’를 통해 구입한 ‘상품 등’에 특별한 하자가 없는데도 불구하고 일부 사용 후 상습적인 취소∙전부 또는 일부 반품 등으로 ‘회사’의 업무를 방해하는 경우
-3. ‘회사’가 회원자격을 제한∙정지시킨 후 동일한 행위가 2회 이상 반복되거나 30일 이내에 그 사유가 시정되지 아니하는 경우 ‘회사’는 회원자격을 상실시킬 수 있습니다.
-4. 재판매의 목적으로 ‘사이트’에서 ‘상품 등’을 중복 구매하는 등 ‘사이트’의 거래질서를 방해하는 경우 ‘회사’는 당해 회원의 회원자격을 상실시킬 수 있습니다.
-5. ‘회사’가 회원자격을 상실시키는 경우에는 회원등록을 말소합니다. 이 경우 회원에게 이를 제8조 제2항 (나)목에 따라 통지하고, 회원등록 말소 전에 소명할 기회를 부여합니다.
-
-제 10 조 (회원의 ID 및 비밀번호에 대한 의무)
-1. ID(전자우편번호 및 소셜네트워크 연동으로 인한 ID)와 비밀번호에 관한 관리책임은 회원에게 있으며, 이를 소홀히 하여 발생한 모든 민∙형사상의 책임은 회원 자신에게 있습니다.
-2. 회원은 자신의 ID 및 비밀번호를 제3자에게 이용하게 해서는 안됩니다.
-3. 회원이 자신의 ID 및 비밀번호를 도난 당하거나 제3자가 사용하고 있음을 인지한 경우에는 즉시 ‘회사’에 통보하고 ‘회사’의 조치가 있는 경우에는 그에 따라야 합니다.
-4. 회원이 제3항에 따른 통지를 하지 않거나 ‘회사’의 조치에 응하지 아니하여 발생하는 모든 불이익에 대한 책임은 회원에게 있습니다.
-
-제 11 조 (회원의 의무)
-1. 회원은 관계법령, 이 약관의 규정, 이용안내 등 ‘회사’가 통지하는 사항을 준수하여야 하며, 기타 ‘회사’ 업무에 방해되는 행위를 하여서는 안됩니다.
-2. 회원은 ‘서비스’ 이용과 관련하여 다음 각 호의 행위를 하여서는 안됩니다.
-가. ‘서비스’ 신청 또는 변경 시 허위내용의 등록
-나. 타인의 정보도용
-다. ‘사이트’에 게시된 정보의 허가 받지 않은 변경
-라. ‘회사’가 정한 정보 이외의 정보(컴퓨터 프로그램 등)의 송신 또는 게시
-마. ‘회사’ 및 기타 제3자의 저작권 등 지적재산권에 대한 침해
-바. ‘회사’ 및 기타 제3자의 명예를 손상시키거나 업무를 방해하는 행위
-사. 외설 또는 폭력적인 메시지∙화상∙음성 기타 공서양속에 반하는 정보를 ‘회사’에 공개 또는 게시하는 행위
-아. ‘회사’의 동의 없이 영리를 목적으로 ‘서비스’를 사용하는 행위
-자. 기타 관계법령이나 ‘회사’에서 정한 규정에 위배되는 행위
-
-제 12 조 (회원의 게시물)
-1. 회원이 작성한 게시물에 대한 모든 권리 및 책임은 이를 게시한 회원에게 있으며, ‘회사’는 회원이 게시하거나 등록하는 ‘서비스’의 내용물이 다음 각 항에 해당한다고 판단되는 경우에 사전통지 없이 삭제할 수 있고, 이에 대하여 ‘회사’는 어떠한 책임도 지지 않습니다.
-2. 다른 회원 또는 제3자를 비방하거나 중상모략으로 명예를 손상시키는 내용인 경우
-3. 공서양속에 위반되는 내용일 경우
-4. 범죄적 행위에 결부된다고 인정되는 경우
-5. ‘회사’의 저작권, 제3자의 저작권 등 기타 권리를 침해하는 내용인 경우
-6. 회원이 ‘사이트’와 게시판에 음란물을 게재하거나 음란사이트를 링크하는 경우
-7. ‘회사’로부터 사전 승인 받지 아니한 상업광고, 판촉내용을 게시하는 경우
-8. 해당 상품과 관련 없는 내용인 경우
-9. 정당한 사유 없이 당사의 영업을 방해하는 내용을 기재하는 경우
-10. 기타 관계법령에 위반된다고 판단되는 경우
-
-제 13 조 (회원에 대한 통지)
-1. ‘회사’가 회원에 대한 통지를 하는 경우, 회원이 가입신청 시 ‘회사’에 제출한 전자우편주소나 SMS, PUSH 등으로 할 수 있습니다.
-2. ‘회사’는 불특정다수 회원에 대한 통지의 경우, 1주일 이상 ‘사이트’에 게시함으로써 개별 통지에 갈음할 수 있습니다. 다만, 회원 본인의 거래에 관하여 중대한 영향을 미치는 사항에 대하여는 개별 통지합니다.
-
-제 14 조 (‘회사’의 의무)
-1. ‘회사’는 관계법령과 이 약관이 금지하거나 공서양속에 반하는 행위를 하지 않으며 이 약관이 정하는 바에 따라 지속적이고, 안정적으로 ‘상품 등’을 제공하는데 최선을 다하여야 합니다.
-2. ‘회사’는 회원이 안전하게 ‘서비스’를 이용할 수 있도록 회원의 개인정보(신용정보 포함)보호를 위한 보안시스템을 갖추어야 하며 개인정보취급방침을 공시하고 준수합니다.
-3. ‘회사’는 회원으로부터 제기되는 의견이나 불만이 정당하고 객관적으로 인정될 경우에는 적절한 절차를 거쳐 즉시 처리하여야 합니다. 다만, 즉시 처리가 곤란한 경우에는 회원에게 그 사유와 처리일정을 통보하여야 합니다.
-
-제 15 조 (개별 서비스에 대한 약관 및 이용조건)
-‘회사’는 제공하는 ‘서비스’내의 개별 서비스에 대한 별도의 약관 및 이용조건을 둘 수 있으며 개별 서비스에서 별도로 적용되는 약관에 대한 동의는 회원이 개별 서비스를 최초로 이용할 경우 별도의 동의절차를 거치게 됩니다. 이 경우 개별 서비스에 대한 이용약관 등이 본 약관에 우선합니다.
-
-제 16 조 (‘서비스’ 이용시간)
-‘서비스’의 이용은 ‘회사’의 업무상 또는 기술상 특별한 지장이 없는 한 연중무휴 1일 24시간을 원칙으로 합니다. 다만 정기점검 등의 필요로 ‘회사’가 정한 날이나 시간은 제외됩니다. 정기점검시간은 ‘서비스’제공화면에 공지한 바에 따릅니다.
-
-제 17 조 (‘서비스’ 이용책임)
-회원은 ‘회사’가 서명한 명시적인 서면에 구체적으로 허용한 경우를 제외하고는 ‘서비스’를 이용하여 상품을 판매하는 영업활동을 할 수 없으며 특히 해킹, 돈벌이 광고, 음란사이트 등을 통한 상업행위, 상용S/W 불법배포 등을 할 수 없습니다. 이를 어겨 발생한 영업활동의 결과 및 손실, 관계기관에 의한 법적 조치 등에 관해서는 ‘회사’가 책임을 지지 않습니다.
-
-제 18 조 (‘서비스’ 제공의 중지)
-1. ‘회사’는 다음 각 호에 해당하는 경우 ‘서비스’ 제공을 중지할 수 있습니다.
-가. 컴퓨터 등 정보통신설비의 보수점검∙교체 및 고장, 통신의 두절 등의 사유가 발생한 경우
-나. 『전기통신사업법』에 규정된 기간통신사업자가 전기통신 ‘서비스’를 중지했을 경우
-다. 기타 불가항력적 사유가 있는 경우
-2. ‘회사’는 국가비상사태, 정전, ‘서비스’ 설비의 장애 또는 ‘서비스’ 이용의 폭주 등으로 정상적인 ‘서비스’ 이용에 지장이 있는 때에는 ‘서비스’의 전부 또는 일부를 제한하거나 정지할 수 있습니다.
-3. ‘회사’가 ‘서비스’ 제공을 일시적으로 중단할 경우 서비스 일시 중단사실과 그 사유를 ‘사이트’ 초기화면에 통지합니다.
-
-제 19 조 (정보의 제공 및 광고의 게재)
-1. ‘회사’는 회원이 ‘서비스’ 이용 중 필요하다고 인정되는 다양한 정보를 공지사항 또는 전자우편이나, SMS, 전화 등의 방법으로 회원에게 제공할 수 있습니다. 다만, 회원은 관련법에 따른 거래관련정보 및 고객문의 등에 대한 답변 등을 제외하고는 언제든지 전자우편 등에 대해서 수신 거절을 할 수 있습니다.
-2. ‘회사’는 ‘서비스’의 운영과 관련하여 ‘서비스’ 화면, 홈페이지, 전자우편 등에 광고를 게재할 수 있습니다. 광고가 게재된 전자우편 등을 수신한 회원은 수신거절을 ‘회사’에게 할 수 있습니다.
-
-제 20 조 (구매신청)
-1. 회원은 본 약관 및 ‘회사’가 정한 규정에 따라 아래 또는 이와 유사한 방법에 의하여 구매를 신청하여야 합니다.
-가. ‘상품 등’의 선택
-나. 구매자 성명, 주소, 전화번호, 전자우편주소, 수취인의 성명, 배송지 정보, 전화번호 입력
-다. 결제 시 유의사항에 대한 확인
-라. 이 약관에 동의한다는 표시(예, 마우스 클릭)
-2. ‘회사’는 회원의 구매신청이 있는 경우 회원에게 수신확인통지를 합니다.
-3. 전 항의 수신확인통지를 받은 회원은 의사표시의 불일치 등이 있는 경우에는 수신확인통지를 받은 후 즉시 구매신청 변경 및 취소를 요청할 수 있습니다. 다만, 이미 대금을 지불한 경우에는 제24조 청약철회 등에 관한 규정에 따릅니다.
-
-제 21 조 (대금지급방법)
-1. ‘회사’에서 구매한 상품 또는 쿠폰에 대한 대금지급방법은 다음 각 호의 하나로 할 수 있습니다.
-가. 신용카드 결제
-나. 실시간 계좌이체
-다. 에스크로 결제
-라. 무통장입금
-마. 기타 ‘회사’가 추가 지정하는 결제 수단(할인쿠폰, 스마트폰 앱 등)
-2. 회원이 구매대금의 결제와 관련하여 입력한 정보 및 그 정보와 관련하여 발생한 책임과 불이익은 전적으로 회원이 부담합니다.
-
-제 22 조 (‘상품 등’의 공급)
-1. ‘회사’는 회원의 ‘상품 등’의 공급에 관하여 별도의 약정이 없는 이상 회원이 ‘상품 등’을 구매한 날부터 빠른 시일 이내에 ‘상품 등’을 배송할 수 있도록 주문제작, 포장 등 기타의 필요한 조치를 취합니다.
-2. ‘회사’는 회원이 ‘상품 등’의 공급절차 및 진행사항, ‘상품 등’에 대한 구매 결제내역을 확인할 수 있도록 적절한 조치를 하여야 하며, ‘상품 등’의 취소방법 및 절차를 안내하여야 합니다.
-3. ‘회사’는 회원이 구매한 ‘상품 등’에 대해 배송수단, 수단별 배송비용, 배송비용 부담자, 수단별 배송기간 등을 명시합니다.
-4. ‘회사’와 고객간에 상품의 인도시기 및 쿠폰의 제공시기에 관하여 별도의 약정이 있는 경우에는 본 약관에 우선합니다.
-
-제 23 조 (환급)
-‘회사’는 회원이 구매 신청한 ‘상품 등’이 품절 등의 사유로 인도 또는 제공할 수 없을 때에는 지체 없이 그 사유를 회원에게 통지하여야 하고, 사전에 ‘상품 등’의 대금을 받은 경우에는 대금을 받은 날로부터 7영업일 이내에 환급하거나 환급에 필요한 조치를 취합니다.
-
-제 24 조 (청약철회 등)
-1. ‘회사’의 ‘상품 등’의 구매취소 및 환불 규정은 『전자상거래 등에서의 소비자보호에 관한 법률』 등 관련 법령을 준수합니다.
-2. ‘회사’와 ‘상품 등’의 구매에 관한 계약을 체결한 회원은 수신확인의 통지를 받은 날(전자우편 또는 SMS 문자통지 등을 받은 날) 또는 ‘상품 등’의 공급을 받은 날로부터 7일 이내에는 청약을 철회할 수 있습니다.
-3. 회원은 ‘상품 등’을 배송 받은 경우 아래 각 호에 해당하는 경우에는 교환 및 반품, 환불을 할 수 없습니다.
-가. 회원에게 책임 있는 사유로 ‘상품 등’이 멸실 또는 훼손된 경우(다만, ‘상품 등’의 내용을 확인하기 위하여 포장 등을 훼손한 경우에는 청약철회를 할 수 있습니다.)
-나. 회원의 사용 또는 일부 소비에 의하여 ‘상품 등’의 가치가 현저히 감소한 경우
-다. 시간의 경과에 의하여 재판매가 곤란할 정도로 ‘상품 등’의 가치가 현저히 감소한 경우
-라. 같은 성능을 지닌 ‘상품 등’으로 복제가 가능한 경우 그 원본인 ‘상품 등’의 포장을 훼손한 경우
-마. 회사가 특정 쿠폰 또는 상품 등에 대하여 청약철회 제한에 관해 사전에 고지한 경우
-5. 회원은 제3항 및 제4항의 규정에 불구하고 ‘상품 등’의 내용이 표시∙광고 내용과 다르거나 계약 내용과 다르게 이행된 때에는 당해 ‘상품 등’을 공급받은 날부터 3일 이내, 그 사실을 안 날 또는 알 수 있었던 날부터 10일 이내에 청약철회 등을 할 수 있습니다.
-
-제 25 조 (청약철회 등의 효과)
-1. 회원이 구매한 ‘상품 등’을 취소 또는 환불하는 경우 ‘회사’는 그 처리 결과에 대해 제13조(회원에 대한 통지)에 정한 방법으로 통지합니다.
-2. ‘회사’는 회원으로부터 쿠폰취소 요청 또는 상품 등을 반환 받은 경우 7영업일 이내에 이미 지급받은 대금을 환급합니다. 이 경우 ‘회사’가 회원에게 재화 등의 환급을 지연할 때에는 그 지연기간에 대하여 공정거래위원회가 정하여 고시하는 지연이자율을 곱하여 산정한 지연이자를 지급합니다.
-3. 청약철회 등의 경우 공급받은 ‘상품 등’의 반환에 필요한 비용은 회원이 부담합니다. 다만, ‘상품 등’의 내용이 표시∙광고 내용과 다르거나 계약내용과 다르게 이행되어 청약철회 등을 하는 경우 ‘상품 등’에 필요한 비용은 ‘회사’가 부담합니다.
-5. 회원의 단순변심에 의한 취소일 경우 환불처리에 발생하는 수수료와 기타 제반 비용은 회원이 부담합니다.
-6. 기타 본 약관 및 ‘사이트’의 이용안내에 규정되지 않은 취소 및 환불에 대한 사항에 대해서는 소비자 피해보상규정에서 정한 바에 따릅니다.
-
-제 26 조 (‘상품 등’의 취소 및 환불의 특칙)
-상품의 반품에 따른 환불은 반품하는 상품이 판매자에게 도착되고, 반품 사유 및 반품 배송비 부담자가 확인된 이후에 이루어집니다.
-
-제 27 조 (게시물의 관리)
-1. 회원의 게시물이 『정보통신망 이용촉진 및 정보보호 등에 관한 법률』 및 『저작권』등 관계법령에 위반되는 내용을 포함하는 경우, 권리자는 관계법령이 정한 절차에 따라 해당 게시물의 게시중단 및 삭제 등을 요청할 수 있으며, ‘회사’는 관계법령에 따라 조치를 취하여야 합니다.
-2. ‘회사’는 전항에 따른 권리자의 요청이 없는 경우라도 권리침해가 인정될 만한 사유가 있거나 기타 ‘회사’ 정책 및 관련법에 위반되는 경우에는 관련법에 따라 해당 ‘게시물’에 대해 임시조치 등을 취할 수 있습니다.
-3. 본 조에 따른 세부절차는 『정보통신망 이용촉진 및 정보보호 등에 관한 법률』 및 『저작권법』이 규정한 범위 내에서 ‘회사’가 정한 ‘게시중단요청서비스’에 따릅니다.
-
-제 28 조 (면책조항)
-1. ‘회사’는 천재지변 또는 이에 준하는 불가항력으로 인하여 ‘서비스’를 제공할 수 없는 경우에는 ‘서비스’ 제공에 관한 책임이 면제됩니다.
-2. ‘회사’는 회원의 귀책사유로 인한 ‘서비스’ 이용의 장애에 대하여 책임을 지지 않습니다.
-3. ‘회사’는 회원이 ‘서비스’를 이용하여 기대하는 수익을 상실한 것에 대하여 책임을 지지 않으며, 그 밖의 ‘서비스’를 통하여 얻은 자료로 인한 손해에 관하여 책임을 지지 않습니다.
-4. ‘회사’는 회원이 게재한 정보, 자료, 사실의 신뢰도, 정확성 등 내용에 관해서는 책임을 지지 않습니다.
-5. 회원이 발송한 메일 내용에 대한 법적인 책임은 사용자에게 있습니다.
-6. ‘회사’는 회원간 또는 회원과 제3자 상호간에 ‘서비스’를 매개로 하여 거래 등을 한 경우에는 책임이 면제됩니다.
-7. ‘회사’는 무료로 제공되는 ‘서비스’ 이용과 관련하여 관련법에 특별한 규정이 없는 한 책임을 지지 않습니다.
-
-제 29 조 (분쟁해결)
-1. ‘회사’는 회원이 제기하는 정당한 의견이나 불만을 반영하고 그 피해를 보상처리하기 위해서 피해보상처리 기구를 설치, 운영합니다.
-2. ‘회사’는 회원으로부터 제출되는 불만사항 및 의견은 우선적으로 그 사항을 처리합니다. 다만 신속한 처리가 곤란한 경우에는 회원에게 그 사유와 처리일정을 즉시 통보합니다.
-
-제 30 조 (준거법 및 관할법원)
-1. 이 약관의 해석 및 ‘회사’와 회원간의 분쟁에 대하여는 대한민국의 법을 적용합니다.
-2. ‘서비스’ 이용 중 발생한 회원과 ‘회사’간의 소송은 민사소송법에 의한 관할법원에 제소합니다.
-
-부칙
-1. 이 약관은 2021년 1월 1일부터 시행합니다.
-2. 이 개정약관은 시행일 이후에 체결되는 계약에만 적용되고 그 이전에 체결된 계약에 대해서는 개정전의 약관조항을 그대로 적용합니다.
-            </div>
-        </div>
-    </div>
-
-    <!-- 개인정보처리방침 모달 -->
-    <div id="privacy-modal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closePrivacyModal()">&times;</span>
-            <div class="modal-title">개인정보처리방침</div>
-            <div class="terms-text">
-<strong>우리는 누구인가요</strong>
-웹사이트 주소는: https://garage40.netlify.app
-
-<strong>댓글</strong>
-제안된 텍스트: 방문자가 사이트에 댓글을 남길 때 댓글 양식에 있는 자료, 스팸 감지를 도울 수 있는 방문자의 IP 주소와 브라우저 사용자 에이전트 문자열 또한 수집합니다.
-이메일에서 생성된 익명화된 문자열(해시로 불리기도 함)이 그라바타 서비스에 제공될 수도 있습니다. 사용하고 있는지 확인하기 위해서 입니다. 그라바타 서비스의 개인정보 처리방침은 다음에서 볼 수 있습니다: https://automattic.com/privacy/. 댓글 승인 후 프로필 사진이 댓글 문맥에 공개로 보이게 됩니다.
-
-<strong>미디어</strong>
-제안된 텍스트: 웹사이트에 이미지를 업로드하면, 임베드한 위치 자료(EXIF GPS)를 포함하여 이미지 업로드를 지해야 합니다. 웹사이트에 방문하는 사람이 웹사이트에 있는 이미지에서 위치 자료를 다운로드하고 추출할 수 있습니다.
-
-<strong>쿠키</strong>
-제안된 텍스트: 사이트에 댓글을 남기면 이름, 이메일 주소와 웹사이트를 쿠키에 ,저장할 것인지 선택할 수 있습니다. 이들은 여러분의 편의를 위한 것이기에 또 다른 댓글을 남길 때 세부사항을 채울 필요가 없습니다. 이 쿠키는 최근 1년 동안 남습니다.
-로그인 페이지를 방문하면, 브라우저가 쿠키를 수용하는지 임시 쿠키를 만들 것입니다. 이 쿠키는 개인정보를 포함하지 않고 브라우저를 닫으면 취소합니다.
-로그인 할 때, 로그인 정보를 저장하고 화면 보이기 선택을 저장하는 쿠키도 설정합니다. 로그인 쿠키는 최근 2일, 그리고 화면 옵션은 최근 1년입니다. “기억하기”를 선택하면, 로그인은 2주 동안 유지합니다. 계정을 로그아웃하면, 로그인 쿠키를 제거할 것입니다..
-게시물을 편집하거나 발행하면, 추가 쿠키를 브라우저에 저장할 것입니다. 이 쿠키는 개인정보를 포함하지 않고 단순히 방금 편집한 게시물의 글 ID만 지시합니다.
-
-<strong>다른 웹사이트에서 임베드한 콘텐츠</strong>
-제안된 텍스트: 이 사이트의 글은 임베드된 콘텐츠(예: 비디오, 이미지, 기사 등)가 포함될 수도 있습니다. 다른 웹사이트로부터 임베드된 콘텐츠는 방문자가 해당 다른 웹사이트를 방문한 것과 동일하게 작동됩니다.
-이 웹사이트는 계정을 가지고 있고 그 웹사이트에 로그인했다면 자신에 대한 자료를 수집하고, 쿠키를 사용하며, 추가 타사 추적을 임베드하고, 임베드한 콘텐츠와 상호작용하는 추적을 포함하는 임베드 콘텐츠와 상호작용을 모니터할 수도 있습니다.
-
-<strong>누구와 함께 자료를 공유하나요</strong>
-제안된 텍스트: 비밀번호 재설정을 요청하면, 재설정 이메일에 IP 주소가 포함됩니다.
-
-<strong>데이터를 보존하는 기간</strong>
-제안된 텍스트: 댓글을 남길 경우 댓글과 해당 메타데이터는 영구히 보존됩니다. 이것은 댓글에 관련 댓글이 있을 경우 검토중으로 있는 것을 방지하기 위해 인지하고 자동으로 승인하기 위해서 입니다.
-웹사이트에 등록한 사용자에 대해, 사용자 프로필에 제공한 개인정보도 저장합니다. 모든 사용자는 언제든 자신의 개인정보를 보고, 편집하거나, 지울 수 있습니다(사용자명은 바꿀 수 없습니다). 웹사이트 관리자는 그 정보를 보고 편집할 수도 있습니다.
-
-<strong>데이터에 관해 갖는 권리의 종류</strong>
-제안된 텍스트: 사이트에 계정을 가지고 있거나, 댓글을 남겼다면, 제공한 어떤 자료이든 보유하고 있는 개인정보의 파일 내보내기를 받도록 요청할 수 있습니다. 또한 보유하고 있는 개인정보를 지우는 것도 요청할 수 있습니다. 이는 관리자, 법, 또는 보안 목적으로 보관해야 하는 자료를 포함하지 않습니다.
-
-<strong>데이터가 보내지는 곳</strong>
-제안된 텍스트: 자동 스팸 감지 서비스를 통해 방문자 댓글을 확인할 수 있습니다.
-            </div>
-        </div>
-    </div>
-
-    <!-- 우측 하단 플로팅 메뉴 (전화, 카톡, TOP) -->
+    <!-- 우측 하단 플로팅 메뉴 -->
     <div class="floating-menu">
         <a href="tel:01046848838" class="float-btn btn-call" title="전화 문의">
-            <!-- 전화기 아이콘 SVG -->
             <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.59 3.99C8.59 3.44 8.14 3 7.59 3H4.03C3.48 3 3 3.45 3 4.01 3 13.42 10.58 21 19.99 21c.56 0 1.01-.45 1.01-1v-3.61c0-.56-.45-1.01-1-.01z"/></svg>
         </a>
         <button onclick="inquire('간편 상담', '상담 연결')" class="float-btn btn-talk" title="카톡 상담">
-            <!-- 말풍선 아이콘 SVG -->
             <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
         </button>
         <a href="#hero" class="float-btn btn-top" title="맨 위로">
-            <!-- 화살표 아이콘 SVG -->
             <svg viewBox="0 0 24 24" style="width:20px; height:20px; margin-bottom:2px;"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
             <span>TOP</span>
         </a>
     </div>
 
+    <!-- Scripts (Modal functions same as before) -->
     <script>
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1289,43 +846,13 @@
             }
         }
 
-        // 이용약관 모달 열기
-        function openTermsModal(e) {
-            if(e) e.preventDefault();
-            document.getElementById('terms-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
-        }
-
-        // 이용약관 모달 닫기
-        function closeTermsModal() {
-            document.getElementById('terms-modal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // 배경 스크롤 복구
-        }
-
-        // 개인정보처리방침 모달 열기
-        function openPrivacyModal(e) {
-            if(e) e.preventDefault();
-            document.getElementById('privacy-modal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        // 개인정보처리방침 모달 닫기
-        function closePrivacyModal() {
-            document.getElementById('privacy-modal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // 모달 바깥 클릭 시 닫기
+        function openTermsModal(e) { if(e) e.preventDefault(); document.getElementById('terms-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
+        function openPrivacyModal(e) { if(e) e.preventDefault(); document.getElementById('privacy-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closePrivacyModal() { document.getElementById('privacy-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
         window.onclick = function(event) {
-            const termsModal = document.getElementById('terms-modal');
-            const privacyModal = document.getElementById('privacy-modal');
-            
-            if (event.target == termsModal) {
-                closeTermsModal();
-            }
-            if (event.target == privacyModal) {
-                closePrivacyModal();
-            }
+            if (event.target == document.getElementById('terms-modal')) closeTermsModal();
+            if (event.target == document.getElementById('privacy-modal')) closePrivacyModal();
         }
     </script>
 </body>
