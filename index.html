@@ -1,969 +1,379 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GARAGE40 - 광택 장인</title>
-    <!-- 구글 폰트 (Noto Sans KR) 로드 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
-        /* --- [Global] 글래스모피즘 테마 설정 --- */
-        :root {
-            --bg-deep: #0f0f0f;
-            --text-white: #ffffff;
-            --text-gold: #eebb66; /* 조금 더 밝은 골드 */
-            --text-gray: #cccccc;
-            --accent-red: #d32f2f;
-            
-            /* Glassmorphism Variables */
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            --glass-blur: blur(12px);
-            
-            /* Liquid Button Gradients */
-            --btn-gradient-red: linear-gradient(180deg, #ff6b6b 0%, #c0392b 100%);
-            --btn-gradient-yellow: linear-gradient(180deg, #f1c40f 0%, #f39c12 100%);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-white);
-            line-height: 1.7;
-            /* 배경에 은은한 빛 효과 추가 */
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(211, 47, 47, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(197, 160, 89, 0.08) 0%, transparent 40%);
-            background-attachment: fixed;
-            /* 단어 단위 줄바꿈 적용 (가독성 향상) */
-            word-break: keep-all; 
-        }
-
-        /* [이미지 공통 설정] 비율 유지하며 꽉 채우기 */
-        img { 
-            width: 100%; 
-            display: block; 
-            object-fit: cover; /* 이미지가 박스 비율에 맞춰 잘림 (찌그러짐 방지) */
-        }
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; }
-
-        /* 공통 유틸리티 */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            /* 상하 여백 80px로 최적화 */
-            padding: 80px 20px;
-        }
-
-        .gold-title {
-            color: var(--text-gold);
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
-        }
-
-        /* [Glass Style] 공통 카드 디자인 */
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur);
-            -webkit-backdrop-filter: var(--glass-blur);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--glass-shadow);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* 그리드 레이아웃 */
-        .grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .grid-3-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
-
-        /* --- 1. 헤더 & 메인 배너 --- */
-        header {
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-deep)), url('image/main-banner.jpg');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-align: center;
-            position: relative;
-        }
-
-        .navbar { 
-            padding: 20px 40px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-        }
-        
-        .logo { font-size: 1.8rem; font-weight: 800; color: white; letter-spacing: 1px; }
-        .logo .since { font-size: 0.9rem; font-weight: 300; margin-left: 10px; color: var(--text-gold); }
-
-        .hero-content { margin-top: auto; margin-bottom: auto; padding: 0 20px; z-index: 1; }
-        .hero-content h1 {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            font-weight: 800;
-            background: linear-gradient(to right, #fff, #ccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* [추가 디자인] 메인 슬로건 스타일 */
-        .hero-slogan {
-            font-size: 1.4rem;
-            color: var(--text-gray);
-            margin-bottom: 50px;
-            font-weight: 300;
-            letter-spacing: 1px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        .hero-slogan strong {
-            color: var(--text-gold);
-            font-weight: 500;
-        }
-
-        .cta-buttons { display: flex; gap: 20px; justify-content: center; }
-        
-        /* 버튼 스타일 */
-        .btn { 
-            padding: 16px 40px; 
-            border-radius: 50px; 
-            font-weight: bold; 
-            font-size: 1.1rem; 
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-red { 
-            background: linear-gradient(135deg, #ff4d4d 0%, #b71c1c 100%);
-            color: white;
-            box-shadow: 0 10px 20px rgba(211, 47, 47, 0.4);
-            border: none;
-        }
-        .btn-red:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(211, 47, 47, 0.6);
-        }
-
-        .btn-glass { 
-            background: var(--glass-bg);
-            backdrop-filter: blur(5px);
-            color: white;
-        }
-        .btn-glass:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: white;
-        }
-
-        .banner-bar {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(10px);
-            color: var(--text-gray);
-            padding: 20px;
-            font-size: 1rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        /* --- 2. 인트로 섹션 --- */
-        #intro { text-align: center; }
-        .badge-icon { width: 120px; margin: 0 auto 40px; filter: drop-shadow(0 0 10px rgba(197, 160, 89, 0.5)); }
-        #intro h2 { font-size: 2.5rem; margin-bottom: 60px; font-weight: 300; line-height: 1.4; color: var(--text-white); }
-        
-        /* [이미지 사이즈 고정] */
-        .intro-img-box img { 
-            height: 350px; 
-            width: 100%;
-            object-fit: cover; 
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            border: 1px solid var(--glass-border);
-        }
-
-        /* --- 3. 문제 제기 (Glass Panel) --- */
-        #problem { padding-top: 0; }
-        .problem-glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 30px;
-            padding: 60px;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .grid-2-col-text-img { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        
-        .text-box h3 { font-size: 2rem; margin-bottom: 30px; color: var(--text-white); font-weight: 700; }
-        .accent-text { 
-            color: var(--accent-red); 
-            font-weight: bold; 
-            margin: 30px 0; 
-            font-size: 1.3rem; 
-            border-left: 4px solid var(--accent-red); 
-            padding-left: 20px; 
-            line-height: 1.6;
-            text-shadow: 0 0 10px rgba(211, 47, 47, 0.3);
-        }
-        
-        .comparison-details { margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
-        .compare-block h4 { font-size: 1.4rem; margin-bottom: 15px; font-weight: bold; color: var(--text-white); display: flex; align-items: center; gap: 10px;}
-        .compare-block p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
-        .compare-divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 30px 0; }
-        .text-red { color: var(--accent-red) !important; text-shadow: 0 0 5px var(--accent-red); }
-
-        /* [이미지 사이즈 고정] */
-        .img-box img { 
-            height: 400px; 
-            width: 100%;
-            object-fit: cover;
-            border-radius: 20px; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
-        }
-
-        /* --- 4. 장인 이야기 --- */
-        #story .text-content { padding: 40px; }
-        /* [이미지 사이즈 고정] */
-        #story img {
-            height: 500px; 
-            width: 100%;
-            object-fit: cover;
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        /* 장인 이야기 하단 여백 축소 */
-        #story .container { padding-bottom: 40px; }
-
-        #story h4 { 
-            font-size: 1.6rem; 
-            margin-bottom: 20px; 
-            line-height: 1.4; 
-            color: var(--text-gold); 
-            font-weight: 700;
-        }
-        #story .story-sub { font-size: 1rem; color: #888; margin-bottom: 40px; font-style: italic;}
-        #story p { color: var(--text-gray); margin-bottom: 20px; font-size: 1.05rem; }
-        .highlight-bold { font-weight: bold; color: var(--text-white); }
-        
-        .signature { 
-            margin-top: 30px; 
-            font-family: 'Brush Script MT', cursive; 
-            color: var(--text-gold) !important; 
-            text-align: right; 
-            font-size: 2rem; 
-            opacity: 0.8;
-        }
-
-        /* --- 5. 복원 프로세스 --- */
-        #process .card { 
-            background: linear-gradient(180deg, rgba(30,30,30,0.6) 0%, rgba(10,10,10,0.8) 100%);
-        }
-        /* [이미지 사이즈 고정] */
-        #process .card img { 
-            height: 250px; 
-            width: 100%; 
-            object-fit: cover;
-            transition: transform 0.5s; 
-            opacity: 0.9; 
-        }
-        #process .card:hover img { transform: scale(1.1); opacity: 1; }
-        
-        #process .overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: rgba(211, 47, 47, 0.9);
-            color: white;
-            padding: 8px 16px;
-            font-weight: bold;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-        
-        .step-desc {
-            padding: 30px;
-            color: var(--text-gray);
-            font-size: 1rem;
-            text-align: center;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* --- 6. 결과 사례 --- */
-        #results .section-quote {
-            font-size: 1.8rem; 
-            color: var(--text-white);
-            margin-bottom: 60px;
-            font-weight: 300;
-            text-align: center;
-        }
-        #results .section-quote strong { color: var(--text-gold); font-weight: 700; }
-
-        .result-card {
-            background: rgba(20, 20, 20, 0.6);
-        }
-        /* [이미지 사이즈 고정] */
-        .result-card .img-wrapper { 
-            height: 250px; 
-            overflow: hidden; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-        }
-        .result-card .img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .result-card h4 { padding: 25px 25px 10px; font-size: 1.2rem; color: var(--text-white); font-weight: bold; }
-        .result-card .desc { padding: 0 25px 25px; font-size: 0.95rem; color: #aaa; }
-
-        .btn-block-red {
-            display: block;
-            margin: 0 25px 25px;
-            background: transparent; 
-            border: 1px solid var(--accent-red);
-            color: var(--accent-red);
-            text-align: center;
-            padding: 12px 0; 
-            border-radius: 12px;
-            font-size: 1rem; 
-            font-weight: 500;
-            transition: 0.3s;
-        }
-        .btn-block-red:hover {
-            background: var(--accent-red);
-            color: white;
-            box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
-        }
-
-        /* --- 7. 가치 복원 프로젝트 (개선 적용) --- */
-        .project-card {
-            background: rgba(255, 255, 255, 0.03);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        /* [이미지 사이즈 고정] */
-        .project-card > img {
-            height: 250px; 
-            width: 100%;
-            object-fit: cover;
-        }
-        .project-quote {
-            text-align: center;
-            padding: 20px;
-            font-size: 0.95rem;
-            color: var(--text-gold);
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-weight: 500;
-        }
-        .project-info { 
-            padding: 30px; 
-            flex-grow: 1; 
-            display: flex;
-            flex-direction: column;
-        }
-        .project-info h4 { color: var(--text-white); font-size: 1.3rem; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        
-        .info-title { color: var(--text-gold); margin-bottom: 12px; display: inline-block; font-size: 0.95rem;}
-        
-        /* [구분선 및 간격 수정] */
-        .info-section {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            min-height: 140px; /* 구분선 위치 고정 */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-        .info-section:last-of-type {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-            min-height: 180px; /* 버튼 위치 고정 */
-        }
-
-        .project-info ul { margin-left: 5px; }
-        .project-info li { color: #ccc; margin-bottom: 8px; font-size: 0.95rem; }
-        
-        /* [버튼 하단 고정] */
-        .price-btn {
-            background: linear-gradient(135deg, #ff4d4d 0%, #b71c1c 100%);
-            margin-top: auto; 
-            width: 100%;
-            padding: 18px 0;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            color: white;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .price-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 15px 30px rgba(211, 47, 47, 0.4);
-        }
-
-        /* --- 8. 문의하기 (Contact: 2분할 글래스 디자인) --- */
-        #contact { 
-            background-color: var(--bg-deep);
-            color: var(--text-white);
-            padding-bottom: 50px;
-        }
-
-        #contact .container {
-            padding-top: 80px; 
-            padding-bottom: 20px;
-        }
-
-        .contact-title { font-size: 4rem; color: var(--text-white); margin-bottom: 20px; }
-        
-        .contact-subtitle-box { text-align: center; margin-bottom: 50px; }
-        .contact-subtitle-box p { color: var(--text-gold); font-size: 1.3rem; font-weight: 500; }
-
-        .contact-actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-
-        .action-card {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        .action-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.05); }
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 12px 0;
-            border-radius: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 25px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.4);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .action-btn-call { background: var(--btn-gradient-red); color: white; }
-        .action-btn-talk { background: var(--btn-gradient-yellow); color: #3c1e1e; }
-
-        .main-desc { font-size: 1.1rem; color: var(--text-white); margin-bottom: 10px; font-weight: bold; }
-        .sub-desc { color: #888; margin-bottom: 20px; font-size: 0.95rem; }
-        .req-list { text-align: left; display: inline-block; color: #ccc; font-size: 0.95rem; list-style: disc; padding-left: 20px; margin-bottom: 25px; }
-
-        .info-capsule {
-            margin-top: auto; 
-            font-size: 1.3rem; 
-            font-weight: 700;
-            color: #ccc;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 0;
-            border-radius: 50px;
-            display: block; 
-            text-align: center;
-            width: 100%; 
-            max-width: 380px;
-            transition: 0.3s;
-        }
-        .info-capsule:hover { background: rgba(0, 0, 0, 0.5); border-color: var(--text-gold); color: var(--text-gold); }
-
-        .contact-footer-divider { border-top: 1px solid rgba(255,255,255,0.1); margin: 40px 0 30px; }
-        
-        .contact-bottom-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end; 
-            flex-wrap: wrap;
-            gap: 20px;
-            padding-top: 20px;
-        }
-        
-        .promise-box { color: var(--text-white); font-weight: 500; font-size: 1.3rem; flex: 1; text-align: left; }
-        .shop-info-box { flex: 1; text-align: right; }
-        .shop-info-box h4 { color: var(--text-white); margin-bottom: 8px; font-size: 1.1rem; }
-        .shop-info-box ul li { color: #aaa; font-size: 0.95rem; margin-bottom: 4px; }
-
-        /* --- 9. Footer --- */
-        .last-page-footer { 
-            border-top: 1px solid rgba(255,255,255,0.05); 
-            background: linear-gradient(to top, #000, var(--bg-deep));
-        }
-        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; padding-top: 60px; }
-        .footer-img-box img { width: 100%; min-height: 500px; border-radius: 20px; }
-        .footer-text-box { display: flex; flex-direction: column; justify-content: flex-end; padding: 20px 0; }
-        .footer-bottom-split { display: flex; flex-direction: column; align-items: flex-end; gap: 30px; text-align: right; }
-        .footer-brand { font-size: 3.5rem; color: var(--text-gold); margin-bottom: 10px; }
-        .footer-message { font-size: 1.4rem; color: var(--text-white); margin-bottom: 5px; }
-        .brand-since { font-weight: bold; color: var(--text-white); font-size: 1.1rem; }
-        .footer-right-group { color: #888; font-size: 0.95rem; line-height: 1.6; }
-
-        /* --- 10. Legal Footer --- */
-        .legal-footer { 
-            background-color: #050505; 
-            border-top: 1px solid #222; 
-            color: #555; 
-            text-align: center; 
-            padding: 40px 0; 
-        }
-        .legal-links { margin-bottom: 20px; }
-        .legal-links a { color: #888; margin: 0 15px; cursor: pointer; text-decoration: none; transition: 0.3s; }
-        .legal-links a:hover { color: var(--text-white); }
-        .legal-info { font-size: 0.85rem; margin-bottom: 8px; line-height: 1.6; }
-        .legal-info span { margin: 0 10px; display: inline-block; }
-
-        /* --- Floating Menu --- */
-        .floating-menu { position: fixed; right: 20px; bottom: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .float-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 8px rgba(0,0,0,0.3); transition: 0.3s; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); }
-        .float-btn svg { width: 24px; height: 24px; fill: currentColor; }
-        .btn-call { background-color: #4CAF50; color: white; }
-        .btn-talk { background-color: #FEE500; color: #3c1e1e; }
-        .btn-top { background: var(--glass-bg); color: white; flex-direction: column; font-size: 0.7rem; backdrop-filter: blur(10px); }
-
-        /* --- Modals (Dark Glass Theme) --- */
-        .modal-overlay { 
-            display: none; 
-            position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); 
-            z-index: 10000; 
-            justify-content: center; align-items: center; 
-            backdrop-filter: blur(8px); 
-        }
-        .modal-content { 
-            background: #151515; 
-            border: 1px solid #333; 
-            color: #eee; 
-            width: 90%; max-width: 800px; height: 80%; 
-            padding: 40px; 
-            border-radius: 25px; 
-            position: relative; 
-            display: flex; flex-direction: column; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-        }
-        .modal-title { font-size: 1.8rem; font-weight: bold; margin-bottom: 20px; color: var(--text-gold); border-bottom: 1px solid #333; padding-bottom: 15px; }
-        .terms-text { flex-grow: 1; overflow-y: auto; white-space: pre-line; text-align: left; color: #aaa; font-size: 0.95rem; line-height: 1.8; padding-right: 15px; }
-        .terms-text strong { color: var(--text-white); display: block; margin-top: 20px; margin-bottom: 10px; }
-        .close-btn { position: absolute; top: 25px; right: 30px; font-size: 35px; cursor: pointer; color: #888; transition: 0.3s; }
-        .close-btn:hover { color: white; }
-
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-slogan { font-size: 1.1rem; }
-            .grid-2-col, .grid-3-col, .contact-actions-grid, .footer-grid { grid-template-columns: 1fr; }
-            .contact-bottom-info { flex-direction: column; text-align: center; }
-            .shop-info-box { text-align: center; }
-            .footer-bottom-split { align-items: center; text-align: center; }
-            .contact-title { font-size: 2.8rem; }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="40년 경력 광택 장인이 직접 진단하고 시공하는 GARAGE40. 자동차 광택, 도장면 복원, 유리막 코팅, 클래식카 리스토어 상담.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:title" content="GARAGE40 | 40년 광택 장인의 도장면 복원">
+  <meta property="og:description" content="덮는 광택이 아닌, 도장 본연의 결을 되살리는 복원. 40년 장인이 차량마다 다른 공정을 직접 설계합니다.">
+  <meta property="og:image" content="https://coorocket.github.io/garage40/image/og-garage40.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="검은 차량과 GARAGE40 도장면 복원 메시지">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GARAGE40 | 40년 광택 장인의 도장면 복원">
+  <meta name="twitter:description" content="덮는 광택이 아닌, 도장 본연의 결을 되살리는 복원.">
+  <meta name="twitter:image" content="https://coorocket.github.io/garage40/image/og-garage40.png">
+  <title>GARAGE40 | 40년 광택 장인의 도장면 복원</title>
+  <link rel="preload" as="image" href="image/main-banner.webp" media="(min-width: 721px)" fetchpriority="high">
+  <link rel="preload" as="image" href="image/main-banner-mobile.webp" media="(max-width: 720px)" fetchpriority="high">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>document.documentElement.classList.add('js');</script>
+  <script type="module" src="assets/site.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AutomotiveBusiness",
+    "name": "GARAGE40",
+    "alternateName": "넘버원카클리닉 K광택",
+    "description": "40년 경력 광택 장인의 자동차 도장면 복원, 광택, 코팅 서비스",
+    "telephone": "+82-10-4684-8838",
+    "email": "garage40@gmail.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "금오로 499, 1F",
+      "addressLocality": "시흥시",
+      "addressRegion": "경기도",
+      "addressCountry": "KR"
+    },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "09:00",
+      "closes": "19:00"
+    }],
+    "priceRange": "₩₩"
+  }
+  </script>
 </head>
 <body>
+  <a class="skip-link" href="#main">본문으로 바로가기</a>
 
-    <!-- 1. 헤더 & 메인 배너 -->
-    <header id="hero">
-        <nav class="navbar">
-            <div class="logo">GARAGE40 <span class="since">since 1980</span></div>
-        </nav>
-        <div class="hero-content">
-            <h1>고가의 내 차,<br>아무에게나 맡기시겠습니까?</h1>
-            <!-- [반영] 요청하신 메인 슬로건 디자인 배치 -->
-            <p class="hero-slogan">대한민국 광택 1세대, 40년의 자부심이 살아있는 곳,<br>광택장인 <strong>[게러지40]</strong> 입니다.</p>
-            
-            <div class="cta-buttons">
-                <a href="#contact" class="btn btn-red">문의하기</a>
-                <a href="#projects" class="btn btn-glass">가격보기</a>
-            </div>
-        </div>
-        <div class="banner-bar glass-card" style="border-radius: 0; border-left:0; border-right:0;">
-            <p>40년 경력 장인의 기술로 완성되는 완벽한 복원 (Restoration)</p>
-        </div>
-    </header>
+  <header class="site-header" data-header>
+    <a class="brand" href="#hero" aria-label="GARAGE40 홈">
+      <span class="brand-name">GARAGE40</span>
+      <span class="brand-since">SINCE 1980</span>
+    </a>
 
-    <!-- 2. 인트로 -->
-    <section id="intro">
-        <div class="container">
-            <div class="badge-icon"><img src="image/badge-icon.png" alt="인증 마크" loading="lazy" decoding="async"></div>
-            <h2>"자동차 광택장인이<br>직접 시공합니다"</h2>
-            <div class="grid-2-col intro-img-box">
-                <img src="image/intro-car-side.jpg" alt="클래식카 측면" loading="lazy" decoding="async">
-                <img src="image/intro-car-detail.jpg" alt="클래식카 디테일" loading="lazy" decoding="async">
-            </div>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle>
+      <span class="sr-only">메뉴 열기</span>
+      <span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="site-navigation" aria-label="주요 메뉴" data-menu>
+      <a href="#standard">철학</a>
+      <a href="#services">서비스</a>
+      <a href="#process">복원 공정</a>
+      <a href="#packages">패키지</a>
+      <a href="#contact">오시는 길</a>
+      <a class="nav-cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진 견적 <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <picture class="hero-media" aria-hidden="true">
+        <source media="(max-width: 720px)" srcset="image/main-banner-mobile.webp">
+        <img src="image/main-banner.webp" alt="" width="1600" height="1067" fetchpriority="high" decoding="async">
+      </picture>
+      <div class="hero-shade"></div>
+
+      <div class="hero-content page-shell">
+        <p class="eyebrow hero-eyebrow">KOREA'S FIRST-GENERATION POLISHING MASTER · 40 YEARS</p>
+        <h1 id="hero-title">광을 덮지 않고,<br><em>도장의 시간을 되돌립니다.</em></h1>
+        <p class="hero-lead">차마다 다른 도장과 상처를 읽고, 필요한 만큼만 정교하게 다듬습니다.<br>대한민국 광택 1세대 장인이 처음부터 끝까지 직접 시공합니다.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#contact">내 차 상담하기 <span aria-hidden="true">→</span></a>
+          <a class="button button-ghost" href="#services">복원 사례 보기</a>
         </div>
+      </div>
+
+      <div class="hero-proof page-shell" aria-label="GARAGE40 주요 경력">
+        <div><strong>40+</strong><span>년의 현장 경험</span></div>
+        <div><strong>50,000</strong><span>대 이상 시공 경험</span></div>
+        <div><strong>1:1</strong><span>마스터 직접 진단</span></div>
+        <p>Covering scratches is not restoration.</p>
+      </div>
     </section>
 
-    <!-- 3. 문제 제기 -->
-    <section id="problem">
-        <div class="container">
-            <div class="problem-glass-panel">
-                <div class="grid-2-col-text-img">
-                    <div class="text-box">
-                        <h3>왜 비싼 돈 들인 광택이<br>세차 몇 번에 사라질까요?</h3>
-                        <p class="accent-text">“저렴한 광택은 기름으로 덮지만,<br>우리는 깍아서 살려냅니다.”</p>
-                        <div class="comparison-details">
-                            <div class="compare-block">
-                                <h4>❌ 일반 광택</h4>
-                                <p>소중한 고객님의 차가 '기름칠' 당하고 있을지 모릅니다. 흠집을 강한 유분으로 덮기 때문에 세차 몇 번이면 다시 드러납니다.</p>
-                            </div>
-                            <hr class="compare-divider">
-                            <div class="compare-block">
-                                <h4 class="text-red">⭕ GARAGE40</h4>
-                                <p>자체 개발한 약품으로 도장면의 본질을 복원합니다. 기름기가 빠져도 광은 사라지지 않고 시간이 지나도 오래 지속 됩니다.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="img-box"><img src="image/problem-comparison.jpg" alt="광택 비교" loading="lazy" decoding="async"></div>
-                </div>
-            </div>
-        </div>
+    <section class="trust-strip" aria-label="서비스 원칙">
+      <div class="page-shell trust-list">
+        <span>장인 직접 시공</span>
+        <span>차종별 맞춤 공정</span>
+        <span>도장면 최소 삭감</span>
+        <span>시공 후 100% AS</span>
+      </div>
     </section>
 
-    <!-- 4. 장인 이야기 -->
-    <section id="story">
-        <div class="container"> 
-            <h3 class="gold-title">Master's Story</h3>
-            <div class="grid-2-col">
-                <img src="image/master-working.jpg" alt="장인 작업 모습" loading="lazy" decoding="async">
-                <div class="text-content">
-                    <h4>40년의 역사, 5만 대의 증명.</h4>
-                    <p class="story-sub">광택의 시초 을지로 오장동에서 시작된 기술은<br>장안동에서 더 정교해졌습니다.</p>
-                    <p><span class="highlight-bold">'모든 차의 피부는 다릅니다.'</span><br>브랜드별 도장의 특성을 완벽히 이해해야 합니다.</p>
-                    <p>마스터가 직접 설계하는 1:1 맞춤 공정. 제 마음에 들지 않는 결과물은 고객님께도 드리지 않습니다.</p>
-                    <p class="highlight-bold" style="margin-top: 10px;">이것이 GARAGE 40의 퀄리티가 다른 이유입니다.</p>
-                    <p class="signature">Master Lee SungGu</p>
-                </div>
-            </div>
+    <section class="section standard" id="standard">
+      <div class="page-shell">
+        <div class="section-heading reveal">
+          <p class="eyebrow">OUR STANDARD</p>
+          <h2>세차 몇 번에 사라지는 광택은<br><em>복원이 아닙니다.</em></h2>
+          <p>유분으로 흠집을 잠시 가리는 대신, 도장 상태를 진단하고 표면을 단계적으로 정리해 본래의 반사와 색감을 되찾습니다.</p>
         </div>
+
+        <div class="standard-grid">
+          <article class="comparison-card comparison-muted reveal">
+            <span class="comparison-number">01</span>
+            <p class="comparison-label">일반적인 저가 광택</p>
+            <h3>흠집을 유분으로 덮습니다.</h3>
+            <p>작업 직후에는 반짝이지만, 세차로 유분이 빠지면 스월 마크와 잔기스가 다시 드러납니다.</p>
+          </article>
+          <article class="comparison-card comparison-accent reveal">
+            <span class="comparison-number">02</span>
+            <p class="comparison-label">GARAGE40 복원 광택</p>
+            <h3>도장 본연의 면을 살립니다.</h3>
+            <p>차량별 도막과 손상 정도에 맞춘 약품·패드·공정으로 오래 유지되는 맑은 반사를 완성합니다.</p>
+          </article>
+        </div>
+
+        <figure class="wide-figure reveal">
+          <img src="image/problem-comparison.webp" alt="조명 아래에서 도장면의 광택 상태를 비교 점검하는 차량" width="1400" height="934" loading="lazy" decoding="async">
+          <figcaption><span>THE DIFFERENCE</span> 눈앞의 반짝임보다, 시간이 지나도 남는 결과를 봅니다.</figcaption>
+        </figure>
+      </div>
     </section>
 
-    <!-- 5. 복원 프로세스 -->
-    <section id="process">
-        <div class="container">
-            <h3 class="gold-title">GARAGE40<br>복원 프로세스</h3>
-            <div class="grid-3-col">
-                <div class="card glass-card">
-                    <img src="image/process-step1.jpg" alt="Step 1" loading="lazy" decoding="async">
-                    <div class="overlay">Step 1. 정밀 세차 및 전처리</div>
-                    <div class="step-desc">차의 상태, 당일 날씨,<br>습도에 맞춘 작업 준비</div>
-                </div>
-                <div class="card glass-card">
-                    <img src="image/process-step2.jpg" alt="Step 2" loading="lazy" decoding="async">
-                    <div class="overlay">Step 2. 약품 광택 폴리싱</div>
-                    <div class="step-desc">직접 개발한 광택제,<br>충분한 작업시간</div>
-                </div>
-                <div class="card glass-card">
-                    <img src="image/process-step3.jpg" alt="Step 3" loading="lazy" decoding="async">
-                    <div class="overlay">Step 3. 표면 보호 코팅</div>
-                    <div class="step-desc">색감 광도 체크 후<br>출고</div>
-                </div>
-            </div>
+    <section class="section story section-contrast" id="story">
+      <div class="page-shell story-grid">
+        <div class="story-visual reveal">
+          <img class="story-main-image" src="image/master-working.webp" alt="차량 도장면을 직접 폴리싱하는 GARAGE40 장인" width="736" height="920" loading="lazy" decoding="async">
+          <div class="story-stamp" aria-hidden="true"><strong>40</strong><span>YEARS OF<br>CRAFT</span></div>
         </div>
+        <div class="story-copy reveal">
+          <p class="eyebrow">MASTER'S STORY</p>
+          <h2>모든 차의 피부는<br><em>서로 다릅니다.</em></h2>
+          <p class="story-intro">광택의 시초, 을지로 오장동에서 시작한 기술은 장안동을 거쳐 더 정교해졌습니다.</p>
+          <p>브랜드마다 다른 도장 경도, 누적된 세차 흔적, 재도장 이력까지 먼저 읽습니다. 정해진 공정을 반복하는 대신 차량 한 대마다 가장 안전하고 정확한 순서를 새로 설계합니다.</p>
+          <blockquote>“제 마음에 들지 않는 결과물은<br>고객님께도 드리지 않습니다.”</blockquote>
+          <div class="master-sign">
+            <span>GARAGE40 MASTER</span>
+            <strong>이성구</strong>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- 6. 결과 사례 -->
-    <section id="results">
-        <div class="container">
-            <h3 class="section-quote">“10년 된 차도 <strong>신차의 설렘</strong>을 되찾을 수 있습니다.”</h3>
-            <div class="grid-3-col">
-                <div class="result-card glass-card">
-                    <div class="img-wrapper"><img src="image/result-case1.jpg" alt="수입차 정밀 광택" loading="lazy" decoding="async"></div>
-                    <h4>수입차 · 클래식카 정밀 복원 광택</h4>
-                    <p class="desc">80년대부터 축적된 데이터로 차종별 1:1 맞춤 공정을 설계하여, 신차 이상의 품격을 완성합니다.</p>
-                    <a href="#" class="btn-block-red">Read more</a>
-                </div>
-                <div class="result-card glass-card">
-                    <div class="img-wrapper"><img src="image/result-case2.jpg" alt="사고 수리 후 광택" loading="lazy" decoding="async"></div>
-                    <h4>사고 수리 & 도색 후처리 광택</h4>
-                    <p class="desc">도색 직후의 거친 표면(오렌지필)을 매끄럽게 다듬어, 완벽한 광택으로 수리를 완성합니다.</p>
-                    <a href="#" class="btn-block-red">Read more</a>
-                </div>
-                <div class="result-card glass-card">
-                    <div class="img-wrapper"><img src="image/result-case3.jpg" alt="잘못된 시공 분석" loading="lazy" decoding="async"></div>
-                    <h4>잘못된 시공 사례 분석</h4>
-                    <p class="desc">기름으로 덮는 눈속임식 저가 시공의 실태를 전문가의 시선으로 정확히 진단해 드립니다.</p>
-                    <a href="#" class="btn-block-red">Read more</a>
-                </div>
-            </div>
+    <section class="section services defer-section" id="services">
+      <div class="page-shell">
+        <div class="section-heading section-heading-split reveal">
+          <div>
+            <p class="eyebrow">RESTORATION WORK</p>
+            <h2>차의 시간을 되돌리는<br><em>세 가지 접근</em></h2>
+          </div>
+          <p>신차 컨디션 관리부터 도색 후처리, 클래식카 복원까지. 현재 상태와 원하는 결과를 기준으로 필요한 작업만 제안합니다.</p>
         </div>
+
+        <div class="service-grid">
+          <article class="service-card reveal">
+            <div class="service-image">
+              <img src="image/result-case1.webp" alt="정밀 광택을 마친 클래식 수입차" width="447" height="668" loading="lazy" decoding="async">
+              <span>01</span>
+            </div>
+            <div class="service-copy">
+              <p>PREMIUM & CLASSIC</p>
+              <h3>수입차 · 클래식카<br>정밀 복원 광택</h3>
+              <p>차종별 도장 특성과 보존 가치를 고려해 삭감을 최소화하고 깊은 색감과 반사를 회복합니다.</p>
+              <a href="#contact">이 서비스 상담하기 <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card service-card-offset reveal">
+            <div class="service-image">
+              <img src="image/result-case2.webp" alt="도색 후 표면을 정리한 차량 도장면" width="1200" height="803" loading="lazy" decoding="async">
+              <span>02</span>
+            </div>
+            <div class="service-copy">
+              <p>PAINT CORRECTION</p>
+              <h3>사고 수리 · 도색<br>후처리 광택</h3>
+              <p>도색 후 남은 오렌지필과 표면 굴곡을 정교하게 정리해 수리 부위와 기존 도장의 이질감을 줄입니다.</p>
+              <a href="#contact">이 서비스 상담하기 <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+
+          <article class="service-card reveal">
+            <div class="service-image">
+              <img src="image/result-case3.webp" alt="조명으로 도장면의 스월 마크를 진단하는 차량" width="1200" height="800" loading="lazy" decoding="async">
+              <span>03</span>
+            </div>
+            <div class="service-copy">
+              <p>DIAGNOSIS & RECOVERY</p>
+              <h3>잘못된 시공<br>진단 및 재복원</h3>
+              <p>홀로그램, 버핑 자국, 과도한 삭감 등 이전 시공의 문제를 먼저 확인하고 가능한 복원 범위를 안내합니다.</p>
+              <a href="#contact">이 서비스 상담하기 <span aria-hidden="true">→</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <!-- 7. 가치 복원 프로젝트 -->
-    <section id="projects">
-        <div class="container">
-            <h3 class="gold-title">차량 가치 복원 프로젝트</h3>
-            <div class="grid-3-col">
-                <div class="project-card glass-card">
-                    <div class="project-quote">"가볍게 시작하는 신차 컨디션 관리"</div>
-                    <img src="image/project-standard.jpg" alt="스탠다드 케어" loading="lazy" decoding="async">
-                    <div class="project-info">
-                        <h4>#1 [스탠다드 케어] 패키지</h4>
-                        <div class="info-section">
-                            <span class="info-title">적합 대상 :</span>
-                            <ul>
-                                <li>출고 1~3년 미만의 신차급 차량.</li>
-                                <li>생활 스크래치를 제거하고, 신차 이상의 광도를 원하는 분.</li>
-                            </ul>
-                        </div>
-                        <div class="info-section">
-                            <span class="info-title">시공 패키지 :</span>
-                            <ul>
-                                <li>세미 폴리싱: 도장면 삭감 최소화, 스월 마크 제거.</li>
-                                <li>광도 증진: 맑은 리플렉션 회복.</li>
-                                <li>기본 코팅: 프리미엄 왁스/실란트 마감.</li>
-                            </ul>
-                        </div>
-                        <button class="price-btn" onclick="inquire('스탠다드 케어', '15만원 부터')">[문의] 15만원 부터</button>
-                    </div>
-                </div>
-                
-                <div class="project-card glass-card">
-                    <div class="project-quote">"GARAGE40의 기술력이 집약된 시그니처"</div>
-                    <img src="image/project-best.jpg" alt="BEST 정밀 광택" loading="lazy" decoding="async">
-                    <div class="project-info">
-                        <h4>#2 [BEST 정밀 광택] 패키지</h4>
-                        <div class="info-section">
-                            <span class="info-title">적합 대상 :</span>
-                            <ul>
-                                <li>출고 3년 이상, 세월의 흔적이 있는 차량.</li>
-                                <li>자동세차 기스를 완벽 제거하고, 새 차 광택으로 복원을 원하는 분.</li>
-                            </ul>
-                        </div>
-                        <div class="info-section">
-                            <span class="info-title">시공 패키지 :</span>
-                            <ul>
-                                <li>1:1 맞춤 약품 처방 시공.</li>
-                                <li>정밀 듀얼 광택: 딥 스크래치 제거 및 정반사 보정.</li>
-                                <li>유리막 코팅: 고경도 코팅 포함.</li>
-                            </ul>
-                        </div>
-                        <button class="price-btn" onclick="inquire('BEST 정밀 광택', '30만원 부터')">[문의] 30만원 부터</button>
-                    </div>
-                </div>
-
-                <div class="project-card glass-card">
-                    <div class="project-quote">"단순한 광택을 넘어선, 완벽한 작품"</div>
-                    <img src="image/project-vip.jpg" alt="VIP 리스토어" loading="lazy" decoding="async">
-                    <div class="project-info">
-                        <h4>#3 [VIP 마스터 리스토어] 패키지</h4>
-                        <div class="info-section">
-                            <span class="info-title">적합 대상 :</span>
-                            <ul>
-                                <li>소장용 올드카, 클래식카, 고가 수입차.</li>
-                                <li>비용 상관없이 "완벽한 상태"로 복원해 평생 소장하고 싶은 분.</li>
-                            </ul>
-                        </div>
-                        <div class="info-section">
-                            <span class="info-title">시공 패키지 :</span>
-                            <ul>
-                                <li>하루 1대 전담: 극한의 마스터 디테일링.</li>
-                                <li>평탄 광택: 오렌지필 평탄화 작업.</li>
-                                <li>토탈 케어: 엔진룸 및 실내 정밀 클리닝 포함.</li>
-                            </ul>
-                        </div>
-                        <button class="price-btn" onclick="inquire('VIP 마스터 리스토어', '50만원 부터')">[문의] 50만원 부터</button>
-                    </div>
-                </div>
-            </div>
+    <section class="section process section-contrast defer-section" id="process">
+      <div class="page-shell">
+        <div class="section-heading reveal">
+          <p class="eyebrow">THE PROCESS</p>
+          <h2>결과를 만드는 것은<br><em>보이지 않는 순서입니다.</em></h2>
         </div>
+
+        <ol class="process-list">
+          <li class="process-item reveal">
+            <div class="process-image"><img src="image/process-step1.webp" alt="광택 전 차량을 정밀 세척하는 모습" width="900" height="675" loading="lazy" decoding="async"></div>
+            <div class="process-copy">
+              <span>STEP 01</span>
+              <h3>정밀 세차와 진단</h3>
+              <p>오염을 안전하게 제거한 뒤 조명 아래에서 도막 상태, 스크래치 깊이, 재도장 여부를 확인합니다.</p>
+            </div>
+          </li>
+          <li class="process-item reveal">
+            <div class="process-image"><img src="image/process-step2.webp" alt="차량 도장면을 폴리싱하는 정밀 작업" width="721" height="900" loading="lazy" decoding="async"></div>
+            <div class="process-copy">
+              <span>STEP 02</span>
+              <h3>맞춤 폴리싱</h3>
+              <p>도장 경도와 손상 정도에 맞춰 약품과 패드를 조합하고, 필요한 만큼만 단계적으로 다듬습니다.</p>
+            </div>
+          </li>
+          <li class="process-item reveal">
+            <div class="process-image"><img src="image/process-step3.webp" alt="광택 후 차량 표면을 최종 점검하는 모습" width="900" height="672" loading="lazy" decoding="async"></div>
+            <div class="process-copy">
+              <span>STEP 03</span>
+              <h3>보호 코팅과 검수</h3>
+              <p>색감과 광도를 다시 확인하고 도장면을 보호하는 마감재를 적용한 뒤 최종 상태를 함께 확인합니다.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
     </section>
 
-    <!-- 8. 문의하기 (Contact: 2분할 글래스 디자인) -->
-    <section id="contact">
-        <div class="container">
-            <div class="contact-header"><h2 class="contact-title">Contact us</h2></div>
-            <div class="contact-subtitle-box">
-                <p>공장처럼 찍어내면 돈은 더 벌겠지만,<br>40년 기술자의 양심은 지킬 수 없습니다.</p>
-            </div>
-            <div class="contact-actions-grid">
-                <div class="action-card">
-                    <a href="tel:01046848838" class="action-btn action-btn-call">📲 1분 통화로 예약하기</a>
-                    <p class="main-desc">"복잡한 건 싫다! 바로 물어보세요."</p>
-                    <p class="sub-desc">(부재 시 문자 남겨주세요) 🤚</p>
-                    <a href="tel:01046848838" class="info-capsule">Tel: 010-4684-8838</a>
-                </div>
-                <div class="action-card">
-                     <button class="action-btn action-btn-talk" onclick="inquire('사진 견적', '상담 연결')">💬 사진으로 견적받기</button>
-                     <p class="main-desc">"카톡으로 상처 부위 사진만 보내주세요."</p>
-                     <ul class="req-list">
-                         <li>차종 & 연식 (예: 벤츠 E클래스 / 20년식)</li>
-                         <li>상처 부위 사진 (멀리서 1장, 가까이서 1장)</li>
-                         <li>원하시는 시공 (광택 / 유리막 / 사고수리 등)</li>
-                     </ul>
-                     <p class="info-capsule">사진을 확인하고 연락 드립니다.</p>
-                </div>
-            </div>
-            <div class="contact-footer-divider"></div>
-            <div class="contact-bottom-info">
-                <div class="promise-box">"불만족 시, 100% AS를 약속드립니다."</div>
-                <div class="shop-info-box">
-                    <h4>운영 정보:</h4>
-                    <ul>
-                        <li>오시는 길: 경기 시흥시 금오로 499, 1F</li>
-                        <li>영업 시간: 09:00 - 19:00 (일요일 휴무)</li>
-                    </ul>
-                </div>
-            </div>
+    <section class="section packages defer-section" id="packages">
+      <div class="page-shell">
+        <div class="section-heading section-heading-split reveal">
+          <div>
+            <p class="eyebrow">CARE PROGRAM</p>
+            <h2>차량 상태에 맞춘<br><em>복원 프로그램</em></h2>
+          </div>
+          <p>표시 금액은 시작가이며 차량 크기, 도장 상태, 필요한 공정에 따라 달라질 수 있습니다. 사진 상담 후 예상 범위를 먼저 안내합니다.</p>
         </div>
+
+        <div class="package-grid">
+          <article class="package-card reveal">
+            <div class="package-image"><img src="image/project-standard.webp" alt="스탠다드 케어 시공 차량" width="800" height="1200" loading="lazy" decoding="async"></div>
+            <div class="package-body">
+              <div class="package-head"><span>01 · STANDARD</span><strong>15만원부터</strong></div>
+              <h3>스탠다드 케어</h3>
+              <p>출고 1~3년, 생활 스크래치와 광도 저하가 신경 쓰이는 차량에 적합합니다.</p>
+              <ul>
+                <li>도장면 삭감을 줄인 세미 폴리싱</li>
+                <li>스월 마크 정리 및 광도 회복</li>
+                <li>프리미엄 왁스·실란트 마감</li>
+              </ul>
+              <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="package-card package-featured reveal">
+            <div class="package-ribbon">MOST REQUESTED</div>
+            <div class="package-image"><img src="image/project-best.webp" alt="BEST 정밀 광택 시공 차량" width="773" height="1000" loading="lazy" decoding="async"></div>
+            <div class="package-body">
+              <div class="package-head"><span>02 · SIGNATURE</span><strong>30만원부터</strong></div>
+              <h3>BEST 정밀 광택</h3>
+              <p>출고 3년 이상, 자동세차 기스와 묵은 흔적을 정교하게 복원하고 싶은 차량에 적합합니다.</p>
+              <ul>
+                <li>차량별 1:1 맞춤 약품 처방</li>
+                <li>다단계 정밀 폴리싱</li>
+                <li>도장면 보호 코팅 마감</li>
+              </ul>
+              <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+
+          <article class="package-card reveal">
+            <div class="package-image"><img src="image/project-vip.webp" alt="VIP 마스터 리스토어 시공 차량" width="1200" height="800" loading="lazy" decoding="async"></div>
+            <div class="package-body">
+              <div class="package-head"><span>03 · MASTER</span><strong>50만원부터</strong></div>
+              <h3>VIP 마스터 리스토어</h3>
+              <p>클래식카, 소장용 차량, 고가 수입차를 위한 하루 1대 전담 복원 프로그램입니다.</p>
+              <ul>
+                <li>하루 1대 마스터 전담 시공</li>
+                <li>오렌지필 평탄화 포함 맞춤 공정</li>
+                <li>실내·엔진룸 토탈 케어 협의</li>
+              </ul>
+              <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
+            </div>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <!-- 9. 최종 푸터 -->
-    <footer class="last-page-footer">
-        <div class="container footer-grid">
-            <div class="footer-img-box"><img src="image/footer-interior.jpg" alt="감성 샷" loading="lazy" decoding="async"></div>
-            <div class="footer-text-box">
-                <div class="footer-bottom-split">
-                    <div class="footer-left-group">
-                        <h2 class="footer-brand">GARAGE40</h2>
-                        <div class="footer-message">"게러지40을 찾아 주셔서 고맙습니다."</div>
-                        <p class="brand-since">GARAGE40 — since 1980</p>
-                    </div>
-                    <div class="footer-right-group">
-                        <p>경기 시흥시 금오로 499, 1F</p>
-                        <p>K 광택 • 실내세차 • 덴트</p>
-                        <p class="contact-line">Tel: 010-4684-8838</p>
-                        <p>Email: garage40@gmail.com</p>
-                        <p>Ins: @garage40</p>
-                    </div>
-                </div>
-            </div>
+    <section class="contact" id="contact">
+      <div class="contact-media" aria-hidden="true"><img src="image/footer-interior.webp" alt="" width="1400" height="933" loading="lazy" decoding="async"></div>
+      <div class="contact-shade"></div>
+      <div class="page-shell contact-inner">
+        <div class="contact-copy reveal">
+          <p class="eyebrow">BOOK YOUR RESTORATION</p>
+          <h2>사진 두 장이면<br><em>상담을 시작할 수 있습니다.</em></h2>
+          <p>차종과 연식, 전체 모습 1장, 상처 부위 1장을 보내주세요. 사진을 먼저 확인한 뒤 가능한 복원 범위와 예상 비용을 안내해 드립니다.</p>
+          <div class="contact-actions">
+            <a class="button button-kakao" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">카카오톡 사진 견적 <span aria-hidden="true">↗</span></a>
+            <a class="button button-ghost" href="tel:01046848838">010-4684-8838</a>
+          </div>
         </div>
-    </footer>
 
-    <!-- 10. 법적 필수정보 -->
-    <div class="legal-footer">
-        <div class="container">
-            <div class="legal-links">
-                <a onclick="openTermsModal(event)">이용약관</a>
-                <a onclick="openPrivacyModal(event)" style="font-weight:bold; color:#ccc;">개인정보처리방침</a>
-            </div>
-            
-            <div class="legal-info">
-                <span>상호명: 넘버원카클리닉 (K광택)</span>
-                <span>대표자: 이성구</span>
-                <span>개인정보관리책임자: 김용화</span>
-            </div>
-            
-            <div class="legal-info">
-                <span>사업자등록번호: 306-27-29085</span>
-                <span>주소: 경기도 시흥시 금오로 499, 1F</span>
-                <span>이메일: qoorocket@gmail.com</span>
-            </div>
+        <aside class="visit-card reveal" aria-label="매장 운영 정보">
+          <p class="visit-label">VISIT GARAGE40</p>
+          <dl>
+            <div><dt>주소</dt><dd>경기 시흥시 금오로 499, 1F</dd></div>
+            <div><dt>운영</dt><dd>월–토 09:00–19:00<br>일요일 휴무</dd></div>
+            <div><dt>서비스</dt><dd>광택 · 유리막 코팅 · 실내세차 · 덴트</dd></div>
+          </dl>
+          <a href="https://map.naver.com/p/search/%EA%B2%BD%EA%B8%B0%20%EC%8B%9C%ED%9D%A5%EC%8B%9C%20%EA%B8%88%EC%98%A4%EB%A1%9C%20499" target="_blank" rel="noopener noreferrer">지도에서 위치 보기 <span aria-hidden="true">↗</span></a>
+          <p class="visit-promise">불만족 시, 100% AS를 약속드립니다.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
 
-            <p style="margin-top:10px;">Copyright © 2024 GARAGE40. All rights reserved.</p>
-        </div>
+  <footer class="site-footer">
+    <div class="page-shell footer-top">
+      <a class="footer-brand" href="#hero"><strong>GARAGE40</strong><span>자동차의 시간을 되돌리는 사람들</span></a>
+      <div class="footer-contact">
+        <p>경기 시흥시 금오로 499, 1F</p>
+        <a href="tel:01046848838">010-4684-8838</a>
+        <a href="mailto:garage40@gmail.com">garage40@gmail.com</a>
+      </div>
     </div>
-
-    <!-- 플로팅 메뉴 -->
-    <div class="floating-menu">
-        <a href="tel:01046848838" class="float-btn btn-call" title="전화"><svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-2.2 2.2a15.05 15.05 0 01-6.59-6.59l2.2-2.21a.96.96 0 00.25-1.01A11.36 11.36 0 018.59 3.99C8.59 3.44 8.14 3 7.59 3H4.03C3.48 3 3 3.45 3 4.01 3 13.42 10.58 21 19.99 21c.56 0 1.01-.45 1.01-1v-3.61c0-.56-.45-1.01-1-.01z"/></svg></a>
-        <button onclick="inquire('간편 상담', '연결')" class="float-btn btn-talk" title="카톡"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></button>
-        <a href="#hero" class="float-btn btn-top" title="TOP"><svg viewBox="0 0 24 24" style="width:20px;"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg><span>TOP</span></a>
+    <div class="page-shell footer-bottom">
+      <p>넘버원카클리닉 (K광택) · 대표 이성구 · 사업자등록번호 306-27-29085</p>
+      <div><button type="button" data-dialog-open="terms-dialog">이용약관</button><button type="button" data-dialog-open="privacy-dialog">개인정보처리방침</button></div>
+      <p>© <span data-year>2026</span> GARAGE40. ALL RIGHTS RESERVED.</p>
     </div>
+  </footer>
 
-    <!-- 모달 창: 이용약관 -->
-    <div id="terms-modal" class="modal-overlay" onclick="closeTermsModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-btn" onclick="closeTermsModal()">&times;</span>
-            <div class="modal-title">사이트 이용약관</div>
-            <div class="terms-text">
-                제 1 조 (목적)
-                본 약관은 GARAGE40(이하 ‘회사’)에서 제공하는 인터넷 관련 서비스(이하 ‘서비스’)를 이용함에 있어 이용자의 권리·의무 및 책임사항을 규정함을 목적으로 합니다.
+  <div class="mobile-dock" aria-label="빠른 상담">
+    <a href="tel:01046848838">전화 상담</a>
+    <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진 견적</a>
+  </div>
 
-                <strong>제 2 조 (이용계약 체결)</strong>
-                이용계약은 이용자가 본 약관의 내용에 동의하고 회사가 정한 절차에 따라 가입신청을 하며, 회사가 이러한 신청에 대하여 승낙함으로써 체결됩니다.
-
-                <strong>제 3 조 (서비스의 제공 및 변경)</strong>
-                회사는 자동차 정밀 광택, 코팅, 사고 수리 견적 및 예약 서비스를 제공합니다. 서비스의 내용이 변경될 경우 사이트를 통해 공지합니다.
-
-                <strong>제 4 조 (회사의 의무)</strong>
-                회사는 법령과 이 약관이 금지하거나 공서양속에 반하는 행위를 하지 않으며 이 약관이 정하는 바에 따라 지속적이고, 안정적으로 서비스를 제공하는 데 최선을 다하여야 합니다.
-            </div>
-        </div>
+  <dialog class="legal-dialog" id="terms-dialog" aria-labelledby="terms-title">
+    <div class="dialog-head"><h2 id="terms-title">사이트 이용약관</h2><button type="button" aria-label="닫기" data-dialog-close>×</button></div>
+    <div class="dialog-body">
+      <h3>1. 목적</h3><p>본 사이트는 GARAGE40의 자동차 광택·복원 서비스와 상담 방법을 안내하기 위해 운영됩니다.</p>
+      <h3>2. 서비스 안내</h3><p>사이트에 표시된 가격은 시작가이며 차량 크기와 도장 상태, 선택 공정에 따라 달라질 수 있습니다. 정확한 시공 범위와 비용은 상담 후 확정됩니다.</p>
+      <h3>3. 외부 서비스</h3><p>전화, 이메일, 카카오톡 등 외부 서비스를 이용한 상담에는 해당 서비스의 이용정책이 적용됩니다.</p>
+      <h3>4. 책임</h3><p>실제 복원 가능 범위는 차량을 직접 확인한 후 달라질 수 있으며, 작업 전 안내와 협의를 거쳐 진행합니다.</p>
     </div>
+  </dialog>
 
-    <!-- 모달 창: 개인정보처리방침 -->
-    <div id="privacy-modal" class="modal-overlay" onclick="closePrivacyModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <span class="close-btn" onclick="closePrivacyModal()">&times;</span>
-            <div class="modal-title">개인정보처리방침</div>
-            <div class="terms-text">
-                GARAGE40은 이용자의 개인정보를 소중히 다루며, '정보통신망 이용촉진 및 정보보호 등에 관한 법률' 등 관련 법규를 준수하고 있습니다.
-
-                <strong>1. 수집하는 개인정보 항목</strong>
-                - 상담 및 예약 신청 시: 이름, 연락처, 차량 정보.
-                - 서비스 이용 과정에서 생성되는 정보: 접속 로그, 쿠키 등.
-
-                <strong>2. 개인정보의 수집 및 이용목적</strong>
-                - 서비스 이용에 따른 본인확인, 상담 답변 제공 및 예약 서비스 관리.
-                - 새로운 서비스나 이벤트 정보 등 마케팅 및 광고에 활용.
-
-                <strong>3. 개인정보의 보유 및 이용기간</strong>
-                - 성명: 김용화
-                - 이메일: qoorocket@gmail.com
-            </div>
-        </div>
+  <dialog class="legal-dialog" id="privacy-dialog" aria-labelledby="privacy-title">
+    <div class="dialog-head"><h2 id="privacy-title">개인정보처리방침</h2><button type="button" aria-label="닫기" data-dialog-close>×</button></div>
+    <div class="dialog-body">
+      <p>GARAGE40 웹사이트는 회원가입 또는 별도의 개인정보 입력 양식을 운영하지 않습니다.</p>
+      <h3>1. 상담 과정에서 전달되는 정보</h3><p>전화·이메일·카카오톡 상담 시 고객이 직접 제공한 연락처, 차량 정보와 사진은 견적 안내 및 예약 관리 목적으로만 사용됩니다.</p>
+      <h3>2. 보유 및 파기</h3><p>상담 정보는 서비스 제공과 고객 응대에 필요한 기간 동안 보관하며, 목적 달성 후 관련 법령에 따른 보존 의무가 없는 정보는 안전하게 파기합니다.</p>
+      <h3>3. 문의</h3><p>개인정보관리책임자: 김용화 · 이메일: qoorocket@gmail.com</p>
     </div>
-
-    <script>
-        function inquire(pkg, price) { if(confirm(`[${pkg}] 상담을 위해 카카오톡으로 이동하시겠습니까?`)) window.open('https://open.kakao.com/o/sWRmKFji', '_blank'); }
-        
-        function openTermsModal(e) { if(e) e.preventDefault(); document.getElementById('terms-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-        function closeTermsModal() { document.getElementById('terms-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-        function openPrivacyModal(e) { if(e) e.preventDefault(); document.getElementById('privacy-modal').style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-        function closePrivacyModal() { document.getElementById('privacy-modal').style.display = 'none'; document.body.style.overflow = 'auto'; }
-        
-        window.onclick = function(event) {
-            if (event.target.id === 'terms-modal') closeTermsModal();
-            if (event.target.id === 'privacy-modal') closePrivacyModal();
-        }
-    </script>
+  </dialog>
 </body>
 </html>

@@ -1,0 +1,14 @@
+{
+  "name": "garage40-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build && mkdir -p dist/server dist/image && cp server/index.js dist/server/index.js && cp image/og-garage40.png dist/image/og-garage40.png"
+  },
+  "devDependencies": {
+    "@openai/sites-vite-plugin": "^0.2.0",
+    "vite": "^8.2.1"
+  }
+}
