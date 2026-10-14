@@ -59,3 +59,48 @@ document.querySelectorAll('.legal-dialog').forEach((dialog) => {
 
 const year = document.querySelector('[data-year]');
 if (year) year.textContent = String(new Date().getFullYear());
+
+// 견적 문의: 입력 내용을 문자/카톡 본문으로 조립 (서버 전송 없음)
+const PHONE = '01046848838';
+const TITLE = '[게러지40 광택 견적 문의]';
+
+function buildMessage(values = {}) {
+  const line = (label, value) => `${label}: ${value ? value.trim() : ''}`;
+  return [
+    TITLE,
+    line('차종·연식', values.car),
+    line('희망 프로그램', values.program),
+    line('신경 쓰이는 부분', values.concern),
+    line('희망 일정', values.when),
+    '사진 2장 첨부 (전체 1장, 신경 쓰이는 부위 1장)',
+  ].join('\n');
+}
+
+const quoteForm = document.querySelector('[data-inquiry]');
+if (quoteForm) {
+  const smsLink = quoteForm.querySelector('[data-inquiry-sms]');
+  const kakaoLink = quoteForm.querySelector('[data-inquiry-kakao]');
+  const note = quoteForm.querySelector('[data-inquiry-note]');
+  const currentMessage = () => buildMessage(Object.fromEntries(new FormData(quoteForm)));
+  const sync = () => smsLink?.setAttribute('href', `sms:${PHONE}?&body=${encodeURIComponent(currentMessage())}`);
+
+  quoteForm.addEventListener('input', sync);
+  quoteForm.addEventListener('change', sync);
+  quoteForm.addEventListener('submit', (event) => event.preventDefault());
+  sync();
+
+  kakaoLink?.addEventListener('click', async () => {
+    let copied = false;
+    try {
+      await navigator.clipboard.writeText(currentMessage());
+      copied = true;
+    } catch {
+      copied = false;
+    }
+    if (note) {
+      note.textContent = copied
+        ? '문의 내용이 복사되었습니다. 카톡 대화창에 붙여넣기 해 주세요.'
+        : '복사에 실패했습니다. 대화창에 차종·연식과 사진 2장을 보내주세요.';
+    }
+  });
+}
