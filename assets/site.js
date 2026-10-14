@@ -78,7 +78,7 @@ function buildMessage(values = {}) {
   return [
     TITLE,
     line('차종·연식', values.car),
-    line('증상', values.concern),
+    line('요청사항', values.concern),
     line('희망 일정', values.when),
     '사진 2장 첨부 (전체 1장, 신경 쓰이는 부위 1장)',
   ].join('\n');
