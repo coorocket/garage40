@@ -78,12 +78,9 @@ function buildMessage(values = {}) {
   return [
     TITLE,
     line('차종·연식', values.car),
-    line('차량 색상', values.color),
-    line('신경 쓰이는 점', values.concern),
-    line('원하는 결과', values.goal),
-    line('방문 희망 시기', values.when),
-    '',
-    '※ 사진 2장을 함께 보내드립니다. (전체 1장, 신경 쓰이는 부위 1장)',
+    line('증상', values.concern),
+    line('희망 일정', values.when),
+    '사진 2장 첨부 (전체 1장, 신경 쓰이는 부위 1장)',
   ].join('\n');
 }
 
