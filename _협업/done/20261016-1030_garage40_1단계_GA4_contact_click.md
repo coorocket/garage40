@@ -69,8 +69,8 @@
 - 사장님: 휴대폰으로 사이트 열어 전화 버튼 1회 눌러 보기(테스트 클릭은 보고에서 제외 표시)
 
 ## 결과
-- PR: (아래 PR 번호는 PR 생성 후 to_aside 메모·PR 본문 참조), 브랜치 `claude/confident-sagan-b7oggu` (세션 지정 브랜치를 사용해 요청서의 `feat/` 접두어와 다름)
-- 변경 파일: `index.html`(gtag, body data-page-type, data-track 8곳), `assets/site.js`(클릭 위임 + 폼 submit 이벤트), 요청서 이동(`to_code/` → `done/`), `to_aside/` 결과 메모
+- PR: #5 (https://github.com/coorocket/garage40/pull/5), 브랜치 `claude/confident-sagan-b7oggu` (세션 지정 브랜치를 사용해 요청서의 `feat/` 접두어와 다름)
+- 변경 파일: `index.html`(gtag, body data-page-type, data-track 11곳), `assets/site.js`(클릭 위임 + 폼 submit 이벤트), 요청서 이동(`to_code/` → `done/`), `to_aside/` 결과 메모
 - data-track 부여: `hero_cta` 1(헤더 사진 견적) / `price_cta` 3(패키지 카드) / `footer_cta` 3(연락 섹션 카톡·전화, 푸터 전화) / `sticky_mobile` 2(하단 바 전화·카톡) / `form_submit` 2(견적 폼 문자·카톡 버튼)
 - 자체검증 (Playwright, 로컬 서버, 375px, gtag를 스텁으로 교체해 인자 수집):
 
