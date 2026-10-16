@@ -104,3 +104,34 @@ if (quoteForm) {
     }
   });
 }
+
+// 문의 클릭 측정 (GA4 contact_click). 링크 이동은 막지 않고, gtag가 없으면 조용히 무시한다.
+function trackContact(method, anchor) {
+  try {
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', 'contact_click', {
+      method,
+      page_type: document.body.dataset.pageType || 'unknown',
+      page_path: location.pathname,
+      cta_position: anchor?.dataset.track || 'unknown',
+    });
+  } catch {
+    // 측정 실패가 사이트 동작에 영향을 주지 않도록 무시
+  }
+}
+
+document.addEventListener('click', (event) => {
+  const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+  if (!link) return;
+  const href = link.getAttribute('href') || '';
+  if (href.startsWith('tel:')) trackContact('tel', link);
+  else if (href.startsWith('sms:')) trackContact('sms', link);
+  else if (href.includes('kakao.com')) trackContact('kakao', link);
+});
+
+document.addEventListener('submit', (event) => {
+  const form = event.target;
+  if (form instanceof Element && form.matches('[data-inquiry]')) {
+    trackContact('form', form.querySelector('[data-track]') || { dataset: { track: 'form_submit' } });
+  }
+});
