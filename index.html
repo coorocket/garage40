@@ -53,8 +53,16 @@
     "priceRange": "₩₩"
   }
   </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-589M5B6Q71"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-589M5B6Q71');
+  </script>
 </head>
-<body>
+<body data-page-type="home">
   <a class="skip-link" href="#main">본문으로 바로가기</a>
 
   <header class="site-header" data-header>
@@ -74,7 +82,7 @@
       <a href="#process">복원 공정</a>
       <a href="#packages">패키지</a>
       <a href="#contact">오시는 길</a>
-      <a class="nav-cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진 견적 <span aria-hidden="true">↗</span></a>
+      <a class="nav-cta" data-track="hero_cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진 견적 <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
 
@@ -275,7 +283,7 @@
                 <li>스월 마크 정리 및 광도 회복</li>
                 <li>프리미엄 왁스·실란트 마감</li>
               </ul>
-              <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
+              <a data-track="price_cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
             </div>
           </article>
 
@@ -291,7 +299,7 @@
                 <li>다단계 정밀 폴리싱</li>
                 <li>도장면 보호 코팅 마감</li>
               </ul>
-              <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
+              <a data-track="price_cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
             </div>
           </article>
 
@@ -306,7 +314,7 @@
                 <li>오렌지필 평탄화 포함 맞춤 공정</li>
                 <li>실내·엔진룸 토탈 케어 협의</li>
               </ul>
-              <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
+              <a data-track="price_cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진으로 견적받기 <span aria-hidden="true">↗</span></a>
             </div>
           </article>
         </div>
@@ -322,8 +330,8 @@
           <h2>사진 두 장이면<br><em>상담을 시작할 수 있습니다.</em></h2>
           <p>차종과 연식, 전체 모습 1장, 상처 부위 1장을 보내주세요. 사진을 먼저 확인한 뒤 가능한 복원 범위와 예상 비용을 안내해 드립니다.</p>
           <div class="contact-actions">
-            <a class="button button-kakao" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">카카오톡 사진 견적 <span aria-hidden="true">↗</span></a>
-            <a class="button button-ghost" href="tel:01046848838">010-4684-8838</a>
+            <a class="button button-kakao" data-track="footer_cta" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">카카오톡 사진 견적 <span aria-hidden="true">↗</span></a>
+            <a class="button button-ghost" data-track="footer_cta" href="tel:01046848838">010-4684-8838</a>
           </div>
           <form class="quote-form" data-inquiry aria-label="온라인 무료 견적 문의">
             <h3>온라인 무료 견적 받기</h3>
@@ -357,8 +365,8 @@
               <input type="text" name="when" autocomplete="off" placeholder="예) 이번 주 토요일">
             </label>
             <div class="quote-actions">
-              <a class="button button-primary" href="sms:01046848838" data-inquiry-sms>문자로 보내기</a>
-              <a class="button button-kakao" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer" data-inquiry-kakao>카톡으로 보내기 <span aria-hidden="true">↗</span></a>
+              <a class="button button-primary" data-track="form_submit" href="sms:01046848838" data-inquiry-sms>문자로 보내기</a>
+              <a class="button button-kakao" data-track="form_submit" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer" data-inquiry-kakao>카톡으로 보내기 <span aria-hidden="true">↗</span></a>
             </div>
             <p class="quote-note" data-inquiry-note role="status" aria-live="polite">카톡은 작성한 내용이 복사됩니다. 대화창에 붙여넣기 해 주세요.</p>
           </form>
@@ -383,7 +391,7 @@
       <a class="footer-brand" href="#hero"><strong>GARAGE40</strong><span>자동차의 시간을 되돌리는 사람들</span></a>
       <div class="footer-contact">
         <p>경기 시흥시 금오로 499, 1F</p>
-        <a href="tel:01046848838">010-4684-8838</a>
+        <a data-track="footer_cta" href="tel:01046848838">010-4684-8838</a>
         <a href="mailto:garage40@gmail.com">garage40@gmail.com</a>
       </div>
     </div>
@@ -395,8 +403,8 @@
   </footer>
 
   <div class="mobile-dock" aria-label="빠른 상담">
-    <a href="tel:01046848838">전화 상담</a>
-    <a href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진 견적</a>
+    <a data-track="sticky_mobile" href="tel:01046848838">전화 상담</a>
+    <a data-track="sticky_mobile" href="https://open.kakao.com/o/sWRmKFji" target="_blank" rel="noopener noreferrer">사진 견적</a>
   </div>
 
   <dialog class="legal-dialog" id="terms-dialog" aria-labelledby="terms-title">
