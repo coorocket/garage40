@@ -1,14 +1,24 @@
 {
-  "name": "garage40-site",
-  "version": "1.0.0",
+  "name": "polish40-site",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "dev": "vite --host 127.0.0.1",
-    "build": "vite build && mkdir -p dist/server dist/client/image && cp server/index.js dist/server/index.js && cp image/og-garage40.png dist/client/image/og-garage40.png"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   },
   "devDependencies": {
-    "@openai/sites-vite-plugin": "^0.2.0",
-    "vite": "^8.2.1"
+    "astro": "^7.4.13"
   }
 }

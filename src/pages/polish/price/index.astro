@@ -1,0 +1,70 @@
+---
+import Base from '../../../layouts/Base.astro';
+import DiagButton from '../../../components/DiagButton.astro';
+import ProgramTable from '../../../components/ProgramTable.astro';
+import Faq from '../../../components/Faq.astro';
+import More from '../../../components/More.astro';
+import { PAGES } from '../../../data/pages';
+
+const path = '/polish/price/';
+const faq = [
+  { q: '사진 보고 싸게 말해 놓고, 가면 올리는 거 아닌가요?', a: '사진으로는 범위를 말씀드립니다. 사진으로는 원래 안 보이는 부분이 있어서, 확정은 차를 직접 본 뒤 작업 전에 합니다. 협의 없이 진행하지 않습니다.' },
+  { q: '어떤 프로그램이 맞는지 모르겠어요.', a: '모르셔도 됩니다. 사진 2장을 보내 주시면 차 상태에 맞는 프로그램을 답장으로 알려 드립니다.' },
+  { q: '유리막코팅을 같이 하면 얼마인가요?', a: '차 크기와 도장 상태를 보고 함께 안내해 드립니다. 사진을 보내실 때 "유리막코팅도"라고 적어 주세요.' },
+];
+---
+<Base path={path} crumbs={[{ name: '자동차광택', path: '/polish/' }, { name: '광택 비용', path }]} faq={faq} service={{ name: '자동차광택', description: PAGES[path].description, programs: true }}>
+  <div class="page-head sec--ivory">
+    <div class="shell">
+      <h1>자동차광택 비용</h1>
+      <p class="answer">자동차광택 비용은 스탠다드 케어 15만원부터, BEST 정밀 광택 30만원부터, VIP 마스터 리스토어 50만원부터입니다. 차 크기와 도장 상태, 필요한 공정에 따라 달라집니다. 사진 2장을 보내 주시면 내 차의 예상 범위를 먼저 알려 드립니다.</p>
+      <p class="byline">글 폴리시40 · 고친 날 <time datetime={PAGES[path].lastmod}>{PAGES[path].lastmod}</time></p>
+    </div>
+  </div>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="block">
+        <div class="sec-head"><h2>프로그램별 가격표</h2></div>
+        <ProgramTable />
+      </div>
+      <div class="block">
+        <div class="sec-head"><h2>값이 달라지는 세 가지</h2></div>
+        <div class="grid3">
+          <div class="card"><h3>차 크기</h3><p>다듬을 면이 넓을수록 시간이 더 듭니다.</p></div>
+          <div class="card"><h3>도장 상태</h3><p>흠집이 깊고 넓을수록 단계가 늘어납니다.</p></div>
+          <div class="card"><h3>필요한 공정</h3><p>다시 칠한 부위 정리나 오렌지필 평탄화처럼 더하는 작업이 있으면 달라집니다.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>사진은 범위, 차를 본 뒤 확정</h2></div>
+      <ol class="numbered">
+        <li>사진 2장으로 예상 범위를 먼저 말씀드립니다.</li>
+        <li>차를 직접 보고, 작업을 시작하기 전에 범위와 비용을 말씀드립니다.</li>
+        <li>협의한 뒤에 진행합니다.</li>
+      </ol>
+      <div class="btn-row"><DiagButton label="사진 2장 보내고 비용 범위 받기" track="price_cta" /></div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="block">
+        <div class="sec-head"><h2>비용, 자주 묻는 질문</h2></div>
+        <Faq items={faq} />
+      </div>
+      <div class="block">
+        <div class="sec-head"><h2>이어 보기</h2></div>
+        <More links={[
+          { label: '자동차광택', href: '/polish/' },
+          { label: '유리막코팅', href: '/coating/' },
+          { label: '자주 묻는 질문', href: '/faq/' },
+        ]} />
+      </div>
+    </div>
+  </section>
+</Base>

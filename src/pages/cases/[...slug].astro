@@ -1,0 +1,95 @@
+---
+// 시공 사례 틀. 공개된 사례가 0건이면 목록(/cases/)도 글도 만들어지지 않는다.
+// 1건 이상이면 /cases/ 와 /cases/{슬러그}/ 가 자동으로 생기고 메뉴에 "시공 사례"가 나온다.
+import Base from '../../layouts/Base.astro';
+import More from '../../components/More.astro';
+import { SITE } from '../../data/site';
+import { CASES_PATH, CASES_LABEL } from '../../data/pages';
+import { getCases, casePath, modified } from '../../data/content';
+
+export async function getStaticPaths() {
+  const cases = await getCases();
+  if (cases.length === 0) return [];
+  return [
+    { params: { slug: undefined }, props: { cases } },
+    ...cases.map((item) => ({ params: { slug: item.id }, props: { item } })),
+  ];
+}
+const { cases, item } = Astro.props;
+const d = item?.data;
+const car = d ? [d.car, d.color].filter(Boolean).join(' · ') : '';
+const rows = d ? [
+  ['차', car], ['증상', d.symptom], ['프로그램', d.program],
+  ['걸린 시간', d.hours], ['비용 범위', d.priceRange], ['지역', d.area],
+].filter(([, value]) => value) : [];
+---
+{item ? (
+  <Base
+    path={casePath(item.id)}
+    title={`${d.title} | ${SITE.name}`}
+    description={d.description}
+    pageType="case"
+    crumbs={[{ name: CASES_LABEL, path: CASES_PATH }, { name: d.title, path: casePath(item.id) }]}
+  >
+    <article class="sec sec--ivory">
+      <div class="shell">
+        <h1>{d.title}</h1>
+        <p class="byline">글 {SITE.name} · 올린 날 <time datetime={d.pubDate}>{d.pubDate}</time> · 고친 날 <time datetime={modified(d)}>{modified(d)}</time></p>
+        {(d.before.length > 0 || d.after.length > 0) && (
+          <div class="grid2 figure">
+            {d.before.map((p) => <figure><img src={p.src} alt={p.alt} loading="lazy" decoding="async" /><figcaption>전</figcaption></figure>)}
+            {d.after.map((p) => <figure><img src={p.src} alt={p.alt} loading="lazy" decoding="async" /><figcaption>후</figcaption></figure>)}
+          </div>
+        )}
+        {rows.length > 0 && (
+          <div class="block">
+            <div class="sec-head"><h2>작업 요약</h2></div>
+            <div class="tblwrap"><table><tbody>{rows.map(([name, value]) => <tr><th scope="row">{name}</th><td>{value}</td></tr>)}</tbody></table></div>
+          </div>
+        )}
+        {d.masterNote && (
+          <div class="block">
+            <div class="sec-head"><h2>장인이 본 상태</h2><p class="lead">{d.masterNote}</p></div>
+          </div>
+        )}
+        {d.steps.length > 0 && (
+          <div class="block">
+            <div class="sec-head"><h2>작업 순서</h2></div>
+            <ol class="numbered">{d.steps.map((step) => <li>{step}</li>)}</ol>
+          </div>
+        )}
+        {d.process.length > 0 && (
+          <div class="grid3 figure">{d.process.map((p) => <img src={p.src} alt={p.alt} loading="lazy" decoding="async" />)}</div>
+        )}
+        {(d.result || d.limits) && (
+          <div class="block">
+            <div class="sec-head"><h2>결과와 남는 한계</h2></div>
+            {d.result && <p>{d.result}</p>}
+            {d.limits && <p class="note">{d.limits}</p>}
+          </div>
+        )}
+        <div class="block">
+          <div class="sec-head"><h2>이어 보기</h2></div>
+          <More links={[{ label: '자동차광택', href: '/polish/' }, { label: '광택 비용', href: '/polish/price/' }, { label: CASES_LABEL, href: CASES_PATH }]} />
+        </div>
+      </div>
+    </article>
+  </Base>
+) : (
+  <Base path={CASES_PATH} title={`${CASES_LABEL} | ${SITE.name}`} pageType="case_index" crumbs={[{ name: CASES_LABEL, path: CASES_PATH }]}>
+    <div class="page-head sec--ivory">
+      <div class="shell"><h1>{CASES_LABEL}</h1></div>
+    </div>
+    <section class="sec sec--ivory">
+      <div class="shell grid3">
+        {cases.map((c) => (
+          <a class="card" href={casePath(c.id)}>
+            <h3>{c.data.title}</h3>
+            {c.data.program && <span class="meta">{c.data.program}</span>}
+            <time datetime={c.data.pubDate}>올린 날 {c.data.pubDate}</time>
+          </a>
+        ))}
+      </div>
+    </section>
+  </Base>
+)}

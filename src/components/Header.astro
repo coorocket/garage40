@@ -1,0 +1,27 @@
+---
+import { SITE } from '../data/site';
+import { CASES_PATH, CASES_LABEL } from '../data/pages';
+import { getCases } from '../data/content';
+interface Props { path: string }
+const { path } = Astro.props;
+const hasCases = (await getCases()).length > 0;
+const menu = [
+  { href: '/polish/', label: '광택' },
+  { href: '/coating/', label: '유리막코팅' },
+  { href: '/polish/price/', label: '비용' },
+  ...(hasCases ? [{ href: CASES_PATH, label: CASES_LABEL }] : []),
+  { href: '/blog/', label: '블로그' },
+  { href: '/master/', label: '40년 장인' },
+  { href: '/contact/', label: '오시는 길' },
+];
+---
+<header class="site-header">
+  <a class="brand" href="/" aria-label={`${SITE.name} 홈`}><strong>{SITE.name}</strong><span>{SITE.nameEn}</span></a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" data-menu-toggle>
+    <span class="sr-only">메뉴 열기</span><span></span><span></span>
+  </button>
+  <nav class="site-nav" id="site-navigation" aria-label="주요 메뉴" data-menu>
+    {menu.map((item) => <a href={item.href} aria-current={item.href === path ? 'page' : undefined}>{item.label}</a>)}
+    <a class="btn btn--primary btn--sm" href="#diagnosis" data-diag data-track="header_cta">사진 2장 진단</a>
+  </nav>
+</header>

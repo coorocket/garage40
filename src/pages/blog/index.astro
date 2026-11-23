@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCards from '../../components/PostCards.astro';
+import { getPosts } from '../../data/content';
+
+const path = '/blog/';
+const posts = await getPosts();
+---
+<Base path={path} crumbs={[{ name: '블로그', path }]}>
+  <div class="page-head sec--ivory">
+    <div class="shell">
+      <h1>도장 관리, 궁금할 때 읽는 글</h1>
+      <p class="lead">혼자 해도 되는 것과 맡겨야 하는 것을 나눠서 알려 드립니다.</p>
+    </div>
+  </div>
+  <section class="sec sec--ivory">
+    <div class="shell"><PostCards posts={posts} detail /></div>
+  </section>
+</Base>

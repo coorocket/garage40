@@ -1,0 +1,8 @@
+---
+// 이어 보기 링크 줄
+interface Props { links: { label: string; href: string }[] }
+const { links } = Astro.props;
+---
+<div class="more-row">
+  {links.map((item) => <a class="more" href={item.href}>{item.label}</a>)}
+</div>

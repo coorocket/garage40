@@ -1,0 +1,20 @@
+---
+import { SITE, PRICES, from } from '../data/site';
+---
+<aside class="fact" aria-labelledby="fact-title">
+  <h2 id="fact-title">{SITE.name} 한눈에 보기</h2>
+  <div class="tblwrap">
+    <table>
+      <tbody>
+        <tr><th scope="row">이름</th><td>{SITE.name} ({SITE.business})</td></tr>
+        <tr><th scope="row">주소</th><td>{SITE.address}</td></tr>
+        <tr><th scope="row">운영</th><td>{SITE.hours.map((line, i) => <>{i > 0 && <br />}{line}</>)}</td></tr>
+        <tr><th scope="row">전화</th><td><a class="tap" href={`tel:${SITE.phoneTel}`} data-track="bottom_cta">{SITE.phone}</a></td></tr>
+        <tr><th scope="row">하는 일</th><td>{SITE.works}</td></tr>
+        <tr><th scope="row">하지 않는 일</th><td>{SITE.notWorks}</td></tr>
+        <tr><th scope="row">광택 비용</th><td>{from(PRICES.standard)} (차 크기와 상태에 따라 달라집니다)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <a class="more" href={SITE.mapUrl} target="_blank" rel="noopener noreferrer">네이버 지도에서 보기</a>
+</aside>

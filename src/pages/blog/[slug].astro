@@ -1,0 +1,67 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import DiagButton from '../../components/DiagButton.astro';
+import Faq from '../../components/Faq.astro';
+import More from '../../components/More.astro';
+import { SITE } from '../../data/site';
+import { getPosts, postPath, labelFor, modified } from '../../data/content';
+
+export async function getStaticPaths() {
+  return (await getPosts()).map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const d = post.data;
+const path = postPath(post.id);
+const { Content } = await render(post);
+const related = await Promise.all(d.related.map(async (href: string) => ({ href, label: await labelFor(href) })));
+---
+<Base
+  path={path}
+  title={`${d.title} | ${SITE.name}`}
+  description={d.description}
+  pageType="blog"
+  crumbs={[{ name: '블로그', path: '/blog/' }, { name: d.title, path }]}
+  faq={d.faq}
+  article={{ headline: d.title, description: d.description, published: d.pubDate, modified: modified(d) }}
+>
+  <article class="sec sec--ivory">
+    <div class="shell article">
+      <p class="eyebrow">{d.category}</p>
+      <h1>{d.title}</h1>
+      <p class="byline">글 {SITE.name} · 올린 날 <time datetime={d.pubDate}>{d.pubDate}</time> · 고친 날 <time datetime={modified(d)}>{modified(d)}</time></p>
+      <p class="answer">{d.summary}</p>
+      {d.cover && <img class="cover" src={d.cover} alt={d.coverAlt ?? ''} loading="lazy" decoding="async" />}
+      {d.glance.length > 0 && (
+        <div class="tblwrap">
+          <table>
+            <caption>한눈에 보기</caption>
+            <tbody>
+              {d.glance.map((row: { name: string; value: string }) => <tr><th scope="row">{row.name}</th><td>{row.value}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <div class="prose"><Content /></div>
+      {d.masterNote && <blockquote class="quote">{d.masterNote}</blockquote>}
+      {d.faq.length > 0 && (
+        <>
+          <h2>자주 묻는 질문</h2>
+          <Faq items={d.faq} />
+        </>
+      )}
+      {d.closing && (
+        <div class="card card--dark closing">
+          <p>{d.closing}</p>
+          <DiagButton label="사진 2장으로 진단 받기" track="bottom_cta" />
+        </div>
+      )}
+      {related.length > 0 && (
+        <>
+          <h2>이어 보기</h2>
+          <More links={related} />
+        </>
+      )}
+    </div>
+  </article>
+</Base>

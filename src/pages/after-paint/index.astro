@@ -1,0 +1,82 @@
+---
+import Base from '../../layouts/Base.astro';
+import DiagButton from '../../components/DiagButton.astro';
+import TelButton from '../../components/TelButton.astro';
+import Steps from '../../components/Steps.astro';
+import Faq from '../../components/Faq.astro';
+import More from '../../components/More.astro';
+import { PAGES } from '../../data/pages';
+
+const path = '/after-paint/';
+const faq = [
+  { q: '오렌지필은 꼭 없애야 하나요?', a: '꼭은 아닙니다. 기능에는 문제가 없고 보기의 문제입니다. 출고 도장에도 어느 정도는 있습니다. 주변과 차이가 눈에 띌 때 정리합니다.' },
+  { q: '완전히 평평하게 만들 수 있나요?', a: '투명층을 다듬는 작업이라 도장 두께 안에서만 할 수 있습니다. 어디까지 되는지 차를 보고 먼저 말씀드립니다.' },
+  { q: '덴트나 판금도 같이 되나요?', a: '하지 않습니다. 수리와 도색이 끝난 뒤의 마무리 광택만 합니다.' },
+];
+---
+<Base path={path} crumbs={[{ name: '도색 후 광택', path }]} faq={faq} service={{ name: '도색 후 광택', description: PAGES[path].description }}>
+  <section class="hero">
+    <div class="shell hero-inner">
+      <p class="eyebrow">시흥 금오로 · 40년 광택 장인이 직접</p>
+      <h1>도색 후 광택</h1>
+      <p class="sub">칠한 곳과 원래 도장이 한 장처럼 보이게.</p>
+      <p class="lead">수리는 끝났는데 칠한 자리만 결이 달라 보이셨죠. 가까이서 보면 귤껍질 같은 표면이 눈에 걸리실 겁니다.</p>
+      <div class="btn-row">
+        <DiagButton label="칠한 곳 사진 2장 보내고 진단 받기" track="hero_cta" />
+        <TelButton track="hero_cta" />
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>도색 후 광택은 무엇을 하나요?</h2>
+        <p class="answer">도색 후 광택은 칠한 뒤 남은 오렌지필(귤껍질 같은 잔굴곡)과 표면 결을 정리해, 수리한 곳과 원래 도장의 차이를 줄이는 작업입니다. 폴리시40은 판금과 도색은 하지 않습니다. 도색이 끝난 뒤의 표면 정리와 광택만 합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>이런 때 찾으십니다</h2></div>
+      <ul class="ticks">
+        <li>칠한 문짝만 조명 아래에서 울렁여 보일 때</li>
+        <li>수리한 곳과 옆 판의 광이 달라 보일 때</li>
+        <li>도색한 곳에 먼지 자국이나 뿌연 느낌이 남았을 때</li>
+      </ul>
+      <p class="note">도색한 곳에서 건조가 끝났다고 한 뒤에 진행합니다. 날짜가 애매하면 사진과 함께 도색한 날을 적어 주세요.</p>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell"><Steps /></div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>공업사·도색 업체에서 맡기실 때</h2>
+        <p class="lead">도색 뒤 마무리 광택만 따로 맡기실 수 있습니다. 차종과 칠한 부위를 적어 문자로 보내 주세요.</p>
+      </div>
+      <DiagButton label="문자로 문의하기" track="mid_cta" />
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="block">
+        <div class="sec-head"><h2>도색 후 광택, 자주 묻는 질문</h2></div>
+        <Faq items={faq} />
+      </div>
+      <div class="block">
+        <div class="sec-head"><h2>이어 보기</h2></div>
+        <More links={[
+          { label: '오렌지필이란?', href: '/blog/orange-peel/' },
+          { label: '자동차광택', href: '/polish/' },
+          { label: '광택 비용', href: '/polish/price/' },
+        ]} />
+      </div>
+    </div>
+  </section>
+</Base>

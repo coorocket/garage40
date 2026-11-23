@@ -1,0 +1,6 @@
+---
+// 주 버튼. 기본은 같은 페이지의 #diagnosis, 휴대폰 폭에서는 문자 창(site.js가 바꾼다).
+interface Props { label: string; track: string; variant?: string }
+const { label, track, variant = 'btn--primary' } = Astro.props;
+---
+<a class={`btn ${variant}`} href="#diagnosis" data-diag data-track={track}>{label}</a>

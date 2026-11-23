@@ -1,0 +1,31 @@
+---
+import { SITE } from '../data/site';
+const links = [
+  { href: '/polish/', label: '자동차광택' },
+  { href: '/polish/price/', label: '광택 비용' },
+  { href: '/coating/', label: '유리막코팅' },
+  { href: '/after-paint/', label: '도색 후 광택' },
+  { href: '/wash/', label: '손세차·실내세차' },
+  { href: '/blog/', label: '블로그' },
+  { href: '/master/', label: '40년 장인' },
+  { href: '/faq/', label: '자주 묻는 질문' },
+  { href: '/contact/', label: '오시는 길' },
+];
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="shell">
+    <p class="footer-brand">{SITE.name} <span>· {SITE.tagline}</span></p>
+    <p class="footer-contact">
+      <span>{SITE.address}</span>
+      <a href={`tel:${SITE.phoneTel}`} data-track="footer_cta">{SITE.phone}</a>
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </p>
+    <ul class="footer-links">
+      {links.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+    </ul>
+    <p>{SITE.business} · 대표 {SITE.owner} · 사업자등록번호 {SITE.bizNo}</p>
+    <p class="footer-legal"><a href="/terms/">이용약관</a><a href="/privacy/">개인정보처리방침</a></p>
+    <p>© {year} {SITE.name}</p>
+  </div>
+</footer>

@@ -1,0 +1,139 @@
+---
+import Base from '../layouts/Base.astro';
+import DiagButton from '../components/DiagButton.astro';
+import ProgramTable from '../components/ProgramTable.astro';
+import Steps from '../components/Steps.astro';
+import Faq from '../components/Faq.astro';
+import PostCards from '../components/PostCards.astro';
+import { SITE } from '../data/site';
+import { IMAGES } from '../data/images';
+import { getPosts, getCases, casePath } from '../data/content';
+
+const hero = IMAGES['home-hero'];
+const compare = IMAGES['home-compare'];
+const posts = (await getPosts()).slice(0, 3);
+const cases = (await getCases()).slice(0, 3);
+
+const works = [
+  { name: '자동차광택', text: '스월마크와 잔기스를 다듬어 없애고 색을 되살립니다.', link: '자동차광택 보기', href: '/polish/' },
+  { name: '유리막코팅', text: '광택으로 고른 면 위에 보호막을 올립니다.', link: '유리막코팅 보기', href: '/coating/' },
+  { name: '도색 후 광택', text: '수리·도색 뒤 남은 귤껍질 표면과 결 차이를 정리합니다.', link: '도색 후 광택 보기', href: '/after-paint/' },
+  { name: '손세차 · 실내세차', text: '도장에 흠집을 덜 내는 순서로 씻습니다.', link: '손세차·실내세차 보기', href: '/wash/' },
+];
+const faq = [
+  { q: '광택하면 도장이 얇아지는 거 아닌가요?', a: '광택은 도장 맨 위 투명층을 아주 얇게 다듬어 흠집을 없애는 작업입니다. 그래서 다듬는 양을 줄이는 것이 중요합니다. 폴리시40은 조명 아래에서 흠집 깊이를 먼저 보고, 필요한 만큼만 단계적으로 다듬습니다.' },
+  { q: '사진 보고 싸게 말해 놓고, 가면 올리는 거 아닌가요?', a: '사진으로는 예상 범위를 먼저 말씀드립니다. 실제 범위와 비용은 차를 직접 본 뒤, 작업을 시작하기 전에 말씀드리고 협의해서 정합니다.' },
+  { q: '광택 내도 세차 몇 번 하면 다시 기스 나지 않나요?', a: '다듬어 없앤 흠집은 세차한다고 다시 올라오지 않습니다. 다만 그 뒤에 새로 생기는 흠집까지 막을 수는 없습니다. 모래가 남은 채 문지르는 일만 줄여도 오래 갑니다.' },
+  { q: '차를 얼마나 맡겨야 하나요?', a: '프로그램과 차 상태에 따라 다릅니다. 사진을 보내 주시면 걸리는 시간도 함께 알려 드립니다.' },
+];
+---
+<Base path="/" faq={faq} preloadHero>
+  <section class="hero hero--home" aria-labelledby="hero-title">
+    <picture class="hero-media" aria-hidden="true">
+      <source media="(max-width: 720px)" srcset={hero.mobileSrc} width={hero.mobileWidth} height={hero.mobileHeight} />
+      <img src={hero.src} alt={hero.alt} width={hero.width} height={hero.height} fetchpriority="high" decoding="async" />
+    </picture>
+    <div class="hero-shade"></div>
+    <div class="shell hero-inner">
+      <p class="eyebrow">시흥 금오로 · 40년 광택 장인이 직접</p>
+      <h1 id="hero-title">시흥 자동차광택, <br /><em>덮지 않고 도장을 되살립니다</em></h1>
+      <p class="lead">광택 냈는데 세차 몇 번에 흠집이 다시 올라온 적, 있으시죠. 폴리시40은 흠집을 가리지 않고 실제로 다듬어 없앱니다.</p>
+      <div class="btn-row">
+        <DiagButton label="사진 2장으로 진단 받기" track="hero_cta" />
+        <a class="btn btn--ghost" href="/polish/price/">광택 비용 보기</a>
+      </div>
+      <p class="hint">사진 2장이면 됩니다. 광택으로 되는 흠집인지부터 먼저 봐 드립니다.</p>
+      <div class="proof">
+        <div><strong>40년</strong><span>광택 한 가지만</span></div>
+        <div><strong>처음부터 끝까지</strong><span>장인 한 사람이 직접</span></div>
+        <div><strong>필요한 만큼만</strong><span>도장을 덜 다듬습니다</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head">
+        <p class="eyebrow">덮지 않는 광택</p>
+        <h2>세차 몇 번에 사라지는 광택은 <br /><em>되살린 것이 아닙니다.</em></h2>
+      </div>
+      <div class="grid2">
+        <div class="card"><span class="kicker">덮는 광택</span><h3>흠집 위에 유분을 채웁니다</h3><p>바로는 반짝이지만, 세차로 유분이 빠지면 스월마크와 잔기스가 다시 보입니다.</p></div>
+        <div class="card card--dark"><span class="kicker">덮지 않는 광택</span><h3>흠집을 실제로 다듬어 없앱니다</h3><p>차마다 도장 상태를 보고 필요한 만큼만 다듬습니다. 그래서 세차한 뒤에도 그대로입니다.</p></div>
+      </div>
+      <figure class="figure">
+        <img src={compare.src} alt={compare.alt} width={compare.width} height={compare.height} loading="lazy" decoding="async" />
+        <figcaption>설명을 돕는 사진입니다.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>차 상태에 맞춘 세 가지 프로그램</h2>
+        <p class="lead">사진으로 범위를 먼저 말씀드리고, 차를 직접 본 뒤 작업 전에 정합니다.</p>
+      </div>
+      <ProgramTable />
+      <div class="more-row"><a class="more" href="/polish/price/">광택 비용 자세히 보기</a></div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head"><h2>폴리시40이 하는 일</h2></div>
+      <div class="grid4">
+        {works.map((w) => (
+          <div class="card"><h3>{w.name}</h3><p>{w.text}</p><a class="more" href={w.href}>{w.link}</a></div>
+        ))}
+      </div>
+      <p class="note">덴트와 판금도색은 하지 않습니다. 다른 곳에서 수리한 뒤의 마무리 광택은 합니다.</p>
+      {cases.length > 0 && (
+        <div class="block">
+          <div class="sec-head"><h2>최근에 되살린 차</h2></div>
+          <div class="grid3">
+            {cases.map((item) => (
+              <a class="card" href={casePath(item.id)}>
+                <h3>{item.data.title}</h3>
+                {item.data.program && <span class="meta">{item.data.program}</span>}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="sec sec--dark">
+    <div class="shell">
+      <div class="sec-head">
+        <p class="eyebrow">40년 광택 장인</p>
+        <h2>모든 차의 도장은 <br /><em>서로 다릅니다.</em></h2>
+        <p class="lead">을지로 오장동에서 시작한 기술은 장안동을 거쳐 더 정교해졌습니다. 차마다 도장의 단단함과 쌓인 세차 자국, 다시 칠한 흔적이 다릅니다. 그래서 정해진 순서를 되풀이하지 않고, 차를 먼저 읽습니다.</p>
+        <blockquote class="quote">"제 마음에 들지 않는 결과물은 고객님께도 드리지 않습니다."</blockquote>
+        <p class="quote-by">폴리시40 대표 {SITE.owner}</p>
+      </div>
+      <a class="more" href="/master/">40년 장인 이야기 보기</a>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell"><Steps images /></div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>맡기기 전에 이런 걱정 드시죠</h2></div>
+      <Faq items={faq} />
+      <div class="more-row"><a class="more" href="/faq/">질문 더 보기</a></div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head"><h2>도장 관리, 궁금할 때 읽는 글</h2></div>
+      <PostCards posts={posts} />
+      <div class="more-row"><a class="more" href="/blog/">글 모두 보기</a></div>
+    </div>
+  </section>
+</Base>

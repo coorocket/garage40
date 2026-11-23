@@ -1,0 +1,182 @@
+---
+import '../styles/global.css';
+import { SITE, SITE_URL, PROGRAMS, abs } from '../data/site';
+import { PAGES } from '../data/pages';
+import { IMAGES } from '../data/images';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Diagnosis from '../components/Diagnosis.astro';
+import MobileDock from '../components/MobileDock.astro';
+import type { FaqItem } from '../components/Faq.astro';
+
+interface Crumb { name: string; path: string }
+interface Props {
+  path: string;                 // 끝이 / 인 주소. 표(PAGES)에 있으면 제목·설명·종류를 거기서 읽는다.
+  title?: string;
+  description?: string;
+  pageType?: string;
+  crumbs?: Crumb[];             // 홈 다음부터. 홈은 자동으로 붙는다.
+  faq?: FaqItem[];              // 화면에 보이는 질문·답과 같은 목록
+  service?: { name: string; description: string; programs?: boolean; minPrice?: number };
+  article?: { headline: string; description: string; published: string; modified: string };
+  noindex?: boolean;            // 404 에만 쓴다
+  preloadHero?: boolean;
+}
+const { path, crumbs = [], faq = [], service, article, noindex = false, preloadHero = false } = Astro.props;
+const meta = PAGES[path];
+const title = Astro.props.title ?? meta?.title ?? SITE.name;
+const description = Astro.props.description ?? meta?.description ?? '';
+const pageType = Astro.props.pageType ?? meta?.pageType ?? 'unknown';
+const url = abs(path);
+const og = IMAGES.og;
+const hero = IMAGES['home-hero'];
+const businessId = `${SITE_URL}/#business`;
+const won = (manwon: number) => manwon * 10000;
+const offer = (name: string | undefined, manwon: number) => ({
+  '@type': 'Offer',
+  ...(name ? { name } : {}),
+  priceCurrency: 'KRW',
+  priceSpecification: { '@type': 'PriceSpecification', minPrice: won(manwon), priceCurrency: 'KRW' },
+});
+
+const graph: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AutomotiveBusiness',
+    '@id': businessId,
+    name: SITE.name,
+    alternateName: [SITE.nameEn, SITE.formerName, SITE.businessAlt],
+    url: abs('/'),
+    image: abs(og.src),
+    telephone: SITE.phoneIntl,
+    email: SITE.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: SITE.addressParts.street,
+      addressLocality: SITE.addressParts.locality,
+      addressRegion: SITE.addressParts.region,
+      addressCountry: SITE.addressParts.country,
+    },
+    openingHoursSpecification: [{
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: SITE.hoursSpec.days,
+      opens: SITE.hoursSpec.opens,
+      closes: SITE.hoursSpec.closes,
+    }],
+    areaServed: SITE.areaServed.map((name) => ({ '@type': 'City', name })),
+    priceRange: SITE.priceRange,
+  },
+];
+if (path === '/') {
+  graph.push({ '@context': 'https://schema.org', '@type': 'WebSite', name: SITE.name, alternateName: SITE.nameEn, url: abs('/'), inLanguage: 'ko' });
+}
+const trail = path === '/' || noindex ? [] : [{ name: '홈', path: '/' }, ...crumbs];
+if (trail.length) {
+  graph.push({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: abs(c.path) })),
+  });
+}
+if (service) {
+  const offers = service.programs
+    ? PROGRAMS.map((p) => offer(p.name, p.price))
+    : service.minPrice ? offer(undefined, service.minPrice) : undefined;
+  graph.push({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    serviceType: service.name,
+    description: service.description,
+    url,
+    provider: { '@id': businessId },
+    areaServed: SITE.areaServed.map((name) => ({ '@type': 'City', name })),
+    ...(offers ? { offers } : {}),
+  });
+}
+if (faq.length) {
+  graph.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.link ? `${item.a} ${item.link.label}` : item.a },
+    })),
+  });
+}
+if (article) {
+  const org = { '@type': 'Organization', name: SITE.name, url: abs('/') };
+  graph.push({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: article.headline,
+    description: article.description,
+    datePublished: article.published,
+    dateModified: article.modified,
+    author: org,
+    publisher: org,
+    image: abs(og.src),
+    mainEntityOfPage: url,
+    inLanguage: 'ko',
+  });
+}
+const ld = (data: object) => JSON.stringify(data).replace(/</g, '\\u003c');
+---
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={url} />}
+  {!noindex && <meta property="og:url" content={url} />}
+  <meta property="og:type" content={article ? 'article' : 'website'} />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:site_name" content={SITE.name} />
+  <meta property="og:title" content={title} />
+  {description && <meta property="og:description" content={description} />}
+  <meta property="og:image" content={abs(og.src)} />
+  <meta property="og:image:width" content={String(og.width)} />
+  <meta property="og:image:height" content={String(og.height)} />
+  <meta property="og:image:alt" content={og.alt} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  {description && <meta name="twitter:description" content={description} />}
+  <meta name="twitter:image" content={abs(og.src)} />
+  <link rel="icon" href={IMAGES.icon.src} type="image/webp" />
+  <link rel="alternate" type="application/rss+xml" title={SITE.name} href={abs('/rss.xml')} />
+  {preloadHero && <link rel="preload" as="image" href={hero.src} media="(min-width: 721px)" fetchpriority="high" />}
+  {preloadHero && <link rel="preload" as="image" href={hero.mobileSrc} media="(max-width: 720px)" fetchpriority="high" />}
+  {graph.map((data) => <script type="application/ld+json" is:inline set:html={ld(data)} />)}
+  <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4}`}></script>
+  <script is:inline define:vars={{ ga4: SITE.ga4 }}>
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function gtag(){window.dataLayer.push(arguments);};
+    window.gtag('js', new Date());
+    window.gtag('config', ga4);
+  </script>
+</head>
+<body data-page-type={pageType} data-phone={SITE.phoneTel}>
+  <a class="skip-link" href="#main">본문으로 바로가기</a>
+  <Header path={path} />
+  {trail.length > 0 && (
+    <nav class="crumbs" aria-label="길 표시">
+      <ol class="shell">
+        {trail.map((c, i) => (
+          <li>{i === trail.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={c.path}>{c.name}</a>}</li>
+        ))}
+      </ol>
+    </nav>
+  )}
+  <main id="main">
+    <slot />
+    <Diagnosis />
+  </main>
+  <Footer />
+  <MobileDock />
+  <script src="../scripts/site.js"></script>
+</body>
+</html>
