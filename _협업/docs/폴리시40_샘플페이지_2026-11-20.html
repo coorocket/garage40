@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>폴리시40 리뉴얼 샘플 페이지 (구성 확인용)</title>
+<style>
+:root{--ink:#0d0d0d;--ink2:#161616;--ivory:#efece4;--sand:#e2dccf;--gold:#b58a5a;--gold2:#d9b88c;--red:#c0503a;--kakao:#fee500;--line:#d3ccbd;--muted:#6f6a60;--note:#fff4c7}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif;color:var(--ink);background:#cfd0cc;line-height:1.6;word-break:keep-all}
+button{font:inherit;cursor:pointer}
+/* 도구 막대 */
+.bar{position:sticky;top:0;z-index:50;background:#16181a;color:#fff;padding:10px 16px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.bar strong{font-size:14px;margin-right:6px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs button,.opts button{border:1px solid #3a3d40;background:#24272a;color:#d6d8da;border-radius:999px;padding:6px 13px;font-size:13px}
+.tabs button.on{background:var(--gold2);color:#2a1c08;border-color:var(--gold2);font-weight:700}
+.opts{margin-left:auto;display:flex;gap:6px}
+.opts button.on{background:#fff;color:#111}
+.legend{background:#fff;border-bottom:1px solid #ddd;padding:8px 16px;font-size:12.5px;color:#444;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:22px;height:14px;border-radius:3px;display:inline-block}
+/* 무대 */
+.stage{container-type:inline-size;max-width:1180px;margin:22px auto 60px;background:var(--ivory);box-shadow:0 10px 40px rgba(0,0,0,.25);overflow:hidden;transition:max-width .25s}
+body.mobile .stage{max-width:390px;border-radius:28px;border:8px solid #16181a}
+.view[hidden]{display:none}
+.wrap{max-width:1040px;margin:0 auto;padding:0 28px}
+section.sec{padding:60px 0}
+.sec.ivory{background:var(--ivory)}.sec.sand{background:var(--sand)}.sec.dark{background:var(--ink);color:#f3f0ea}.sec.white{background:#fff}
+/* 설명 딱지 */
+.tag{background:var(--note);border-left:4px solid #e0a800;color:#4d3b00;font-size:12.5px;padding:7px 11px;margin:0 0 18px;line-height:1.5;font-weight:400;letter-spacing:0;text-align:left}
+.tag b{margin-right:6px}.tag em{font-style:normal;color:#8a5a00;font-weight:700}
+body.nonotes .tag,body.nonotes .legend{display:none}
+/* 그림 자리 */
+.ph{background:repeating-linear-gradient(135deg,#dedede 0 14px,#d2d2d2 14px 28px);border:1.5px dashed #8a8a8a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;color:#333;min-height:200px;gap:4px}
+.ph b{font-size:15px}.ph span{font-size:12.5px;max-width:320px;line-height:1.4}.ph i{font-style:normal;font-size:11px;background:#fff;border-radius:99px;padding:2px 9px;margin-top:4px;border:1px solid #aaa;color:#333}
+.ph.real{background:repeating-linear-gradient(135deg,#ecd9bd 0 14px,#e3cca9 14px 28px);border-color:#a5753a;color:#553610}.ph.real i{border-color:#c9a36c}
+.ph.tall{min-height:420px}.ph.mid{min-height:270px}.ph.sm{min-height:150px}
+.need{background:#ffe1e1;border-bottom:1.5px dashed #d33;padding:0 3px;color:#8a1010!important;font-size:.92em;font-weight:600}
+/* 사이트 부품 */
+.hd{display:flex;align-items:center;gap:20px;padding:16px 28px;background:var(--ink);color:#fff;border-bottom:1px solid #2a2a2a}
+.logo{font-weight:800;font-size:19px;letter-spacing:.02em;white-space:nowrap}.logo small{font-size:10.5px;color:var(--gold2);letter-spacing:.16em;margin-left:8px;font-weight:600}
+.nav{display:flex;gap:20px;font-size:14px;color:#ddd;margin-left:auto;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 24px;font-weight:700;font-size:15px;border:1.5px solid transparent;white-space:nowrap}
+.btn.p{background:var(--red);color:#fff}.btn.g{border-color:#777;color:inherit}.btn.k{background:var(--kakao);color:#2d2624}.btn.w{background:#fff;color:#111}
+.btn.s{padding:9px 15px;font-size:13.5px}
+.eyebrow{color:var(--gold);font-weight:700;font-size:13.5px;letter-spacing:.06em;margin:0 0 12px}
+.dark .eyebrow{color:var(--gold2)}
+h1.big{font-size:clamp(32px,5.2cqw,58px);font-weight:800;letter-spacing:-.03em;line-height:1.16;margin:0 0 18px}
+h1.big em,h2 em{font-style:normal;color:var(--gold)}.dark h1.big em,.dark h2 em{color:var(--gold2)}
+h1.page{font-size:clamp(30px,4.6cqw,50px);font-weight:800;letter-spacing:-.03em;line-height:1.2;margin:0 0 12px}
+.lead{font-size:clamp(16px,1.9cqw,20px);margin:0 0 24px;max-width:700px}
+.dark .lead{color:#cfcac0}
+h2{font-size:clamp(24px,3.4cqw,40px);letter-spacing:-.025em;line-height:1.24;margin:0 0 14px;font-weight:800}
+h3{font-size:18px;margin:0 0 8px}
+p{margin:0 0 12px}
+.sub{color:var(--muted);max-width:720px;margin:0 0 26px}.dark .sub{color:#b9b3a8}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hint{font-size:13.5px;color:#b9b3a8;margin-top:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:36px;align-items:center}
+.card{background:#fff;border:1px solid var(--line);padding:24px}
+.sand .card{background:var(--ivory)}
+.dark .card{background:var(--ink2);border-color:#2c2c2c;color:#eee}
+.card.acc{background:var(--ink);color:#f3f0ea;border-color:var(--ink)}
+.card small.k{display:block;color:var(--gold);font-weight:700;font-size:12.5px;letter-spacing:.06em;margin-bottom:10px}
+.proof{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:38px;border-top:1px solid #333;padding-top:22px}
+.proof b{display:block;font-size:22px}.proof span{font-size:13px;color:#b9b3a8}
+table{width:100%;border-collapse:collapse;font-size:14.5px;background:#fff}
+th,td{border:1px solid var(--line);padding:11px 12px;text-align:left;vertical-align:top}
+th{background:#f6f2ea;font-size:13.5px}
+.tblwrap{overflow-x:auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.steps .card{counter-increment:s}.steps .card::before{content:"STEP " counter(s);display:block;color:var(--gold);font-weight:800;font-size:12.5px;letter-spacing:.1em;margin-bottom:10px}
+.faq{border-top:1px solid var(--line)}
+.faq div{border-bottom:1px solid var(--line);padding:16px 4px}
+.faq b{display:block;font-size:16.5px;margin-bottom:6px}.faq b::before{content:"Q. ";color:var(--gold)}
+.faq p{margin:0;color:#444;font-size:14.5px}
+.quote{border-left:3px solid var(--gold);padding:6px 0 6px 18px;font-size:19px;font-weight:700;margin:18px 0}
+.fact{background:#fff;color:var(--ink);border:1px solid var(--line);padding:20px 22px;font-size:14.5px}
+.fact dl{display:grid;grid-template-columns:92px 1fr;gap:7px 12px;margin:0}.fact dt{color:var(--muted)}.fact dd{margin:0}
+.form{background:var(--ink2);border:1px solid #2c2c2c;padding:24px;color:#eee}
+.inp{border:1px solid #444;background:#1d1d1d;color:#888;padding:11px 12px;font-size:14px;margin:6px 0 14px}
+.crumb{font-size:13px;color:var(--muted);padding:16px 0 0}
+.answer{background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);padding:18px 20px;font-size:16.5px;font-weight:600;margin:0 0 22px}
+.by{font-size:13px;color:var(--muted);margin:0 0 20px}
+.art{max-width:760px}
+.art h2{font-size:25px;margin-top:34px}
+.art ul{margin:0 0 14px 20px;padding:0}
+.ft{background:var(--ink);color:#b9b3a8;font-size:13px;padding:26px 0}
+.mbar{display:none;position:sticky;bottom:0;background:rgba(10,10,10,.96);padding:8px;gap:8px;border-top:1px solid #2a2a2a}
+.mbar .btn{flex:1;justify-content:center;padding:12px 8px;font-size:14px;color:#fff}
+.mbar .btn.k{color:#2d2624}
+.tree{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:8px}
+.tree .card{padding:14px 16px;font-size:14px}.tree .card b{display:block;font-size:15.5px}.tree .card code{font-size:12px;color:var(--gold);font-family:Menlo,monospace}
+.flowline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.flowline .card{padding:14px 12px;font-size:13.5px;position:relative}.flowline .card b{display:block;font-size:14.5px;margin-bottom:4px}
+.pill{display:inline-block;font-size:11.5px;border:1px solid var(--gold);color:var(--gold);padding:1px 8px;border-radius:99px;margin-left:6px;font-weight:700}
+@container (max-width:700px){
+  .hero,.grid2,.grid3,.steps,.proof{grid-template-columns:1fr}
+  .grid4,.tree{grid-template-columns:1fr 1fr}
+  .flowline{grid-template-columns:1fr 1fr}
+  .nav,.hd .btn{display:none}
+  .wrap{padding:0 18px}
+  section.sec{padding:44px 0}
+  .mbar{display:flex}
+  .ph.tall{min-height:260px}
+  .btn{white-space:normal}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <strong>폴리시40 리뉴얼 샘플</strong>
+  <div class="tabs">
+    <button data-view="v-flow" class="on">0 전체 흐름</button>
+    <button data-view="v-home">1 홈</button>
+    <button data-view="v-polish">2 광택 페이지</button>
+    <button data-view="v-price">3 광택 비용</button>
+    <button data-view="v-case">4 사례 1건</button>
+    <button data-view="v-blog">5 블로그 글</button>
+    <button data-view="v-master">6 장인 소개</button>
+  </div>
+  <div class="opts"><button id="dev">모바일로 보기</button><button id="notes" class="on">설명 딱지 켜짐</button></div>
+</div>
+<div class="legend">
+  <span><i class="sw" style="background:var(--note);border-left:4px solid #e0a800"></i>노란 딱지 = 왜 이렇게 했는지 설명 (실제 사이트에는 안 나옴)</span>
+  <span><i class="sw" style="background:#e3cca9;border:1.5px dashed #a5753a"></i>금빛 빗금 = 실제로 찍을 사진 자리</span>
+  <span><i class="sw" style="background:#d2d2d2;border:1.5px dashed #8a8a8a"></i>회색 빗금 = 생성 그림 자리</span>
+  <span><b class="need">빨간 글씨</b> = 사장님·대표님 확인이 필요한 값</span>
+</div>
+
+<div class="stage">
+
+<!-- ================= 0 전체 흐름 ================= -->
+<div class="view" id="v-flow">
+  <section class="sec white"><div class="wrap">
+    <div class="tag"><b>이 화면은</b>실제 페이지가 아니라 <em>지도</em>입니다. 위 번호 버튼(1~6)을 누르면 각 페이지 샘플이 나옵니다. 글과 숫자는 구성 확인용 초안이고, 디자인은 지금 사이트의 검정·아이보리·금빛을 그대로 가져왔습니다.</div>
+    <p class="eyebrow">한 장 → 여러 장</p>
+    <h2>지금은 1장, 리뉴얼 뒤에는 이렇게 나뉩니다</h2>
+    <p class="sub">검색엔진과 AI는 "한 페이지 = 한 주제"일 때 잘 알아듣습니다. 그래서 주제마다 방을 따로 만듭니다.</p>
+    <div class="tree">
+      <div class="card acc"><b>홈</b><code>/</code><br>가게 이름 + 시흥 자동차광택</div>
+      <div class="card"><b>자동차광택</b><code>/polish/</code><br>자동차광택 2,340</div>
+      <div class="card"><b>광택 비용</b><code>/polish/price/</code><br>자동차광택비용 2,690</div>
+      <div class="card"><b>유리막코팅</b><code>/coating/</code><br>자동차유리막코팅 5,720</div>
+      <div class="card"><b>도색 후 광택</b><code>/after-paint/</code><br>오렌지필 1,730</div>
+      <div class="card"><b>시공 사례</b><code>/cases/</code><br>실제 전후 사진이 쌓이는 곳</div>
+      <div class="card"><b>블로그</b><code>/blog/</code><br>증상·방법 글 (주 1편)</div>
+      <div class="card"><b>40년 장인</b><code>/master/</code><br>누가 하는지</div>
+      <div class="card"><b>자주 묻는 질문</b><code>/faq/</code></div>
+      <div class="card"><b>오시는 길</b><code>/contact/</code></div>
+      <div class="card"><b>손세차·실내세차</b><code>/wash/</code><br>1장만, 메뉴에는 작게</div>
+      <div class="card" style="opacity:.6"><b>지역 안내</b><code>/area/…</code><br>사례가 쌓인 뒤</div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-top:12px">숫자는 네이버 월 검색수(마피아넷, 2026-11-19 조회).</p>
+  </div></section>
+
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>마케팅 설계자</b>공짜에서 시작해 한 칸씩 올라가는 <em>계단(가치 사다리)</em>입니다. 모든 페이지가 3번 "사진 2장 진단"으로 손님을 데려갑니다.</div>
+    <h2>손님이 걷는 길</h2>
+    <div class="flowline">
+      <div class="card"><b>1 검색</b>"스월마크", "자동차광택 비용"</div>
+      <div class="card"><b>2 글·페이지</b>답을 먼저 읽는다</div>
+      <div class="card acc"><b>3 사진 2장 진단</b>문자로 사진 2장. 무료</div>
+      <div class="card"><b>4 답장</b>되는 것, 안 되는 것, 비용 범위</div>
+      <div class="card"><b>5 방문·시공</b>조명 아래 함께 확인</div>
+      <div class="card"><b>6 관리 안내</b>첫 세차 방법 문자 <span class="need">가능 여부</span></div>
+    </div>
+  </div></section>
+
+  <section class="sec white"><div class="wrap">
+    <div class="tag"><b>모든 페이지 공통</b>아래 3가지는 어느 페이지에나 들어갑니다. AI 검색이 가져다 쓰기 좋은 모양입니다.</div>
+    <h2>어느 페이지에나 있는 3가지</h2>
+    <div class="grid3">
+      <div class="card"><small class="k">첫 문장</small><h3>답부터 말한다</h3><p>질문의 답을 첫 2~3문장에 적습니다. 설명은 그 뒤에.</p></div>
+      <div class="card"><small class="k">버튼</small><h3>사진 2장으로 진단 받기</h3><p>누르면 문자 창이 열리고 차종·증상이 자동으로 적힙니다.</p></div>
+      <div class="card"><small class="k">맨 아래</small><h3>가게 사실 카드</h3><p>이름, 주소, 시간, 하는 일, 안 하는 일, 가격 시작가를 한 칸에.</p></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= 1 홈 ================= -->
+<div class="view" id="v-home" hidden>
+  <div class="hd"><div class="logo">폴리시40<small>POLISH40</small></div><div class="nav"><span>광택</span><span>유리막코팅</span><span>비용</span><span>시공 사례</span><span>블로그</span><span>40년 장인</span><span>오시는 길</span></div><span class="btn p s">사진 2장 진단</span></div>
+
+  <section class="sec dark" style="padding-top:48px"><div class="wrap">
+    <div class="tag"><b>① 첫 화면</b>5초 안에 3가지가 보여야 합니다: 무엇을 해 주나, 나에게 뭐가 좋아지나, 어떻게 신청하나. 큰 글씨가 곧 검색용 제목(H1)입니다. 영어 문구는 뺐습니다. <em>브라우저 제목 안: 폴리시40 | 시흥 자동차광택·유리막코팅, 40년 광택 장인</em></div>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">시흥 금오로 · <span class="need">1980년</span>부터 광택 한길</p>
+        <h1 class="big">시흥 자동차광택,<br><em>덮지 않고 도장을 되살립니다.</em></h1>
+        <p class="lead">광택 냈는데 세차 몇 번에 흠집이 다시 올라온 적, 있으시죠. 폴리시40은 흠집을 가리지 않고 실제로 다듬어 없앱니다.</p>
+        <div class="row"><span class="btn p">사진 2장으로 진단 받기 →</span><span class="btn g">광택 비용 보기</span></div>
+        <p class="hint">사진 2장이면 됩니다. 광택으로 되는 흠집인지부터 먼저 봐 드립니다.</p>
+      </div>
+      <div class="ph real tall"><b>실제 매장 사진</b><span>조명 켠 작업 공간과 작업 중인 차. 로고·번호판이 안 보이게</span><i>찍기 전 임시: 생성 그림 G-1</i></div>
+    </div>
+    <div class="proof">
+      <div><b><span class="need">40년 넘게</span></b><span>광택 한 가지만</span></div>
+      <div><b>처음부터 끝까지</b><span>장인 한 사람이 직접</span></div>
+      <div><b><span class="need">하루 ○대</span></b><span>만 받습니다</span></div>
+    </div>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>② 대표 문구</b>핑크펭귄의 <em>빅 아이디어</em> 자리입니다. 「덮지 않는 광택」에 이름표를 붙였습니다. 다른 업체를 깎지 않고, "흠집이 다시 올라오는 일"을 악당으로 삼았습니다.</div>
+    <p class="eyebrow">덮지 않는 광택</p>
+    <h2>세차 몇 번에 사라지는 광택은<br><em>되살린 것이 아닙니다.</em></h2>
+    <div class="grid2" style="margin-top:24px">
+      <div class="card"><small class="k">덮는 광택</small><h3>흠집 위에 유분을 채웁니다</h3><p>바로는 반짝이지만, 세차로 유분이 빠지면 스월마크와 잔기스가 다시 보입니다.</p></div>
+      <div class="card acc"><small class="k">덮지 않는 광택</small><h3>흠집을 실제로 다듬어 없앱니다</h3><p>차마다 도장 상태를 보고 필요한 만큼만 다듬습니다. 그래서 세차한 뒤에도 그대로입니다.</p></div>
+    </div>
+    <div class="grid2" style="margin-top:22px">
+      <div class="ph real mid"><b>실제 전후 사진 1세트</b><span>같은 자리, 같은 각도, 같은 조명</span><i>전 / 후 나란히</i></div>
+      <div class="ph mid"><b>설명 그림 G-10</b><span>도장 단면: 흠집을 채운 모습과 평평하게 다듬은 모습</span><i>"설명을 돕는 그림입니다" 표시</i></div>
+    </div>
+  </div></section>
+
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>③ 선택지 3개</b>핑크펭귄의 "상자 3개"입니다. 지금 사이트의 3단계를 그대로 살리고, 글 대신 <em>표</em>로 보여 줍니다. AI는 표를 잘 가져갑니다.</div>
+    <h2>차 상태에 맞춘 세 가지 프로그램</h2>
+    <p class="sub">표시 금액은 시작가입니다. 사진으로 범위를 먼저 말씀드리고, 현장에서 확인한 뒤 정합니다.</p>
+    <div class="tblwrap"><table>
+      <tr><th>프로그램</th><th>이런 차에</th><th>시작가</th><th>걸리는 시간</th></tr>
+      <tr><td><b>스탠다드 케어</b></td><td>출고 1~3년, 생활 흠집과 줄어든 광이 신경 쓰일 때</td><td>15만원부터</td><td><span class="need">확인</span></td></tr>
+      <tr><td><b>BEST 정밀 광택</b> <span class="pill">가장 많이 찾음</span></td><td>출고 3년 이상, 자동세차 기스와 묵은 자국</td><td>30만원부터</td><td><span class="need">확인</span></td></tr>
+      <tr><td><b>VIP 마스터 리스토어</b></td><td>소장용 차, 수입차. 하루 1대만</td><td>50만원부터</td><td><span class="need">확인</span></td></tr>
+    </table></div>
+    <p style="margin-top:16px"><span class="btn w s" style="border:1px solid #111">차 크기별 비용 자세히 보기 →</span></p>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>④ 최근 사례</b>가장 중요한 칸입니다. <em>실제 사진만</em> 들어갑니다. 사례가 생길 때마다 자동으로 최신 3건이 올라옵니다.</div>
+    <h2>최근에 되살린 차</h2>
+    <div class="grid3" style="margin-top:20px">
+      <div><div class="ph real sm"><b>실제 전후 사진</b></div><h3 style="margin-top:12px">예시: 검정 세단, 자동세차 기스</h3><p style="font-size:14px;color:var(--muted)">BEST 정밀 광택 · <span class="need">○시간</span></p></div>
+      <div><div class="ph real sm"><b>실제 전후 사진</b></div><h3 style="margin-top:12px">예시: 흰색 SUV, 물때 자국</h3><p style="font-size:14px;color:var(--muted)">스탠다드 케어 · <span class="need">○시간</span></p></div>
+      <div><div class="ph real sm"><b>실제 전후 사진</b></div><h3 style="margin-top:12px">예시: 도색 뒤 귤껍질 표면</h3><p style="font-size:14px;color:var(--muted)">도색 후 광택 · <span class="need">○시간</span></p></div>
+    </div>
+  </div></section>
+
+  <section class="sec dark"><div class="wrap">
+    <div class="tag"><b>⑤ 안내자</b>무기가 되는 스토리의 <em>안내자</em>, 마케팅 설계자의 <em>매력적인 캐릭터</em> 자리입니다. 가게가 아니라 사람 한 명을 앞에 세웁니다. 인용문은 지금 사이트에 있는 대표님 말 그대로입니다.</div>
+    <div class="hero" style="grid-template-columns:.8fr 1.2fr">
+      <div class="ph real tall"><b>{대표 이름} 대표 실제 사진</b><span>얼굴이 어려우면 광택기를 잡은 손</span></div>
+      <div>
+        <p class="eyebrow">40년 광택 장인</p>
+        <h2>모든 차의 도장은<br><em>서로 다릅니다.</em></h2>
+        <p class="sub"><span class="need">1980년 을지로 오장동</span>에서 광택을 시작했습니다. 차마다 도장의 단단함과 쌓인 흠집이 달라서, 정해진 순서를 되풀이하지 않고 차를 먼저 읽습니다.</p>
+        <div class="quote">"제 마음에 들지 않는 결과물은<br>고객님께도 드리지 않습니다."</div>
+        <span class="btn g s">40년 장인 이야기 보기 →</span>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>⑥ 계획</b>무기가 되는 스토리의 <em>계획 3단계</em>입니다. 단계에 이름을 붙이면 손님이 "여기는 순서가 있구나" 하고 안심합니다.</div>
+    <h2>덮지 않는 광택 3단계</h2>
+    <div class="steps" style="margin-top:20px">
+      <div class="card"><h3>세차와 진단</h3><p>오염을 걷어 낸 뒤 조명 아래에서 흠집 깊이와 재도장 여부를 봅니다.</p></div>
+      <div class="card"><h3>맞춤 폴리싱</h3><p>도장 상태에 맞는 약품과 패드로, 필요한 만큼만 단계적으로 다듬습니다.</p></div>
+      <div class="card"><h3>보호 마감과 함께 확인</h3><p>마감재를 올린 뒤, 조명 아래에서 손님과 같이 봅니다.</p></div>
+    </div>
+  </div></section>
+
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>⑦ 걱정 질문</b>우리는 어떻게 마음을 움직이는가의 <em>의심을 먼저 말해 주기</em>입니다. 손님이 속으로 하는 말을 질문 제목 그대로 씁니다. 답은 대표님 확인 뒤 채웁니다.</div>
+    <h2>맡기기 전에 이런 걱정 드시죠</h2>
+    <div class="faq" style="margin-top:18px">
+      <div><b>광택하면 도장이 얇아지는 거 아닌가요?</b><p><span class="need">대표님 답</span> (예: 얼마나 다듬는지, 몇 번까지 괜찮은지)</p></div>
+      <div><b>사진 보고 싸게 말해 놓고, 가면 올리는 거 아닌가요?</b><p>사진으로는 범위를 말씀드리고, 현장에서 확인한 뒤 정합니다. 작업 전에 말씀드리고, 동의 없이 더하지 않습니다. <span class="need">약속 문구 확인</span></p></div>
+      <div><b>광택 내도 세차 몇 번 하면 다시 기스 나지 않나요?</b><p><span class="need">대표님 답</span></p></div>
+      <div><b>차를 하루 종일 맡겨야 하나요?</b><p><span class="need">프로그램별 시간</span></p></div>
+    </div>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>⑧ 블로그</b>새 글 3편이 자동으로 올라옵니다. 홈이 "살아 있는 사이트"로 보이고, 검색엔진이 새 글을 빨리 찾습니다.</div>
+    <h2>도장 관리, 궁금할 때 읽는 글</h2>
+    <div class="grid3" style="margin-top:20px">
+      <div class="card"><div class="ph sm" style="margin-bottom:14px"><b>글 대표 그림</b></div><h3>스월마크란? 생기는 이유와 없애는 방법</h3></div>
+      <div class="card"><div class="ph sm" style="margin-bottom:14px"><b>글 대표 그림</b></div><h3>자동차 컴파운드, 혼자 해도 되는 흠집</h3></div>
+      <div class="card"><div class="ph sm" style="margin-bottom:14px"><b>글 대표 그림</b></div><h3>오렌지필이란? 도색 뒤 귤껍질 표면</h3></div>
+    </div>
+  </div></section>
+
+  <section class="sec dark"><div class="wrap">
+    <div class="tag"><b>⑨ 행동 요청</b>핑크펭귄의 <em>무료 가치 먼저 주기</em>입니다. 「사진 2장 도장 진단」이라는 이름을 붙이고, 답장으로 무엇이 오는지 3줄로 적었습니다. 주 버튼은 문자(내용이 자동으로 적힘), 카톡은 보조입니다.</div>
+    <div class="grid2">
+      <div>
+        <p class="eyebrow">사진 2장 도장 진단 · 무료</p>
+        <h2>사진 2장이면<br><em>먼저 봐 드립니다.</em></h2>
+        <p class="sub">차 전체 1장, 신경 쓰이는 곳 1장. 답장에는 이 3가지가 옵니다.</p>
+        <p>① 광택으로 되는 흠집 / 안 되는 흠집<br>② 맞는 프로그램<br>③ 예상 비용 범위</p>
+        <div class="form" style="margin-top:20px">
+          <div>차종 · 연식</div><div class="inp">예) 그랜저 IG · 2019년식</div>
+          <div>가장 신경 쓰이는 부분</div><div class="inp">세차 기스 · 스월마크 ▾</div>
+          <div class="row"><span class="btn w">문자로 보내기</span><span class="btn k">카톡으로 보내기</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="fact"><h3>가게 사실 카드</h3><dl>
+          <dt>이름</dt><dd>폴리시40 (넘버원카클리닉)</dd>
+          <dt>주소</dt><dd>{주소}</dd>
+          <dt>시간</dt><dd><span class="need">실제 영업시간</span></dd>
+          <dt>전화</dt><dd><span class="need">대표 번호 1개</span></dd>
+          <dt>하는 일</dt><dd>자동차광택, 유리막코팅, 손세차, 실내세차</dd>
+          <dt>안 하는 일</dt><dd>덴트, 판금도색</dd>
+          <dt>가격</dt><dd>광택 15만원부터</dd>
+        </dl></div>
+        <div class="ph real sm" style="margin-top:16px"><b>지도 + 매장 바깥 사진</b><span>주차 자리, 들어오는 길 한 줄 <span class="need">확인</span></span></div>
+      </div>
+    </div>
+  </div></section>
+  <div class="ft"><div class="wrap">폴리시40 · 넘버원카클리닉 · 대표 {대표 이름} · 사업자등록번호 · 이용약관 · 개인정보처리방침 (별도 페이지)</div></div>
+  <div class="mbar"><span class="btn g">전화</span><span class="btn p">사진 2장 진단</span></div>
+</div>
+
+<!-- ================= 2 광택 페이지 ================= -->
+<div class="view" id="v-polish" hidden>
+  <div class="hd"><div class="logo">폴리시40<small>POLISH40</small></div><div class="nav"><span style="color:var(--gold2)">광택</span><span>유리막코팅</span><span>비용</span><span>시공 사례</span><span>블로그</span><span>40년 장인</span><span>오시는 길</span></div><span class="btn p s">사진 2장 진단</span></div>
+  <section class="sec dark" style="padding-top:20px"><div class="wrap">
+    <div class="crumb" style="color:#999">홈 › 자동차광택</div>
+    <div class="tag" style="margin-top:14px"><b>첫 화면 공식</b>윗줄(지역 + 믿을 근거) → 제목(검색어) → 부제(손님이 얻는 결과) → 공감 2줄 → 버튼. 블루헬프에서 쓰는 틀과 같습니다. <em>브라우저 제목 안: 자동차광택, 덮지 않고 되살리는 정밀 광택 | 폴리시40</em></div>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">시흥 금오로 · 40년 광택 장인이 직접</p>
+        <h1 class="page">자동차광택</h1>
+        <p class="lead" style="font-weight:700;color:#fff">세차한 뒤에도 그대로인 광택을 받아 가세요.</p>
+        <p class="sub">자동세차를 몇 번 돌렸더니 햇빛 아래에서 거미줄 같은 자국이 보이셨죠. 광택을 맡기자니 도장만 깎이는 건 아닌지 걱정되실 겁니다.</p>
+        <div class="row"><span class="btn p">내 차 사진 2장 보내고 진단 받기 →</span><span class="btn g">전화</span></div>
+      </div>
+      <div class="ph real tall"><b>실제 작업 사진</b><span>조명 아래 광택 중인 차</span><i>임시: 생성 그림 G-3</i></div>
+    </div>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>불릿 3개</b>스토리 설계자의 공식: <em>기능 → 그래서 혜택 → 그 말은 곧 의미</em>. 실제로 그렇게 하시는지 대표님 확인 뒤에만 씁니다.</div>
+    <h2>폴리시40 광택이 다른 점</h2>
+    <div class="grid3" style="margin-top:20px">
+      <div class="card"><small class="k">먼저 본다</small><h3>조명 아래에서 흠집 깊이를 먼저 봅니다</h3><p>그래서 필요한 만큼만 다듬습니다. 그 말은 곧, 다음 광택을 할 도장이 남는다는 뜻입니다. <span class="need">확인</span></p></div>
+      <div class="card"><small class="k">차마다 다르게</small><h3>약품과 패드를 차마다 다르게 고릅니다</h3><p>그래서 무른 도장도 자국 없이 끝납니다. 그 말은 곧, 햇빛 아래에서 동그란 자국이 안 보인다는 뜻입니다. <span class="need">확인</span></p></div>
+      <div class="card"><small class="k">한 사람이</small><h3>처음부터 끝까지 한 사람이 합니다</h3><p>그래서 중간에 손이 바뀌지 않습니다. 그 말은 곧, 누구에게 물어도 같은 답을 듣는다는 뜻입니다.</p></div>
+    </div>
+  </div></section>
+
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>증거</b>말보다 사진. 이 서비스의 실제 전후 2~3세트가 들어갑니다. 사례 페이지로 이어집니다.</div>
+    <h2>같은 자리, 전과 후</h2>
+    <div class="grid2" style="margin-top:20px">
+      <div class="ph real mid"><b>실제 전후 1</b><span>보닛 스월마크</span></div>
+      <div class="ph real mid"><b>실제 전후 2</b><span>문짝 잔기스</span></div>
+    </div>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>이름 붙은 순서 + 가격</b>홈과 같은 3단계, 같은 가격을 다시 보여 줍니다. 자세한 표는 비용 페이지가 맡습니다(같은 검색어를 두 페이지가 다투지 않게).</div>
+    <h2>덮지 않는 광택 3단계</h2>
+    <div class="steps" style="margin:20px 0 34px">
+      <div class="card"><h3>세차와 진단</h3><p>흠집 깊이, 재도장 여부 확인</p></div>
+      <div class="card"><h3>맞춤 폴리싱</h3><p>필요한 만큼만 단계적으로</p></div>
+      <div class="card"><h3>보호 마감과 함께 확인</h3><p>조명 아래에서 같이 봅니다</p></div>
+    </div>
+    <h2>광택 비용은 15만원부터입니다</h2>
+    <p class="sub">스탠다드 15만원부터, BEST 정밀 광택 30만원부터, VIP 50만원부터. 차 크기와 도장 상태에 따라 달라집니다.</p>
+    <span class="btn w s" style="border:1px solid #111">광택 비용 자세히 보기 →</span>
+  </div></section>
+
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>FAQ 5개</b>질문과 답이 한 쌍으로 있으면 AI 검색이 그대로 가져다 씁니다. 서비스 페이지마다 5개씩.</div>
+    <h2>자동차광택, 자주 묻는 질문</h2>
+    <div class="faq" style="margin-top:18px">
+      <div><b>광택은 얼마나 자주 해도 되나요?</b><p><span class="need">대표님 답</span></p></div>
+      <div><b>광택하면 도장이 얇아지지 않나요?</b><p><span class="need">대표님 답</span></p></div>
+      <div><b>광택으로 안 지워지는 흠집은 어떤 건가요?</b><p>손톱에 걸리는 깊은 흠집은 광택만으로는 어렵습니다. 사진 2장이면 먼저 구분해 드립니다. <span class="need">문구 확인</span></p></div>
+      <div><b>광택 뒤에 유리막코팅까지 해야 하나요?</b><p><span class="need">대표님 답</span></p></div>
+      <div><b>시간은 얼마나 걸리나요?</b><p><span class="need">프로그램별 시간</span></p></div>
+    </div>
+  </div></section>
+
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>이어 보기</b>사례와 글로 가는 링크입니다. 페이지끼리 서로 이어 주면 검색엔진이 사이트 전체를 한 덩어리로 이해합니다.</div>
+    <div class="grid2">
+      <div><h3>이 서비스로 작업한 사례</h3><p>예시: 검정 세단 자동세차 기스 →<br>예시: 흰색 SUV 물때 자국 →</p></div>
+      <div><h3>함께 읽으면 좋은 글</h3><p>스월마크란? 생기는 이유와 없애는 방법 →<br>자동세차 기스, 왜 생기고 어떻게 되돌리나 →</p></div>
+    </div>
+  </div></section>
+  <section class="sec dark"><div class="wrap"><h2>사진 2장이면 <em>먼저 봐 드립니다.</em></h2><p class="sub">문의 폼 + 가게 사실 카드 (홈과 같음)</p><span class="btn p">사진 2장으로 진단 받기 →</span></div></section>
+  <div class="ft"><div class="wrap">바닥 정보 (홈과 같음)</div></div>
+  <div class="mbar"><span class="btn g">전화</span><span class="btn p">사진 2장 진단</span></div>
+</div>
+
+<!-- ================= 3 광택 비용 ================= -->
+<div class="view" id="v-price" hidden>
+  <div class="hd"><div class="logo">폴리시40<small>POLISH40</small></div><div class="nav"><span>광택</span><span>유리막코팅</span><span style="color:var(--gold2)">비용</span><span>시공 사례</span><span>블로그</span><span>40년 장인</span><span>오시는 길</span></div><span class="btn p s">사진 2장 진단</span></div>
+  <section class="sec white" style="padding-top:8px"><div class="wrap">
+    <div class="crumb">홈 › 자동차광택 › 광택 비용</div>
+    <div class="tag" style="margin-top:14px"><b>이 페이지의 일</b>"자동차광택비용"(월 2,690)을 맡습니다. 지금은 홈 제목이 이 검색어를 잡고 있는데, 리뉴얼 뒤에는 이 페이지가 넘겨받습니다. <em>브라우저 제목 안: 자동차광택 비용, 차 크기·상태별 가격표 | 폴리시40</em></div>
+    <h1 class="page" style="margin-top:8px">자동차광택 비용</h1>
+    <div class="tag"><b>답 먼저</b>첫 문단이 곧 답입니다. AI가 "자동차 광택 얼마야?"에 이 문장을 가져갑니다. 숫자에는 꼭 조건을 붙입니다.</div>
+    <div class="answer">자동차광택 비용은 차 크기와 도장 상태에 따라 15만원부터 50만원대까지입니다. <span class="need">범위 확인</span> 사진 2장을 보내 주시면 내 차의 예상 범위를 먼저 알려 드립니다.</div>
+    <p class="by">글·감수 {대표 이름} (폴리시40 대표) · 고친 날 2026-00-00</p>
+
+    <h2>프로그램별·차 크기별 가격표</h2>
+    <div class="tblwrap"><table>
+      <tr><th>프로그램</th><th>이런 차에</th><th>소형·준중형</th><th>중형·준대형</th><th>대형·SUV</th><th>걸리는 시간</th></tr>
+      <tr><td><b>스탠다드 케어</b></td><td>출고 1~3년</td><td>15만원부터</td><td><span class="need">확인</span></td><td><span class="need">확인</span></td><td><span class="need">확인</span></td></tr>
+      <tr><td><b>BEST 정밀 광택</b></td><td>출고 3년 이상</td><td>30만원부터</td><td><span class="need">확인</span></td><td><span class="need">확인</span></td><td><span class="need">확인</span></td></tr>
+      <tr><td><b>VIP 마스터 리스토어</b></td><td>소장용·수입차</td><td>50만원부터</td><td><span class="need">확인</span></td><td><span class="need">확인</span></td><td><span class="need">확인</span></td></tr>
+    </table></div>
+    <div class="ph sm" style="margin:18px 0 30px"><b>설명 그림 G-7</b><span>차 크기 4가지 옆모습 (소형 → 대형 SUV)</span></div>
+
+    <h2>값이 달라지는 경우 3가지</h2>
+    <div class="grid3" style="margin:18px 0 34px">
+      <div class="card"><h3>검정 계열</h3><p>자국이 가장 잘 보여서 단계가 늘어납니다. <span class="need">확인</span></p></div>
+      <div class="card"><h3>다시 칠한 부위</h3><p>도장 두께가 달라 따로 다룹니다. <span class="need">확인</span></p></div>
+      <div class="card"><h3>깊은 흠집</h3><p>광택으로 되는 깊이인지 먼저 봅니다. <span class="need">확인</span></p></div>
+    </div>
+
+    <div class="tag"><b>약속</b>우리는 어떻게 마음을 움직이는가: 손님이 가장 무서워하는 "가서 값이 오르는 일"을 먼저 꺼내 답합니다.</div>
+    <h2>사진은 범위, 현장에서 확정</h2>
+    <div class="grid3" style="margin-top:18px">
+      <div class="card acc"><h3>1. 사진으로 범위를 말씀드립니다</h3></div>
+      <div class="card acc"><h3>2. 현장에서 보고 작업 전에 확정합니다</h3></div>
+      <div class="card acc"><h3>3. 동의 없이 작업을 더하지 않습니다</h3></div>
+    </div>
+    <p style="margin-top:10px;font-size:13.5px;color:var(--muted)"><span class="need">세 문장 모두 대표님이 지킬 수 있는 약속인지 확인</span></p>
+  </div></section>
+  <section class="sec sand"><div class="wrap">
+    <h2>비용, 자주 묻는 질문</h2>
+    <div class="faq" style="margin-top:18px">
+      <div><b>사진 보고 싸게 말해 놓고, 가면 올리는 거 아닌가요?</b><p>위 약속 3가지로 답합니다.</p></div>
+      <div><b>부분 광택도 되나요? 얼마인가요?</b><p><span class="need">대표님 답</span></p></div>
+      <div><b>유리막코팅을 같이 하면 얼마인가요?</b><p><span class="need">유리막 가격</span> → 유리막코팅 가격 페이지로 연결</p></div>
+    </div>
+  </div></section>
+  <section class="sec dark"><div class="wrap"><h2>내 차는 얼마일까요? <em>사진 2장이면 됩니다.</em></h2><span class="btn p" style="margin-top:10px">사진 2장 보내고 비용 범위 받기 →</span></div></section>
+  <div class="ft"><div class="wrap">바닥 정보 (홈과 같음)</div></div>
+  <div class="mbar"><span class="btn g">전화</span><span class="btn p">사진 2장 진단</span></div>
+</div>
+
+<!-- ================= 4 사례 ================= -->
+<div class="view" id="v-case" hidden>
+  <div class="hd"><div class="logo">폴리시40<small>POLISH40</small></div><div class="nav"><span>광택</span><span>유리막코팅</span><span>비용</span><span style="color:var(--gold2)">시공 사례</span><span>블로그</span><span>40년 장인</span><span>오시는 길</span></div><span class="btn p s">사진 2장 진단</span></div>
+  <section class="sec white" style="padding-top:8px"><div class="wrap">
+    <div class="crumb">홈 › 시공 사례 › 검정 세단 자동세차 기스</div>
+    <div class="tag" style="margin-top:14px"><b>사례 1건의 틀</b>아래 차와 내용은 <em>전부 예시</em>입니다. 실제 차가 들어오면 사진과 사실로 바꿉니다. 주소에는 날짜를 넣지 않습니다(예: /cases/black-sedan-swirl/). 생성 그림은 이 페이지에 쓰지 않습니다.</div>
+    <h1 class="page" style="margin-top:8px">예시: 검정 세단 자동세차 기스, BEST 정밀 광택으로 되살린 사례</h1>
+    <p class="lead">예시 문장: 5년 동안 자동세차만 돌린 검정 세단입니다. 햇빛 아래에서 거미줄 같은 자국이 보닛 전체에 보였고, BEST 정밀 광택으로 정리했습니다.</p>
+    <div class="tag"><b>전후 사진을 가장 위에</b>손님은 글보다 사진을 먼저 봅니다. 같은 자리·같은 각도·같은 조명으로 나란히. 번호판은 가립니다.</div>
+    <div class="grid2">
+      <div class="ph real tall"><b>전 (BEFORE)</b><span>보닛, 조명 아래</span></div>
+      <div class="ph real tall"><b>후 (AFTER)</b><span>같은 자리, 같은 각도</span></div>
+    </div>
+    <div class="tag" style="margin-top:26px"><b>작업 요약 표</b>AI와 검색엔진이 가장 좋아하는 칸입니다. "시흥에서 ○○ 광택 얼마?" 같은 질문의 재료가 됩니다.</div>
+    <h2>작업 요약</h2>
+    <div class="tblwrap"><table>
+      <tr><th>차</th><td>예시: 국산 준대형 세단 · 2021년식 · 검정</td></tr>
+      <tr><th>증상</th><td>자동세차 기스(스월마크), 광 줄어듦</td></tr>
+      <tr><th>프로그램</th><td>BEST 정밀 광택</td></tr>
+      <tr><th>걸린 시간</th><td><span class="need">실제 값</span></td></tr>
+      <tr><th>비용 범위</th><td><span class="need">실제 값 (범위로)</span></td></tr>
+      <tr><th>지역</th><td>시흥 (동 단위까지, 손님 동의 범위)</td></tr>
+    </table></div>
+  </div></section>
+  <section class="sec ivory"><div class="wrap">
+    <div class="grid2">
+      <div><h2>장인이 본 상태</h2><p><span class="need">대표님 메모 2~3줄</span> (무엇을 보고 어떻게 판단했는지)</p>
+        <h2 style="margin-top:28px">작업 순서</h2><p>1. 세차와 오염 제거<br>2. 조명 아래 흠집 깊이 확인<br>3. 단계별 폴리싱 <span class="need">몇 단계</span><br>4. 보호 마감<br>5. 손님과 함께 확인</p></div>
+      <div><div class="ph real mid"><b>작업 중 사진</b><span>폴리싱 장면 1~2장</span></div></div>
+    </div>
+    <div class="tag" style="margin-top:26px"><b>남는 한계도 적는다</b>"다 됩니다"보다 "이것은 남았습니다"가 믿음을 줍니다. 과장 없는 톤이 이 사이트의 자산입니다.</div>
+    <h2>결과와 남는 한계</h2>
+    <p>예시 문장: 보닛과 지붕의 스월마크는 정리됐습니다. 운전석 문 아래 깊은 흠집 1곳은 광택으로 지울 수 없는 깊이라 그대로 두었고, 작업 전에 말씀드렸습니다.</p>
+    <div class="grid3" style="margin-top:22px">
+      <div class="ph real sm"><b>후 사진 2</b></div><div class="ph real sm"><b>후 사진 3</b></div><div class="ph real sm"><b>남은 흠집 가까이</b></div>
+    </div>
+  </div></section>
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>링크는 위로</b>사례 → 서비스 페이지 → 홈 방향으로 겁니다. 사례가 쌓일수록 서비스 페이지가 힘을 받습니다.</div>
+    <div class="grid2">
+      <div><h3>이 작업의 서비스</h3><p>자동차광택 → · 광택 비용 →</p><h3 style="margin-top:18px">비슷한 사례</h3><p>예시: 흰색 SUV 물때 자국 →</p></div>
+      <div><h3>이 사례에서 자주 받는 질문</h3><div class="faq"><div><b>검정 차는 값이 더 드나요?</b><p><span class="need">대표님 답</span></p></div></div></div>
+    </div>
+  </div></section>
+  <section class="sec dark"><div class="wrap"><h2>내 차도 될까요? <em>사진 2장이면 먼저 봐 드립니다.</em></h2><span class="btn p" style="margin-top:10px">사진 2장으로 진단 받기 →</span></div></section>
+  <div class="ft"><div class="wrap">바닥 정보 (홈과 같음)</div></div>
+  <div class="mbar"><span class="btn g">전화</span><span class="btn p">사진 2장 진단</span></div>
+</div>
+
+<!-- ================= 5 블로그 ================= -->
+<div class="view" id="v-blog" hidden>
+  <div class="hd"><div class="logo">폴리시40<small>POLISH40</small></div><div class="nav"><span>광택</span><span>유리막코팅</span><span>비용</span><span>시공 사례</span><span style="color:var(--gold2)">블로그</span><span>40년 장인</span><span>오시는 길</span></div><span class="btn p s">사진 2장 진단</span></div>
+  <section class="sec white" style="padding-top:8px"><div class="wrap"><div class="art">
+    <div class="crumb">홈 › 블로그 › 도장 증상 사전</div>
+    <div class="tag" style="margin-top:14px"><b>글 1편의 틀</b>글 1편 = 파일 1개. 제목·설명·날짜·갈래·FAQ를 파일 위에 적으면 이 화면, 목록, RSS, 사이트맵이 자동으로 만들어집니다. 아래 본문은 틀을 보여 주는 <em>초안 예시</em>입니다.</div>
+    <h1 class="page" style="margin-top:8px">스월마크란? 생기는 이유와 없애는 방법</h1>
+    <p class="by">글·감수 {대표 이름} (폴리시40 대표, 광택 경력 <span class="need">○년</span>) · 올린 날 2026-00-00 · 고친 날 2026-00-00</p>
+    <div class="tag"><b>① 답 먼저</b>첫 2~3문장이 질문의 답입니다. AI 검색과 네이버 요약이 이 칸을 가져갑니다.</div>
+    <div class="answer">스월마크는 세차하거나 닦을 때 생긴 아주 얕은 흠집이 빛을 흩뜨려, 햇빛이나 조명 아래에서 거미줄처럼 동그랗게 보이는 자국입니다. 도장 맨 위 투명층에 생긴 것이라, 얕으면 광택(폴리싱)으로 없앨 수 있습니다.</div>
+    <div class="ph mid" style="margin-bottom:22px"><b>설명 그림 G-9</b><span>투명층의 잔흠집이 빛을 여러 방향으로 흩뜨리는 단면</span><i>"설명을 돕는 그림입니다" 표시</i></div>
+    <div class="tag"><b>② 한눈에 보기 표</b>바쁜 사람은 표만 봅니다.</div>
+    <div class="tblwrap"><table>
+      <tr><th>무엇</th><td>도장 맨 위 투명층의 얕은 원형 잔흠집</td></tr>
+      <tr><th>잘 생기는 때</th><td>자동세차, 마른 수건으로 닦기, 모래가 남은 채 문지르기</td></tr>
+      <tr><th>잘 보이는 차</th><td>검정 등 짙은 색</td></tr>
+      <tr><th>혼자 되나</th><td>아주 얕으면 가능. 넓거나 깊으면 맡기는 편이 안전</td></tr>
+    </table></div>
+    <div class="tag" style="margin-top:22px"><b>③ 질문형 소제목</b>사람들이 검색창에 치는 말 그대로 소제목을 씁니다.</div>
+    <h2>스월마크는 왜 생기나요?</h2>
+    <p>먼지나 모래가 남은 채로 도장을 문지르면, 그 알갱이가 표면을 얇게 긁습니다. 한 번은 안 보이지만 쌓이면 빛이 고르게 반사되지 않아 뿌옇게 보입니다.</p>
+    <h2>왁스를 바르면 없어지나요?</h2>
+    <p>잠깐 가려질 수는 있습니다. 왁스가 흠집을 메워 주기 때문입니다. 세차 몇 번에 왁스가 빠지면 다시 보입니다. 없애려면 흠집 깊이만큼 표면을 고르게 다듬어야 합니다.</p>
+    <div class="tag"><b>④ 장인 한마디</b>이 칸이 다른 블로그와 다른 점입니다. 실제로 하신 말만 넣습니다. 지어내지 않습니다.</div>
+    <div class="quote" style="font-size:17px"><span class="need">대표님 구술 2~3문장</span><br><span style="font-weight:400;font-size:14px;color:var(--muted)">예: 스월마크 차를 받으면 가장 먼저 무엇을 보시는지</span></div>
+    <div class="tag"><b>⑤ 혼자 되는 것 / 맡겨야 하는 것</b>정직하게 나눠 줍니다. "다 맡기세요"보다 믿음이 갑니다(무료 가치 먼저 주기).</div>
+    <h2>혼자 해도 되는 경우, 맡겨야 하는 경우</h2>
+    <div class="grid2">
+      <div class="card"><small class="k">혼자 해 볼 만한 경우</small><p>좁은 부위의 아주 얕은 자국. 약한 약제와 부드러운 패드로 손으로 살살.</p></div>
+      <div class="card acc"><small class="k">맡기는 편이 안전한 경우</small><p>차 전체에 퍼진 자국, 검정 차, 다시 칠한 부위. 기계를 잘못 쓰면 새 자국이 남습니다.</p></div>
+    </div>
+    <h2>스월마크, 자주 묻는 질문</h2>
+    <div class="faq">
+      <div><b>새 차에도 스월마크가 있나요?</b><p><span class="need">대표님 답</span></p></div>
+      <div><b>광택 뒤에 다시 안 생기게 하려면요?</b><p>손세차 순서 글로 연결 →</p></div>
+      <div><b>없애는 데 비용은 얼마인가요?</b><p>광택 비용 페이지로 연결 →</p></div>
+    </div>
+    <div class="tag" style="margin-top:22px"><b>⑥ 마무리</b>글 끝의 제안은 "참고로"로 가볍게 시작합니다. 파는 느낌 없이 다음 걸음을 알려 줍니다.</div>
+    <div class="card acc" style="margin-top:6px"><p style="margin:0 0 14px">참고로, 사진 2장이면 내 차 자국이 광택으로 되는 깊이인지 먼저 봐 드립니다.</p><span class="btn p s">사진 2장으로 진단 받기 →</span></div>
+    <h3 style="margin-top:30px">이어서 읽기</h3>
+    <p>자동세차 기스, 왜 생기고 어떻게 되돌리나 → · 자동차 컴파운드, 혼자 해도 되는 흠집 → · 관련 사례: 예시 검정 세단 →</p>
+  </div></div></section>
+  <div class="ft"><div class="wrap">바닥 정보 (홈과 같음)</div></div>
+  <div class="mbar"><span class="btn g">전화</span><span class="btn p">사진 2장 진단</span></div>
+</div>
+
+<!-- ================= 6 장인 ================= -->
+<div class="view" id="v-master" hidden>
+  <div class="hd"><div class="logo">폴리시40<small>POLISH40</small></div><div class="nav"><span>광택</span><span>유리막코팅</span><span>비용</span><span>시공 사례</span><span>블로그</span><span style="color:var(--gold2)">40년 장인</span><span>오시는 길</span></div><span class="btn p s">사진 2장 진단</span></div>
+  <section class="sec dark" style="padding-top:44px"><div class="wrap">
+    <div class="tag"><b>이 페이지의 일</b>"누가 내 차를 만지나"에 답합니다. 마케팅 설계자의 <em>매력적인 캐릭터</em>: 어디서 시작했고, 무엇을 고집하고, 무엇은 안 하는지. 전부 인터뷰 10문항으로 채웁니다. 옛날 사진은 만들지 않고, 지금의 손과 도구를 찍습니다.</div>
+    <div class="hero" style="grid-template-columns:.85fr 1.15fr">
+      <div class="ph real tall"><b>{대표 이름} 대표 실제 사진</b><span>정면 또는 옆모습</span></div>
+      <div>
+        <p class="eyebrow">40년 광택 장인</p>
+        <h1 class="page">광택 한 가지만,<br><em style="color:var(--gold2);font-style:normal"><span class="need">40년 넘게</span> 했습니다.</em></h1>
+        <p class="sub">폴리시40 대표 {대표 이름}입니다. <span class="need">1980년 을지로 오장동</span>에서 광택을 배우기 시작해, 장안동을 거쳐 지금은 시흥 금오로에서 일합니다.</p>
+        <div class="quote">"제 마음에 들지 않는 결과물은<br>고객님께도 드리지 않습니다."</div>
+      </div>
+    </div>
+  </div></section>
+  <section class="sec ivory"><div class="wrap">
+    <div class="tag"><b>걸어온 길</b>연도와 장소는 사실만. "1세대", "시초" 같은 말은 근거가 있을 때만 씁니다.</div>
+    <h2>걸어온 길</h2>
+    <div class="tblwrap"><table>
+      <tr><th style="width:130px"><span class="need">1980년</span></th><td>을지로 오장동에서 광택을 배우기 시작 <span class="need">인터뷰 1, 2번</span></td></tr>
+      <tr><th><span class="need">○○○○년</span></th><td>장안동에서 <span class="need">무슨 일</span></td></tr>
+      <tr><th><span class="need">○○○○년</span></th><td>시흥 금오로 매장</td></tr>
+    </table></div>
+    <div class="grid3" style="margin-top:20px">
+      <div class="ph real sm"><b>광택기를 잡은 손</b></div><div class="ph real sm"><b>쓰는 패드와 약품</b></div><div class="ph real sm"><b>조명 아래 확인 장면</b></div>
+    </div>
+  </div></section>
+  <section class="sec sand"><div class="wrap">
+    <div class="tag"><b>고집과 하지 않는 것</b>"하지 않는 것"을 적는 가게는 드뭅니다. 그래서 눈에 띕니다(핑크펭귄). 아래 왼쪽은 인터뷰로 채웁니다. 오른쪽 첫 줄(덴트·판금도색)은 10/19에 확인된 사실입니다.</div>
+    <div class="grid2">
+      <div><h2>고집하는 것</h2><div class="faq" style="border:0">
+        <div><b style="font-size:16px">차를 받으면 가장 먼저 <span class="need">인터뷰 4번</span></b></div>
+        <div><b style="font-size:16px">절대 쓰지 않는 방법 <span class="need">인터뷰 8번</span></b></div>
+        <div><b style="font-size:16px">시공 뒤 꼭 드리는 당부 <span class="need">인터뷰 9번</span></b></div></div></div>
+      <div><h2>하지 않는 것</h2>
+        <div class="card" style="margin-bottom:12px"><h3>덴트·판금도색은 하지 않습니다</h3><p>다른 곳에서 수리한 뒤의 마무리 광택은 합니다.</p></div>
+        <div class="card" style="margin-bottom:12px"><h3>흠집을 가리기만 하는 광택은 하지 않습니다</h3><p>세차 몇 번에 다시 올라오기 때문입니다.</p></div>
+        <div class="card"><h3>광택으로 안 되는 흠집은 안 된다고 말씀드립니다</h3><p><span class="need">인터뷰 5번으로 확인</span></p></div></div>
+    </div>
+  </div></section>
+  <section class="sec dark"><div class="wrap"><h2>내 차 상태가 궁금하시면, <em>사진 2장이면 됩니다.</em></h2><span class="btn p" style="margin-top:10px">사진 2장으로 진단 받기 →</span></div></section>
+  <div class="ft"><div class="wrap">바닥 정보 (홈과 같음)</div></div>
+  <div class="mbar"><span class="btn g">전화</span><span class="btn p">사진 2장 진단</span></div>
+</div>
+
+</div><!-- /stage -->
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+$$('[data-view]').forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-view]').forEach(x=>x.classList.toggle('on',x===b));
+  $$('.view').forEach(v=>v.hidden=(v.id!==b.dataset.view));
+  window.scrollTo(0,0);
+}));
+$('#dev').addEventListener('click',e=>{const on=document.body.classList.toggle('mobile');e.target.classList.toggle('on',on);e.target.textContent=on?'PC로 보기':'모바일로 보기';});
+$('#notes').addEventListener('click',e=>{const off=document.body.classList.toggle('nonotes');e.target.classList.toggle('on',!off);e.target.textContent=off?'설명 딱지 꺼짐':'설명 딱지 켜짐';});
+</script>
+</body>
+</html>
