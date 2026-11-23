@@ -1,0 +1,21 @@
+---
+import { PROGRAMS, from } from '../data/site';
+---
+<div class="tblwrap">
+  <table class="tbl--stack">
+    <thead>
+      <tr><th scope="col">프로그램</th><th scope="col">이런 차에</th><th scope="col">시작가</th><th scope="col">들어 있는 것</th></tr>
+    </thead>
+    <tbody>
+      {PROGRAMS.map((p) => (
+        <tr>
+          <th scope="row">{p.name}{p.badge && <> <span class="pill">{p.badge}</span></>}</th>
+          <td data-label="이런 차에">{p.forWhom}</td>
+          <td data-label="시작가" class="price">{from(p.price)}</td>
+          <td data-label="들어 있는 것">{p.includes}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="note">표시 금액은 시작가입니다. 차 크기, 도장 상태, 필요한 공정에 따라 달라집니다.</p>

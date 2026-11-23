@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import DiagButton from '../../components/DiagButton.astro';
+import TelButton from '../../components/TelButton.astro';
+import More from '../../components/More.astro';
+import { PAGES } from '../../data/pages';
+import { IMAGES } from '../../data/images';
+
+const path = '/wash/';
+const img = IMAGES['wash-hero'];
+---
+<Base path={path} crumbs={[{ name: '손세차 · 실내세차', path }]} service={{ name: '손세차 · 실내세차', description: PAGES[path].description }}>
+  <section class="hero">
+    <div class="shell hero-inner hero-grid">
+      <div>
+        <p class="eyebrow">시흥 금오로 · 광택 전문점의 세차</p>
+        <h1>시흥 손세차 · 실내세차</h1>
+        <p class="sub">광택 낸 차를 오래 지키는 세차.</p>
+        <p class="lead">스월마크는 대부분 세차할 때 생깁니다. 그래서 씻는 순서가 중요합니다.</p>
+        <div class="btn-row">
+          <DiagButton label="문자로 예약 문의하기" track="hero_cta" />
+          <TelButton track="hero_cta" />
+        </div>
+      </div>
+      <div class="hero-figure hero-figure--wide"><img src={img.src} alt={img.alt} width={img.width} height={img.height} fetchpriority="high" decoding="async" /></div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head"><h2>흠집을 줄이는 손세차의 기본</h2></div>
+      <ol class="numbered">
+        <li>물로 먼저 충분히 헹궈 모래와 먼지를 흘려보냅니다.</li>
+        <li>거품을 올려 오염을 불립니다.</li>
+        <li>부드러운 미트로 위에서 아래로, 힘을 빼고 닦습니다.</li>
+        <li>깨끗한 수건으로 눌러서 물기를 걷어 냅니다.</li>
+      </ol>
+      <p class="note">마른 수건으로 문지르거나 먼지가 남은 채 닦는 일만 줄여도 잔흠집이 크게 줄어듭니다.</p>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="block">
+        <div class="sec-head">
+          <h2>예약과 비용</h2>
+          <p class="lead">손세차와 실내세차 비용은 차 크기와 상태에 따라 안내해 드립니다. 원하는 날과 차종을 문자로 보내 주세요.</p>
+        </div>
+      </div>
+      <div class="block">
+        <div class="sec-head"><h2>이어 보기</h2></div>
+        <More links={[
+          { label: '스월마크란?', href: '/blog/swirl-mark/' },
+          { label: '자동차광택', href: '/polish/' },
+        ]} />
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,23 @@
+---
+import { IMAGES } from '../data/images';
+// [공통-3단계] 덮지 않는 광택 3단계. images 가 true 일 때만 그림을 붙인다.
+interface Props { images?: boolean }
+const { images = false } = Astro.props;
+const steps = [
+  { slot: 'step-1', name: '세차와 진단', text: '오염을 안전하게 걷어 낸 뒤, 조명 아래에서 흠집 깊이와 다시 칠한 곳이 있는지 봅니다.' },
+  { slot: 'step-2', name: '맞춤 폴리싱', text: '도장 상태에 맞춰 약품과 패드를 고르고, 필요한 만큼만 단계적으로 다듬습니다.' },
+  { slot: 'step-3', name: '보호 마감과 함께 확인', text: '도장면을 보호하는 마감재를 올린 뒤, 마지막 상태를 함께 확인합니다.' },
+];
+---
+<div class="sec-head"><h2>덮지 않는 광택 3단계</h2></div>
+<ol class="steps">
+  {steps.map((step) => {
+    const img = IMAGES[step.slot];
+    return (
+      <li>
+        {images && <img src={img.src} alt={img.alt} width={img.width} height={img.height} loading="lazy" decoding="async" />}
+        <div class="step-body"><h3>{step.name}</h3><p>{step.text}</p></div>
+      </li>
+    );
+  })}
+</ol>

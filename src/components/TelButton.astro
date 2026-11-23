@@ -1,0 +1,6 @@
+---
+import { SITE } from '../data/site';
+interface Props { track: string; label?: string }
+const { track, label = '전화' } = Astro.props;
+---
+<a class="btn btn--ghost" href={`tel:${SITE.phoneTel}`} data-track={track}>{label}</a>

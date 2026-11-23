@@ -1,0 +1,97 @@
+---
+import Base from '../../layouts/Base.astro';
+import DiagButton from '../../components/DiagButton.astro';
+import TelButton from '../../components/TelButton.astro';
+import Steps from '../../components/Steps.astro';
+import Faq from '../../components/Faq.astro';
+import More from '../../components/More.astro';
+import { PAGES } from '../../data/pages';
+import { PRICES } from '../../data/site';
+import { IMAGES } from '../../data/images';
+
+const path = '/polish/';
+const img = IMAGES['polish-hero'];
+const points = [
+  { head: '조명 아래에서 흠집 깊이를 먼저 봅니다.', text: '그래서 필요한 만큼만 다듬습니다. 그 말은 곧, 다음에 광택을 할 도장이 남는다는 뜻입니다.' },
+  { head: '약품과 패드를 차마다 다르게 고릅니다.', text: '그래서 무른 도장도 자국 없이 끝납니다. 그 말은 곧, 햇빛 아래에서 동그란 자국이 보이지 않는다는 뜻입니다.' },
+  { head: '처음부터 끝까지 한 사람이 합니다.', text: '그래서 중간에 손이 바뀌지 않습니다. 그 말은 곧, 누구에게 물어도 같은 답을 듣는다는 뜻입니다.' },
+];
+const faq = [
+  { q: '광택은 얼마나 자주 해도 되나요?', a: '광택은 투명층을 다듬는 작업이라 자주 할수록 좋은 일이 아닙니다. 흠집이 눈에 띄게 쌓였을 때 하고, 그 사이에는 세차 습관과 보호 마감으로 유지하는 편이 도장에 좋습니다.' },
+  { q: '광택하면 도장이 얇아지지 않나요?', a: '아주 얇게 다듬습니다. 그래서 조명 아래에서 흠집 깊이를 먼저 보고 필요한 만큼만 다듬습니다.' },
+  { q: '광택으로 안 지워지는 흠집은 어떤 건가요?', a: '손톱으로 긁었을 때 걸리는 깊은 흠집은 투명층 아래까지 파인 경우가 많아 광택만으로는 없애기 어렵습니다.' },
+  { q: '광택 뒤에 유리막코팅까지 꼭 해야 하나요?', a: '꼭은 아닙니다. 광택은 흠집을 다듬는 일이고, 유리막코팅은 그 위를 보호하는 일입니다. 차를 쓰는 방식에 맞춰 필요한 경우에만 권합니다.' },
+  { q: '새 차에도 광택이 필요한가요?', a: '새 차도 옮기고 보관하고 씻는 동안 잔흠집이 생길 수 있습니다. 상태를 보고 가볍게 정리하거나, 하지 않아도 된다고 말씀드립니다.' },
+];
+---
+<Base path={path} crumbs={[{ name: '자동차광택', path }]} faq={faq} service={{ name: '자동차광택', description: PAGES[path].description, minPrice: PRICES.standard }}>
+  <section class="hero">
+    <div class="shell hero-inner hero-grid">
+      <div>
+        <p class="eyebrow">시흥 금오로 · 40년 광택 장인이 직접</p>
+        <h1>자동차광택</h1>
+        <p class="sub">세차한 뒤에도 그대로인 광택을 받아 가세요.</p>
+        <p class="lead">자동세차를 몇 번 돌렸더니 햇빛 아래에서 거미줄 같은 자국이 보이셨죠. 광택을 맡기자니 도장만 깎이는 건 아닌지 걱정되실 겁니다.</p>
+        <div class="btn-row">
+          <DiagButton label="내 차 사진 2장 보내고 진단 받기" track="hero_cta" />
+          <TelButton track="hero_cta" />
+        </div>
+      </div>
+      <div class="hero-figure"><img src={img.src} alt={img.alt} width={img.width} height={img.height} fetchpriority="high" decoding="async" /></div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head"><h2>폴리시40 광택이 다른 점</h2></div>
+      <div class="grid3">
+        {points.map((p) => <div class="card"><h3>{p.head}</h3><p>{p.text}</p></div>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>이런 차에 맞습니다</h2></div>
+      <ul class="ticks">
+        <li>자동세차 뒤 햇빛 아래에서 동그란 잔흠집이 보이는 차</li>
+        <li>색이 칙칙해지고 광이 줄어든 차</li>
+        <li>예전에 광택을 낸 뒤 얼룩이나 기계 자국이 남은 차</li>
+        <li>팔기 전이나 반납 전에 겉모습을 정리하고 싶은 차</li>
+      </ul>
+      <p class="note">손톱에 걸리는 깊은 흠집은 광택만으로는 어렵습니다. 사진 2장이면 될지 안 될지 먼저 봐 드립니다.</p>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell"><Steps /></div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>광택 비용은 15만원부터입니다</h2>
+        <p class="lead">스탠다드 케어 15만원부터, BEST 정밀 광택 30만원부터, VIP 마스터 리스토어 50만원부터입니다. 차 크기와 도장 상태에 따라 달라집니다.</p>
+      </div>
+      <a class="more" href="/polish/price/">광택 비용 자세히 보기</a>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head"><h2>자동차광택, 자주 묻는 질문</h2></div>
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>이어 보기</h2></div>
+      <More links={[
+        { label: '스월마크란? 생기는 이유와 없애는 방법', href: '/blog/swirl-mark/' },
+        { label: '자동차 컴파운드 사용법', href: '/blog/car-compound/' },
+        { label: '유리막코팅', href: '/coating/' },
+      ]} />
+    </div>
+  </section>
+</Base>

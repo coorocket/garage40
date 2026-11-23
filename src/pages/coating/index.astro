@@ -1,0 +1,86 @@
+---
+import Base from '../../layouts/Base.astro';
+import DiagButton from '../../components/DiagButton.astro';
+import TelButton from '../../components/TelButton.astro';
+import Faq from '../../components/Faq.astro';
+import More from '../../components/More.astro';
+import { PAGES } from '../../data/pages';
+
+const path = '/coating/';
+const faq = [
+  { q: '새 차인데 광택 없이 코팅만 해도 되나요?', a: '새 차도 잔흠집이 있을 수 있어 상태를 먼저 봅니다. 깨끗하면 가벼운 정리만 하고 코팅을 올립니다.' },
+  { q: '유리막코팅을 하면 흠집이 안 생기나요?', a: '아닙니다. 한 겹이 더 생길 뿐, 흠집을 완전히 막지는 못합니다. 세차 습관이 함께 가야 오래 갑니다.' },
+  { q: '코팅한 뒤 세차는 언제부터 해도 되나요?', a: '쓰는 제품에 따라 다릅니다. 시공한 날 그 차에 맞춰 알려 드립니다.' },
+  { q: '코팅은 얼마나 가나요?', a: '제품과 주차 환경, 세차 방법에 따라 크게 달라집니다. 상담할 때 차를 쓰시는 방식을 듣고 말씀드립니다.' },
+];
+---
+<Base path={path} crumbs={[{ name: '유리막코팅', path }]} faq={faq} service={{ name: '자동차유리막코팅', description: PAGES[path].description }}>
+  <section class="hero">
+    <div class="shell hero-inner">
+      <p class="eyebrow">시흥 금오로 · 40년 광택 장인이 직접</p>
+      <h1>자동차유리막코팅</h1>
+      <p class="sub">고른 면 위에 올려야 오래 맑습니다.</p>
+      <p class="lead">새 차를 뽑았거나 광택을 낸 김에, 이 상태를 오래 지키고 싶으시죠. 유리막코팅이 정말 값어치를 하는지 궁금하셨을 겁니다.</p>
+      <div class="btn-row">
+        <DiagButton label="내 차 사진 2장 보내고 상담 받기" track="hero_cta" />
+        <TelButton track="hero_cta" />
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>유리막코팅은 무엇인가요?</h2>
+        <p class="answer">유리막코팅은 도장 위에 얇고 단단한 보호막을 올리는 작업입니다. 물이 잘 흘러내리고 오염이 덜 달라붙어 세차가 쉬워집니다. 다만 이미 있는 흠집을 없애 주지는 않습니다. 그래서 폴리시40은 광택으로 면을 먼저 고른 뒤 코팅을 올립니다.</p>
+      </div>
+      <div class="tblwrap">
+        <table class="tbl--stack">
+          <thead><tr><td></td><th scope="col">유리막코팅이 해 주는 일</th><th scope="col">해 주지 못하는 일</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">겉모습</th><td data-label="유리막코팅이 해 주는 일">광이 또렷해지고 물이 잘 흘러내립니다</td><td data-label="해 주지 못하는 일">이미 있는 흠집을 없애지는 못합니다</td></tr>
+            <tr><th scope="row">관리</th><td data-label="유리막코팅이 해 주는 일">오염이 덜 붙어 세차가 쉬워집니다</td><td data-label="해 주지 못하는 일">세차를 안 해도 되는 것은 아닙니다</td></tr>
+            <tr><th scope="row">보호</th><td data-label="유리막코팅이 해 주는 일">도장 위에 한 겹이 더 생깁니다</td><td data-label="해 주지 못하는 일">깊은 긁힘이나 문콕까지 막지는 못합니다</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>폴리시40 유리막코팅 순서</h2></div>
+      <ol class="numbered">
+        <li><strong>세차와 진단</strong>: 오염을 걷어 내고 조명 아래에서 도장 상태를 봅니다.</li>
+        <li><strong>광택으로 면 정리</strong>: 흠집을 다듬어 면을 고릅니다. 흠집 위에 코팅을 올리면 흠집이 그대로 갇힙니다.</li>
+        <li><strong>코팅과 함께 확인</strong>: 코팅을 올리고 마지막 상태를 함께 확인합니다.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="sec-head">
+        <h2>유리막코팅 비용</h2>
+        <p class="lead">유리막코팅 비용은 차 크기와 도장 상태를 보고 안내해 드립니다. 광택이 얼마나 필요한지에 따라 달라지기 때문입니다. 사진 2장을 보내 주시면 예상 범위를 먼저 알려 드립니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="block">
+        <div class="sec-head"><h2>유리막코팅, 자주 묻는 질문</h2></div>
+        <Faq items={faq} />
+      </div>
+      <div class="block">
+        <div class="sec-head"><h2>이어 보기</h2></div>
+        <More links={[
+          { label: '자동차광택', href: '/polish/' },
+          { label: '광택 비용', href: '/polish/price/' },
+          { label: '스월마크란?', href: '/blog/swirl-mark/' },
+        ]} />
+      </div>
+    </div>
+  </section>
+</Base>

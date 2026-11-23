@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../data/site';
+const path = '/privacy/';
+---
+<Base path={path} crumbs={[{ name: '개인정보처리방침', path }]}>
+  <div class="page-head sec--ivory">
+    <div class="shell"><h1>개인정보처리방침</h1></div>
+  </div>
+  <section class="sec sec--ivory">
+    <div class="shell article legal">
+      <p>폴리시40 웹사이트는 회원가입을 받지 않습니다. 진단 폼에 적은 내용은 서버로 전송되거나 저장되지 않고, 고객님 기기의 문자·카카오톡 작성 화면으로만 옮겨집니다.</p>
+      <h2>1. 상담 과정에서 전달되는 정보</h2>
+      <p>전화·이메일·카카오톡 상담 시 고객이 직접 제공한 연락처, 차량 정보와 사진은 견적 안내 및 예약 관리 목적으로만 사용됩니다.</p>
+      <h2>2. 보유 및 파기</h2>
+      <p>상담 정보는 서비스 제공과 고객 응대에 필요한 기간 동안 보관하며, 목적 달성 후 관련 법령에 따른 보존 의무가 없는 정보는 안전하게 파기합니다.</p>
+      <h2>3. 방문 통계</h2>
+      <p>사이트 이용 현황을 파악하기 위해 Google Analytics(GA4)를 사용합니다. 이 과정에서 쿠키와 방문 기록(본 페이지, 누른 버튼)이 Google에 전송될 수 있으며, 이름과 연락처는 수집하지 않습니다.</p>
+      <h2>4. 문의</h2>
+      <p>개인정보관리책임자: {SITE.privacyOfficer.name} · 이메일: {SITE.privacyOfficer.email}</p>
+    </div>
+  </section>
+</Base>

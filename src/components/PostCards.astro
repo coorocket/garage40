@@ -1,0 +1,15 @@
+---
+import { postPath } from '../data/content';
+interface Props { posts: any[]; detail?: boolean }
+const { posts, detail = false } = Astro.props;
+---
+<div class="grid3">
+  {posts.map((post) => (
+    <a class="card" href={postPath(post.id)}>
+      {detail && <span class="kicker">{post.data.category}</span>}
+      <h3>{post.data.title}</h3>
+      <p>{post.data.description}</p>
+      {detail && <time datetime={post.data.pubDate}>올린 날 {post.data.pubDate}</time>}
+    </a>
+  ))}
+</div>

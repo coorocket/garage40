@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import { SITE } from '../../data/site';
+
+const path = '/contact/';
+---
+<Base path={path} crumbs={[{ name: '오시는 길', path }]}>
+  <div class="page-head sec--ivory">
+    <div class="shell"><h1>오시는 길 · 예약</h1></div>
+  </div>
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <div class="tblwrap">
+        <table>
+          <tbody>
+            <tr><th scope="row">주소</th><td>{SITE.address}</td></tr>
+            <tr><th scope="row">운영</th><td>{SITE.hours.map((line, i) => <>{i > 0 && <br />}{line}</>)}</td></tr>
+            <tr><th scope="row">전화</th><td><a class="tap" href={`tel:${SITE.phoneTel}`} data-track="mid_cta">{SITE.phone}</a></td></tr>
+            <tr><th scope="row">지도</th><td><a class="tap" href={SITE.mapUrl} target="_blank" rel="noopener noreferrer">네이버 지도에서 보기</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  <section class="sec sec--sand">
+    <div class="shell">
+      <div class="sec-head"><h2>예약은 이렇게 합니다</h2></div>
+      <ol class="numbered">
+        <li>사진 2장과 차종을 문자로 보내 주세요.</li>
+        <li>답장으로 맞는 프로그램, 걸리는 시간, 비용 범위를 알려 드립니다.</li>
+        <li>날짜를 정하고 오시면, 차를 직접 본 뒤 작업 전에 범위와 비용을 다시 말씀드립니다.</li>
+      </ol>
+    </div>
+  </section>
+</Base>

@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://garage40.netlify.app/sitemap.xml

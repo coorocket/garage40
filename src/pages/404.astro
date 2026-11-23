@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import More from '../components/More.astro';
+---
+<Base path="/404/" title="찾으시는 페이지가 없습니다 | 폴리시40" pageType="not_found" noindex>
+  <div class="page-head sec--ivory">
+    <div class="shell">
+      <h1>찾으시는 페이지가 없습니다.</h1>
+      <p class="lead">주소가 바뀌었거나 잘못 들어오셨습니다. 아래에서 다시 찾아보세요.</p>
+    </div>
+  </div>
+  <section class="sec sec--ivory">
+    <div class="shell">
+      <More links={[
+        { label: '홈', href: '/' },
+        { label: '자동차광택', href: '/polish/' },
+        { label: '광택 비용', href: '/polish/price/' },
+        { label: '블로그', href: '/blog/' },
+        { label: '오시는 길', href: '/contact/' },
+      ]} />
+    </div>
+  </section>
+</Base>
